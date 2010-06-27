@@ -10,16 +10,16 @@ var store = (function(){
 	api.delete = function(key) {}
 	api.clear = function() {}
 	
-	if (win.globalStorage) {
-		storage = win.globalStorage[win.location.hostname]
-		api.set = function(key, val) { storage[key] = val }
-		api.get = function(key) { return storage[key] && storage[key].value }
-		api.delete = function(key) { delete storage[key] }
-		api.clear = function() { for (var key in storage ) { delete storage[key] } }
-	} else if (win.localStorage) {
+	if (win.localStorage) {
 		storage = win.localStorage
 		api.set = function(key, val) { storage[key] = val }
 		api.get = function(key) { return storage[key] }
+		api.delete = function(key) { delete storage[key] }
+		api.clear = function() { storage.clear() }
+	} else if (win.globalStorage) {
+		storage = win.globalStorage[win.location.hostname]
+		api.set = function(key, val) { storage[key] = val }
+		api.get = function(key) { return storage[key] && storage[key].value }
 		api.delete = function(key) { delete storage[key] }
 		api.clear = function() { for (var key in storage ) { delete storage[key] } }
 	} else if (Element.prototype.addBehavior) {
