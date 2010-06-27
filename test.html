@@ -13,17 +13,23 @@
 	<div id="errorOutput"></div>
 
 	<script>
-		(function(){
+		(function() {
 			var doc = document,
 				errorOutput = doc.getElementById('errorOutput'),
-				testFailed = false
+				testFailed = false,
+				isSecondPass = (doc.location.hash == '#secondPass')
 
 			function outputError(msg) { errorOutput.appendChild(doc.createElement('div')).innerHTML = msg }
-			function assert(truthy, msg) { if (!truthy) { outputError('Bad assert: ' + msg); testFailed = true } }
-
-			try {
+			function assert(truthy, msg) { 
+				if (!truthy) {
+					outputError((isSecondPass ? 'second' : 'first') + ' pass bad assert: ' + msg);
+					testFailed = true
+				}
+			}
+			
+			function doFirstPass() {
 				store.clear()
-
+				
 				store.set('foo', 'bar')
 				assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
 
@@ -34,13 +40,31 @@
 				store.set('bar', 'foo')
 				store.clear()
 				assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
-
+				
+				store.set('firstPassFoo', 'bar')
+			}
+			
+			function doSecondPass() {
+				assert(store.get('firstPassFoo') == 'bar', "first pass key 'firstPassFoo' not equal to stored value 'bar'")
+				store.clear()
+				assert(store.get('firstPassFoo') == null, "first pass key 'firstPassFoo' not null after store cleared")
+			}
+			
+			try {
+				if (isSecondPass) { doSecondPass() }
+				else { doFirstPass() }
 			} catch(e) {
 				assert(false, 'Tests should not throw')
 			}
 
 			if (!testFailed) {
-				doc.body.appendChild(doc.createElement('div')).innerHTML = 'Tests passed'
+				if (!isSecondPass) {
+					doc.location.hash = '#secondPass'
+					doc.location.reload()
+				} else {
+					doc.location.hash = '#'
+					doc.body.appendChild(doc.createElement('div')).innerHTML = 'Tests passed'
+				}
 			}
 		})()
 	</script>
