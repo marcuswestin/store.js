@@ -7,20 +7,20 @@ var store = (function(){
 	
 	api.set = function(key, value) {}
 	api.get = function(key) {}
-	api.delete = function(key) {}
+	api.del = function(key) {}
 	api.clear = function() {}
 	
 	if (win.localStorage) {
 		storage = win.localStorage
 		api.set = function(key, val) { storage[key] = val }
 		api.get = function(key) { return storage[key] }
-		api.delete = function(key) { delete storage[key] }
+		api.del = function(key) { delete storage[key] }
 		api.clear = function() { storage.clear() }
 	} else if (win.globalStorage) {
 		storage = win.globalStorage[win.location.hostname]
 		api.set = function(key, val) { storage[key] = val }
 		api.get = function(key) { return storage[key] && storage[key].value }
-		api.delete = function(key) { delete storage[key] }
+		api.del = function(key) { delete storage[key] }
 		api.clear = function() { for (var key in storage ) { delete storage[key] } }
 	} else if (Element.prototype.addBehavior) {
 		storage = doc.body.appendChild(doc.createElement('div'))
@@ -36,7 +36,7 @@ var store = (function(){
 		api.get = function(key) {
 			return storage.getAttribute(key)
 		}
-		api.delete = function(key) {
+		api.del = function(key) {
 			storage.removeAttribute(key)
 			storage.save(name)
 		}

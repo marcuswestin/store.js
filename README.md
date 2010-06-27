@@ -10,7 +10,7 @@ store.js exposes a simple API for cross browser local store
 	store.get('username')
 	
 	// Delete 'username'
-	store.delete('username')
+	store.del('username')
 	
 	// Clear all keys
 	store.clear()
@@ -27,7 +27,9 @@ Tests
 Go to test.html in your browser.
 
 So far tested in
- - Firefox 3.6
+ - Tested Firefox 3.6
+ - Tested in Chrome 5
+ - Tested in Safari 5
 
 TODO
 ----
@@ -40,12 +42,9 @@ I wrote store.js in the past hour looking at https://developer.mozilla.org/en/do
  - Test in Firefox 2.0
  - Test in Firefox 3.0
  - Test in Firefox 3.5
- - Test in Firefox 3.6
  - Test in Safari 2
  - Test in Safari 3
  - Test in Safari 4
- - Test in Safari 5
  - Test in Chrome 4
- - Test in Chrome 5
  - Test in Opera 9
  - Test in Opera 10

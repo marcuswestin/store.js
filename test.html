@@ -33,7 +33,7 @@
 				store.set('foo', 'bar')
 				assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
 
-				store.delete('foo')
+				store.del('foo')
 				assert(store.get('foo') == null, "deleted key 'foo' not null")
 
 				store.set('foo', 'bar')
