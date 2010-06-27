@@ -22,12 +22,18 @@ store.js exposes a simple API for cross browser local store
 	var user = JSON.parse(store.get('user'))
 	alert(user.name + ' likes ' + user.likes)
 
+Tests
+-----
+Go to test.html in your browser.
+
+So far tested in
+ - Firefox 3.6
+
 TODO
 ----
 I wrote store.js in the past hour looking at https://developer.mozilla.org/en/dom/store and http://msdn.microsoft.com/en-us/library/ms531424.aspx. I haven't tested it yet though.
 
  - I believe underlying APIs can throw under certain conditions. Where do we need try/catch?
- - Write tests
  - Test in IE6
  - Test in IE7
  - Test in IE8
