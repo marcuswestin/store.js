@@ -27,6 +27,7 @@ Tests
 Go to test.html in your browser.
 
 So far tested in
+
  - Tested Firefox 3.6
  - Tested in Chrome 5
  - Tested in Safari 5
