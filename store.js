@@ -13,7 +13,7 @@ var store = (function(){
 	if (win.globalStorage) {
 		storage = win.globalStorage[win.location.hostname]
 		api.set = function(key, val) { storage[key] = val }
-		api.get = function(key) { return storage[key].value }
+		api.get = function(key) { return storage[key] && storage[key].value }
 		api.delete = function(key) { delete storage[key] }
 		api.clear = function() { for (var key in storage ) { delete storage[key] } }
 	} else if (win.localStorage) {

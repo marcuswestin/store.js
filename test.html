@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+	<title>store.js test</title>
+	<style type="text/css">
+		body { margin: 50px; font-family: helvetica; color: #333; }
+		div { color: green; }
+		#errorOutput div { color: red; }
+	</style>
+	<script src="store.js"></script>
+</head>
+<body>
+	tests for <a href="http://github.com/marcuswestin/store.js">store.js</a>
+	<div id="errorOutput"></div>
+
+	<script>
+		(function(){
+			var doc = document,
+				errorOutput = doc.getElementById('errorOutput'),
+				testFailed = false
+
+			function outputError(msg) { errorOutput.appendChild(doc.createElement('div')).innerHTML = msg }
+			function assert(truthy, msg) { if (!truthy) { outputError('Bad assert: ' + msg); testFailed = true } }
+
+			try {
+				store.clear()
+
+				store.set('foo', 'bar')
+				assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
+
+				store.delete('foo')
+				assert(store.get('foo') == null, "deleted key 'foo' not null")
+
+				store.set('foo', 'bar')
+				store.set('bar', 'foo')
+				store.clear()
+				assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
+
+			} catch(e) {
+				assert(false, 'Tests should not throw')
+			}
+
+			if (!testFailed) {
+				doc.body.appendChild(doc.createElement('div')).innerHTML = 'Tests passed'
+			}
+		})()
+	</script>
+</body>
+</html>
