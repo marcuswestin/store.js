@@ -37,13 +37,14 @@ So far tested in
  - Tested in IE6
  - Tested in IE7
  - Tested in IE8
+ - Tested in Opera 10
 
 TODO
 ----
 
  - I believe underlying APIs can throw under certain conditions. Where do we need try/catch?
- - Fix for Firefox 1.0 (borken)
- - Fix for Opera 10 (borken)
+ - Fix for Firefox 1.0 if possible (no localStorage or globalStorage)
+ - Fix for Opera 9 if possible (no localStorage or globalStorage)
  - Test in Firefox 3.5
  - Test in Safari 2
  - Test in Safari 3
