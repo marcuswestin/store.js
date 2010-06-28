@@ -42,6 +42,11 @@
 				
 				store.set('foo', 'bar')
 				store.set('bar', 'foo')
+				store.del('foo')
+				assert(store.get('bar') == 'foo', "deletion of key 'foo' also deleted key 'bar'")
+				
+				store.set('foo', 'bar')
+				store.set('bar', 'foo')
 				store.clear()
 				assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
 				
