@@ -36,6 +36,10 @@
 				store.del('foo')
 				assert(store.get('foo') == null, "deleted key 'foo' not null")
 
+				store.set('foo', 'bar1')
+				store.set('foo', 'bar2')
+				assert(store.get('foo') == 'bar2', "key 'foo' is not equal to second value set 'bar2'")
+				
 				store.set('foo', 'bar')
 				store.set('bar', 'foo')
 				store.clear()
