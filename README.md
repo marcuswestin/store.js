@@ -31,6 +31,7 @@ So far tested in
  - Tested Firefox 3.6
  - Tested in Chrome 5
  - Tested in Safari 5
+ - Tested in IE7
 
 TODO
 ----
@@ -38,7 +39,6 @@ I wrote store.js in the past hour looking at https://developer.mozilla.org/en/do
 
  - I believe underlying APIs can throw under certain conditions. Where do we need try/catch?
  - Test in IE6
- - Test in IE7
  - Test in IE8
  - Test in Firefox 2.0
  - Test in Firefox 3.0
