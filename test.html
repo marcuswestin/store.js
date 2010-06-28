@@ -63,7 +63,7 @@
 				if (isSecondPass) { doSecondPass() }
 				else { doFirstPass() }
 			} catch(e) {
-				assert(false, 'Tests should not throw')
+				assert(false, 'Tests should not throw: "' + e.message + '"')
 			}
 
 			if (!testFailed) {
