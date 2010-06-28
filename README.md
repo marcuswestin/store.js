@@ -9,8 +9,8 @@ store.js exposes a simple API for cross browser local store
 	// Get 'username'
 	store.get('username')
 	
-	// Delete 'username'
-	store.del('username')
+	// Remove 'username'
+	store.remove('username')
 	
 	// Clear all keys
 	store.clear()
