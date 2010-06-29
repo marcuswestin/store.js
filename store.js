@@ -2,7 +2,8 @@ var store = (function(){
 	var api = {},
 		win = window,
 		doc = win.document,
-		name = 'localStorage',
+		localStorageName = 'localStorage',
+		globalStorageName = 'globalStorage',
 		storage
 	
 	api.set = function(key, value) {}
@@ -10,14 +11,14 @@ var store = (function(){
 	api.remove = function(key) {}
 	api.clear = function() {}
 	
-	if (win.localStorage) {
-		storage = win.localStorage
+	if (localStorageName in win && win[localStorageName]) {
+		storage = win[localStorageName]
 		api.set = function(key, val) { storage[key] = val }
 		api.get = function(key) { return storage[key] }
 		api.remove = function(key) { delete storage[key] }
 		api.clear = function() { storage.clear() }
-	} else if (win.globalStorage) {
-		storage = win.globalStorage[win.location.hostname]
+	} else if (globalStorageName in win && win[globalStorageName]) {
+		storage = win[globalStorageName][win.location.hostname]
 		api.set = function(key, val) { storage[key] = val }
 		api.get = function(key) { return storage[key] && storage[key].value }
 		api.remove = function(key) { delete storage[key] }
