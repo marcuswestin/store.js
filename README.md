@@ -24,10 +24,10 @@ store.js exposes a simple API for cross browser local store
 
 Tests
 -----
-Go to test.html in your browser.
+Go to test.html in your browser
 
-So far tested in
-
+Supported
+---------
  - Tested in Firefox 2.0
  - Tested in Firefox 3.0
  - Tested in Firefox 3.6
@@ -39,14 +39,17 @@ So far tested in
  - Tested in IE8
  - Tested in Opera 10
 
+Not supported
+-------------
+ - Firefox 1.0: no means (beside cookies and flash)
+ - Safari 2: no means (beside cookies and flash)
+ - Safari 3: no synchronous api (has asynch sqlite api, but store.js is synch)
+
 TODO
 ----
-
  - I believe underlying APIs can throw under certain conditions. Where do we need try/catch?
- - Fix for Firefox 1.0 if possible (no localStorage or globalStorage)
- - Fix for Opera 9 if possible (no localStorage or globalStorage)
+ - Check if there's an API for storage in Opera 9
  - Test in Firefox 3.5
- - Test in Safari 2
- - Test in Safari 3
  - Test in Chrome 4
  - Test in Opera 9
+ - Test different versions of Opera 10.X explicitly
