@@ -39,7 +39,7 @@ Supported
  - Tested in IE7
  - Tested in IE8
  - Tested in Opera 10
-  - Opera 10.54
+   - Opera 10.54
 
 Supported but borken (please help fix)
 --------------------------------------
