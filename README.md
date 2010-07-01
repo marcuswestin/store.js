@@ -38,12 +38,13 @@ Supported
  - Tested in IE6
  - Tested in IE7
  - Tested in IE8
+ - Tested in Opera 10
+  - Opera 10.54
 
 Supported but borken (please help fix)
 --------------------------------------
- - Opera 10.10
- - Opera 10.50 (fails deletion test)
  - Chrome 4
+ - Opera 10.10 (Someone reported this as broken, I'm not sure it's true)
 
 Not supported
 -------------
