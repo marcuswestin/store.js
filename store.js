@@ -17,37 +17,41 @@ var store = (function(){
 		api.get = function(key) { return storage[key] }
 		api.remove = function(key) { delete storage[key] }
 		api.clear = function() { storage.clear() }
+
 	} else if (globalStorageName in win && win[globalStorageName]) {
 		storage = win[globalStorageName][win.location.hostname]
 		api.set = function(key, val) { storage[key] = val }
 		api.get = function(key) { return storage[key] && storage[key].value }
 		api.remove = function(key) { delete storage[key] }
 		api.clear = function() { for (var key in storage ) { delete storage[key] } }
+
 	} else if (doc.documentElement.addBehavior) {
-		function createStorage() {
+		function getStorage() {
+			if (storage) { return storage; }
 			storage = doc.body.appendChild(doc.createElement('div'))
 			storage.style.display = 'none'
 			// See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
 			// and http://msdn.microsoft.com/en-us/library/ms531424(v=VS.85).aspx
 			storage.addBehavior('#default#userData') 
 			storage.load(localStorageName)
+			return storage;
 		}
 		api.set = function(key, val) {
-			if (!storage) { createStorage() }
+			var storage = getStorage()
 			storage.setAttribute(key, val)
 			storage.save(localStorageName)
 		}
 		api.get = function(key) {
-			if (!storage) { createStorage() }
+			var storage = getStorage()
 			return storage.getAttribute(key)
 		}
 		api.remove = function(key) {
-			if (!storage) { createStorage() }
+			var storage = getStorage()
 			storage.removeAttribute(key)
 			storage.save(localStorageName)
 		}
 		api.clear = function() {
-			if (!storage) { createStorage() }
+			var storage = getStorage()
 			var attributes = storage.XMLDocument.documentElement.attributes;
 			storage.load(localStorageName)
 			for (var i=0, attr; attr = attributes[i]; i++) {
