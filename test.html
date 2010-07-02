@@ -6,6 +6,7 @@
 		div { color: green; }
 		#errorOutput div { color: red; }
 	</style>
+	<script src="json.js"></script>
 	<script src="store.js"></script>
 </head>
 <body>
@@ -50,7 +51,26 @@
 				store.clear()
 				assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
 				
+				store.set('foo', { name: 'marcus', arr: [1,2,3] })
+				assert(typeof store.get('foo') == 'object', "type of stored object 'foo' is not 'object'")
+				assert(store.get('foo') instanceof Object, "stored object 'foo' is not an instance of Object")
+				assert(store.get('foo').name == 'marcus', "property 'name' of stored object 'foo' is not 'marcus'")
+				assert(store.get('foo').arr instanceof Array, "Array property 'arr' of stored object 'foo' is not an instance of Array")
+				assert(store.get('foo').arr.length == 3, "The length of Array property 'arr' stored on object 'foo' is not 3")
+				
+				store.remove('circularReference')
+				var circularOne = {}
+				var circularTwo = { one:circularOne }
+				circularOne.two = circularTwo
+				var threw = false
+				try { store.set('circularReference', circularOne) }
+				catch(e) { threw = true }
+				assert(threw, "storing object with circular reference did not throw")
+				assert(!store.get('circularReference'), "attempting to store object with circular reference which should have faile affected store state")
+
+				// The following stored values get tested in doSecondPass after a page reload
 				store.set('firstPassFoo', 'bar')
+				store.set('firstPassObj', { woot: true })
 			}
 			
 			function doSecondPass() {
@@ -63,7 +83,7 @@
 				if (isSecondPass) { doSecondPass() }
 				else { doFirstPass() }
 			} catch(e) {
-				assert(false, 'Tests should not throw: "' + e.message + '"')
+				assert(false, 'Tests should not throw: "' + e + '"')
 			}
 
 			if (!testFailed) {
