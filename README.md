@@ -44,7 +44,7 @@ Supported
 Supported but borken (please help fix)
 --------------------------------------
  - Chrome 4
- - Opera 10.10 (Someone reported this as broken, I'm not sure it's true)
+ - Opera 10.10
 
 Not supported
 -------------
