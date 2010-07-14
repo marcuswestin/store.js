@@ -10,6 +10,12 @@ var store = (function(){
 	api.get = function(key) {}
 	api.remove = function(key) {}
 	api.clear = function() {}
+	api.transact = function(key, transactionFn) {
+		var val = api.get(key)
+		if (typeof val == 'undefined') { val = {} }
+		transactionFn(val)
+		store.set(key, val)
+	}
 	
 	function serialize(value) {
 		return JSON.stringify(value)

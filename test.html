@@ -51,6 +51,16 @@
 				store.clear()
 				assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
 				
+				store.transact('foosact', function(val) {
+					assert(typeof val == 'object', "new key is not an object at beginning of transaction")
+					val.foo = 'foo'
+				})
+				store.transact('foosact', function(val) {
+					assert(val.foo == 'foo', "first transaction did not register")
+					val.bar = 'bar'
+				})
+				assert(store.get('foosact').bar == 'bar', "second transaction did not register")
+
 				store.set('foo', { name: 'marcus', arr: [1,2,3] })
 				assert(typeof store.get('foo') == 'object', "type of stored object 'foo' is not 'object'")
 				assert(store.get('foo') instanceof Object, "stored object 'foo' is not an instance of Object")
