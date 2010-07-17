@@ -27,9 +27,9 @@ var store = (function(){
 
 	if (localStorageName in win && win[localStorageName]) {
 		storage = win[localStorageName]
-		api.set = function(key, val) { if (typeof(storage.setItem) == 'undefined') { storage[key] = serialize(val) } else { storage.setItem(key, serialize(val)) } }
-		api.get = function(key) { if (typeof(storage.getItem) == 'undefined') { return deserialize(storage[key]) } else { return deserialize(storage.getItem(key)) } }
-		api.remove = function(key) { if (typeof(storage.removeItem) == 'undefined') { delete storage[key] } else { storage.removeItem(key) } }
+		api.set = function(key, val) { if (storage.setItem) { storage.setItem(key, serialize(val)) } else { storage[key] = serialize(val) } }
+		api.get = function(key) { if (storage.getItem) { return deserialize(storage.getItem(key)) } else { return deserialize(storage[key]) } }
+		api.remove = function(key) { if (storage.removeItem) { storage.removeItem(key) } else { delete storage[key] } }
 		api.clear = function() { storage.clear() }
 
 	} else if (globalStorageName in win && win[globalStorageName]) {
