@@ -93,7 +93,7 @@
 				if (isSecondPass) { doSecondPass() }
 				else { doFirstPass() }
 			} catch(e) {
-				assert(false, 'Tests should not throw: "' + e + '"')
+				assert(false, 'Tests should not throw: "' + JSON.stringify(e) + '"')
 			}
 
 			if (!testFailed) {
