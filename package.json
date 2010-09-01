@@ -24,7 +24,4 @@
 		"url": "http://github.com/marcuswestin/store.js/raw/master/LICENSE"
 	}],
 	"main": "store"
-	// "directories" : { "doc" : "./doc", "man" : "./man", "lib" : "./lib" }
-	// "bin" : { "npm" : "./cli.js" }
-	// "scripts" : { "test" : "make test" }
 }
