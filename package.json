@@ -1,7 +1,7 @@
 {
 	"name": "store.js",
 	"description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"homepage": "http://github.com/marcuswestin/store.js/",
 	"author": "Marcus Westin <narcvs@gmail.com> (http://marcuswest.in)",
 	"contributors": [
