@@ -77,4 +77,4 @@ var store = (function(){
 	}
 
 	return api
-})()
+})();
