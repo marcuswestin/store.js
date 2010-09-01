@@ -17,25 +17,25 @@ var store = (function(){
 		store.set(key, val)
 	}
 	
-	function serialize(value) {
+	api.serialize = function(value) {
 		return JSON.stringify(value)
 	}
-	function deserialize(value) { 
+	api.deserialize = function(value) {
 		if (typeof value != 'string') { return undefined }
 		return JSON.parse(value)
 	}
-
+	
 	if (localStorageName in win && win[localStorageName]) {
 		storage = win[localStorageName]
-		api.set = function(key, val) { storage.setItem(key, serialize(val)) }
-		api.get = function(key) { return deserialize(storage.getItem(key)) }
+		api.set = function(key, val) { storage.setItem(key, api.serialize(val)) }
+		api.get = function(key) { return api.deserialize(storage.getItem(key)) }
 		api.remove = function(key) { storage.removeItem(key) }
 		api.clear = function() { storage.clear() }
 
 	} else if (globalStorageName in win && win[globalStorageName]) {
 		storage = win[globalStorageName][win.location.hostname]
-		api.set = function(key, val) { storage[key] = serialize(val) }
-		api.get = function(key) { return deserialize(storage[key] && storage[key].value) }
+		api.set = function(key, val) { storage[key] = api.serialize(val) }
+		api.get = function(key) { return api.deserialize(storage[key] && storage[key].value) }
 		api.remove = function(key) { delete storage[key] }
 		api.clear = function() { for (var key in storage ) { delete storage[key] } }
 
@@ -56,11 +56,11 @@ var store = (function(){
 			}
 		}
 		api.set = withIEStorage(function(storage, key, val) {
-			storage.setAttribute(key, serialize(val))
+			storage.setAttribute(key, api.serialize(val))
 			storage.save(localStorageName)
 		})
 		api.get = withIEStorage(function(storage, key) {
-			return deserialize(storage.getAttribute(key))
+			return api.deserialize(storage.getAttribute(key))
 		})
 		api.remove = withIEStorage(function(storage, key) {
 			storage.removeAttribute(key)
