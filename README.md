@@ -26,8 +26,10 @@ store.js depends on JSON for serialization.
 
 IE6/7 limitation
 ----------------
-Access to the userData behavior in IE6 and IE7 is restricted to "same directory" in the path of the URL, much like access to localStorage is restricted to "same domain" in the protocol and host name of the URL. As a result, the following happens:
-	
+Access to the userData behavior in IE6 and IE7 is restricted to "same directory" in the path of the URL, much like access to localStorage is restricted to "same domain" in the protocol and host name of the URL. In addition, just as localStorage cannot be accessed across sub domains, userData behavior cannot be accessed across sub-directories.
+
+Here are some examples to demonstrate the IE6 and IE7 limitations:
+
 	// on http://example.com/path1/
 	store.set('foo', 1)
 	
@@ -36,8 +38,13 @@ Access to the userData behavior in IE6 and IE7 is restricted to "same directory"
 	store.get('foo') == 1
 	store.set('bar', 2)
 	
-	// on http://example.com/path2/ the value of "foo" is not readable
+	// on http://example.com/path2/ the values of "foo" and "bar" are not readable
 	// because we are not in the same "directory" - the directory is not /path2/
+	store.get('foo') == null
+	store.get('bar') == null
+
+	// on http://example.com/path1/subpath/ the values of "foo" and "bar" are not
+	// readable here either, because we are in the directory /path1/subpath/.
 	store.get('foo') == null
 	store.get('bar') == null
 
