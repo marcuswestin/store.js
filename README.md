@@ -83,7 +83,7 @@ Supported but borken (please help fix)
  - Chrome 4
  - Opera 10.10
 
-Unsuported browsers
+Unsupported browsers
 -------------------
  - Firefox 1.0: no means (beside cookies and flash)
  - Safari 2: no means (beside cookies and flash)
