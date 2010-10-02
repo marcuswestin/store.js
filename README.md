@@ -24,6 +24,23 @@ store.js exposes a simple API for cross browser local storage
 
 store.js depends on JSON for serialization.
 
+IE6/7 limitation
+----------------
+Access to the userData behavior in IE6 and IE7 is restricted to "same directory" in the path of the URL, much like access to localStorage is restricted to "same domain" in the protocol and host name of the URL. As a result, the following happens:
+	
+	// on http://example.com/path1/
+	store.set('foo', 1)
+	
+	// on http://example.com/path1/test.html the value of "foo"
+	// is readable because we are in the same "directory" /path1/
+	store.get('foo') == 1
+	store.set('bar', 2)
+	
+	// on http://example.com/path2/ the value of "foo" is not readable
+	// because we are not in the same "directory" - the directory is not /path2/
+	store.get('foo') == null
+	store.get('bar') == null
+
 How does it works?
 ------------------
 store.js uses localStorage when available, and falls back on globalStorage for earlier versions of Firefox and the userData behavior in IE6 and IE7.
