@@ -14,7 +14,7 @@ var store = (function(){
 		var val = api.get(key)
 		if (typeof val == 'undefined') { val = {} }
 		transactionFn(val)
-		store.set(key, val)
+		api.set(key, val)
 	}
 	
 	api.serialize = function(value) {
