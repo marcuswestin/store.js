@@ -115,6 +115,11 @@ Unsupported browsers
  - Opera 9: don't know if there is synchronous api for storing data locally
  - Firefox 1.5: don't know if there is synchronous api for storing data locally
 
+Forks
+----
+ - Sans JSON support (simple key/values only): https://github.com/cloudhead/store.js
+ - jQueryfied version: https://github.com/whitmer/store.js 
+
 TODO
 ----
  - I believe underlying APIs can throw under certain conditions. Where do we need try/catch?
