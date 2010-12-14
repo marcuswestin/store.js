@@ -118,6 +118,7 @@ Forks
 ----
  - Sans JSON support (simple key/values only): https://github.com/cloudhead/store.js
  - jQueryfied version: https://github.com/whitmer/store.js 
+ - Lint.js passing version (with semi-colons): https://github.com/StevenBlack/store.js
 
 TODO
 ----
