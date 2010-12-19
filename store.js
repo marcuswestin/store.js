@@ -46,14 +46,29 @@ var store = (function(){
 		return JSON.parse(value)
 	}
 	
-	if (localStorageName in win && win[localStorageName]) {
+	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
+	// when about.config::dom.storage.enabled === false
+	// See https://github.com/marcuswestin/store.js/issues#issue/13
+	function isLocalStorageNameSupported() {
+		var ret = false;
+		try { ret = (localStorageName in win && win[localStorageName]) }
+		finally { return ret }
+	}
+	
+	function isGlobalStorageNameSupported() {
+		var ret = false;
+		try { ret = (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
+		finally { return ret }
+	}	
+
+	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
 		api.set = function(key, val) { storage.setItem(key, api.serialize(val)) }
 		api.get = function(key) { return api.deserialize(storage.getItem(key)) }
 		api.remove = function(key) { storage.removeItem(key) }
 		api.clear = function() { storage.clear() }
 
-	} else if (globalStorageName in win && win[globalStorageName]) {
+	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname]
 		api.set = function(key, val) { storage[key] = api.serialize(val) }
 		api.get = function(key) { return api.deserialize(storage[key] && storage[key].value) }
