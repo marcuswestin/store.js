@@ -27,6 +27,7 @@ var store = (function(){
 		globalStorageName = 'globalStorage',
 		storage
 	
+	api.disabled = false
 	api.set = function(key, value) {}
 	api.get = function(key) {}
 	api.remove = function(key) {}
@@ -108,6 +109,8 @@ var store = (function(){
 			}
 			storage.save(localStorageName)
 		})
+	} else {
+		api.disabled = true
 	}
 
 	return api
