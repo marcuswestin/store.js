@@ -50,15 +50,13 @@ var store = (function(){
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
-		var ret = false;
-		try { ret = (localStorageName in win && win[localStorageName]) }
-		finally { return ret }
+		try { return (localStorageName in win && win[localStorageName]) }
+		catch(err) { return false }
 	}
 	
 	function isGlobalStorageNameSupported() {
-		var ret = false;
-		try { ret = (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
-		finally { return ret }
+		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
+		catch(err) { return false }
 	}	
 
 	if (isLocalStorageNameSupported()) {
