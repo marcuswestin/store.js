@@ -26,7 +26,7 @@ var store = (function(){
 		localStorageName = 'localStorage',
 		globalStorageName = 'globalStorage',
 		storage
-	
+
 	api.disabled = false
 	api.set = function(key, value) {}
 	api.get = function(key) {}
@@ -38,7 +38,7 @@ var store = (function(){
 		transactionFn(val)
 		api.set(key, val)
 	}
-	
+
 	api.serialize = function(value) {
 		return JSON.stringify(value)
 	}
@@ -46,7 +46,7 @@ var store = (function(){
 		if (typeof value != 'string') { return undefined }
 		return JSON.parse(value)
 	}
-	
+
 	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
