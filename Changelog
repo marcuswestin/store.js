@@ -1,4 +1,4 @@
-v1.0.0
+v1.1.0
 + First versioned version.
 + API: store.set, store.get, store.remove, store.clear, store.transact
 + Minified versions are included: store.min.js for store.js only, and store+json2.min.js for store.js and json2.js
