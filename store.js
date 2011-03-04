@@ -25,6 +25,7 @@ var store = (function(){
 		doc = win.document,
 		localStorageName = 'localStorage',
 		globalStorageName = 'globalStorage',
+		namespace = '__storejs__',
 		storage
 
 	api.disabled = false
@@ -109,9 +110,15 @@ var store = (function(){
 			}
 			storage.save(localStorageName)
 		})
-	} else {
+	}
+	
+	try {
+		api.set(namespace, namespace)
+		if (api.get(namespace) != namespace) { api.disabled = true }
+		api.remove(namespace)
+	} catch(e) {
 		api.disabled = true
 	}
-
+	
 	return api
 })();
