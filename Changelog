@@ -2,3 +2,6 @@ v1.1.0
 + First versioned version.
 + API: store.set, store.get, store.remove, store.clear, store.transact
 + Minified versions are included: store.min.js for store.js only, and store+json2.min.js for store.js and json2.js
+
+TODO
+- Get around IE6/7 per-directory restrition. @lrbabe/@louis_remi had the idea of putting the store.js API in an anonymous iframe a la https://github.com/meebo/embed-code and see what directory restriction that would fall under
