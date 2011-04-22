@@ -1,4 +1,5 @@
 intended v1.1.1
++ Publish in npm as "store" rather than "store.js"
 + Add commonjs export for require support
 
 v1.1.0
