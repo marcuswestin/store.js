@@ -122,3 +122,5 @@ var store = (function(){
 	
 	return api
 })();
+
+if (typeof module != 'undefined') { module.exports = store }

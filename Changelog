@@ -1,3 +1,6 @@
+intended v1.1.1
++ Add commonjs export for require support
+
 v1.1.0
 + First versioned version.
 + API: store.set, store.get, store.remove, store.clear, store.transact
