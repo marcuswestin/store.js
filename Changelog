@@ -1,6 +1,7 @@
-intended v1.1.1
+v1.1.1
 + Publish in npm as "store" rather than "store.js"
 + Add commonjs export for require support
++ Add supported browsers Chrome 6-11, Firefox 4.0
 
 v1.1.0
 + First versioned version.
