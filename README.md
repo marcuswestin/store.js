@@ -84,7 +84,9 @@ Some browsers do not have native support for JSON. For those browsers you should
 
 Tests
 -----
-Go to test.html in your browser
+Go to test.html in your browser.
+
+(Note that test.html must be served over http:// or https://. This is because localStore does not work in some browsers when using the file:// protocol)
 
 Supported browsers
 ------------------
@@ -92,7 +94,13 @@ Supported browsers
  - Tested in Firefox 3.0
  - Tested in Firefox 3.5
  - Tested in Firefox 3.6
+ - Tested in Firefox 4.0
  - Tested in Chrome 5
+ - Tested in Chrome 6
+ - Tested in Chrome 7
+ - Tested in Chrome 8
+ - Tested in Chrome 10
+ - Tested in Chrome 11
  - Tested in Safari 4
  - Tested in Safari 5
  - Tested in IE6
