@@ -109,7 +109,7 @@ Supported browsers
  - Tested in Opera 10
    - Opera 10.54
 
-Supported but borken (please help fix)
+Supported but broken (please help fix)
 --------------------------------------
  - Chrome 4
  - Opera 10.10
