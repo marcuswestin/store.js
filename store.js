@@ -62,11 +62,14 @@ var store = (function(){
 	}	
 
 	if (isLocalStorageNameSupported()) {
-		storage = win[localStorageName]
-		api.set = function(key, val) { storage.setItem(key, api.serialize(val)) }
-		api.get = function(key) { return api.deserialize(storage.getItem(key)) }
-		api.remove = function(key) { storage.removeItem(key) }
-		api.clear = function() { storage.clear() }
+		storage = win[localStorageName];
+		//handle Safari exception when private browsing, 
+		//see http://lists.macosforge.org/pipermail/webkit-dev/2009-May/007788.html
+		api.set = function(key, val) { try { storage.setItem(key, api.serialize(val)); }  
+			catch(err) { } };
+		api.get = function(key) { return api.deserialize(storage.getItem(key)); };
+		api.remove = function(key) { storage.removeItem(key); };
+		api.clear = function() { storage.clear(); };
 
 	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname]
