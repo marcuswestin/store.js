@@ -21,17 +21,17 @@
 				isSecondPass = (doc.location.hash == '#secondPass')
 
 			function outputError(msg) { errorOutput.appendChild(doc.createElement('div')).innerHTML = msg }
-			function assert(truthy, msg) { 
+			function assert(truthy, msg) {
 				if (!truthy) {
 					outputError((isSecondPass ? 'second' : 'first') + ' pass bad assert: ' + msg);
 					if (store.disabled) { outputError('<br>Note that store.disabled == true') }
 					testFailed = true
 				}
 			}
-			
+
 			function doFirstPass() {
 				store.clear()
-				
+
 				store.set('foo', 'bar')
 				assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
 
@@ -41,17 +41,17 @@
 				store.set('foo', 'bar1')
 				store.set('foo', 'bar2')
 				assert(store.get('foo') == 'bar2', "key 'foo' is not equal to second value set 'bar2'")
-				
+
 				store.set('foo', 'bar')
 				store.set('bar', 'foo')
 				store.remove('foo')
 				assert(store.get('bar') == 'foo', "removing key 'foo' also removed key 'bar'")
-				
+
 				store.set('foo', 'bar')
 				store.set('bar', 'foo')
 				store.clear()
 				assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
-				
+
 				store.transact('foosact', function(val) {
 					assert(typeof val == 'object', "new key is not an object at beginning of transaction")
 					val.foo = 'foo'
@@ -68,7 +68,7 @@
 				assert(store.get('foo').name == 'marcus', "property 'name' of stored object 'foo' is not 'marcus'")
 				assert(store.get('foo').arr instanceof Array, "Array property 'arr' of stored object 'foo' is not an instance of Array")
 				assert(store.get('foo').arr.length == 3, "The length of Array property 'arr' stored on object 'foo' is not 3")
-				
+
 				store.remove('circularReference')
 				var circularOne = {}
 				var circularTwo = { one:circularOne }
@@ -83,13 +83,13 @@
 				store.set('firstPassFoo', 'bar')
 				store.set('firstPassObj', { woot: true })
 			}
-			
+
 			function doSecondPass() {
 				assert(store.get('firstPassFoo') == 'bar', "first pass key 'firstPassFoo' not equal to stored value 'bar'")
 				store.clear()
 				assert(store.get('firstPassFoo') == null, "first pass key 'firstPassFoo' not null after store cleared")
 			}
-			
+
 			try {
 				if (isSecondPass) { doSecondPass() }
 				else { doFirstPass() }
