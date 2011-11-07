@@ -19,6 +19,11 @@
  * THE SOFTWARE.
  */
 
+if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
+	goog.provide('store');
+	// requires JSON
+}
+
 var store = (function(){
 	var api = {},
 		win = window,
@@ -39,6 +44,7 @@ var store = (function(){
 		transactionFn(val)
 		api.set(key, val)
 	}
+	api.getAll = function() {}
 
 	api.serialize = function(value) {
 		return JSON.stringify(value)
@@ -48,18 +54,18 @@ var store = (function(){
 		return JSON.parse(value)
 	}
 
-	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
+	// Functions to encapsulate questionable FireFox 3.6.13 behavior
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
 		try { return (localStorageName in win && win[localStorageName]) }
 		catch(err) { return false }
 	}
-	
+
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
 		catch(err) { return false }
-	}	
+	}
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
@@ -67,6 +73,14 @@ var store = (function(){
 		api.get = function(key) { return api.deserialize(storage.getItem(key)) }
 		api.remove = function(key) { storage.removeItem(key) }
 		api.clear = function() { storage.clear() }
+		api.getAll = function() {
+			var ret = {}
+			for (var i = 0; i < storage.length; ++i) {
+				var key = storage.key(i)
+				ret[key] = storage.getItem(key)
+			}
+			return ret
+		}
 
 	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname]
@@ -74,7 +88,13 @@ var store = (function(){
 		api.get = function(key) { return api.deserialize(storage[key] && storage[key].value) }
 		api.remove = function(key) { delete storage[key] }
 		api.clear = function() { for (var key in storage ) { delete storage[key] } }
-
+		api.getAll = function() {
+			var ret = {}
+			for (var key in storage) {
+				ret[key] = storage[key]
+			}
+			return ret
+		}
 	} else if (doc.documentElement.addBehavior) {
 		var storage = doc.createElement('div')
 		function withIEStorage(storeFunction) {
@@ -110,16 +130,26 @@ var store = (function(){
 			}
 			storage.save(localStorageName)
 		})
+		api.getAll = withIEStorage(function(storage) {
+			var attributes = storage.XMLDocument.documentElement.attributes
+			storage.load(localStorageName)
+			var ret = {}
+			for (var i = 0, attr; attr = attributes[i]; ++i) {
+				ret[attr] = api.get(attr)
+			}
+			return ret
+		})
 	}
-	
+
 	try {
 		api.set(namespace, namespace)
 		if (api.get(namespace) != namespace) { api.disabled = true }
 		api.remove(namespace)
 	} catch(e) {
+		// todo: could fallback to in-memory storage here?
 		api.disabled = true
 	}
-	
+
 	return api
 })();
 
