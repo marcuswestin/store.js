@@ -43,6 +43,7 @@
 		transactionFn(val)
 		store.set(key, val)
 	}
+	store.getAll = function() {}
 
 	store.serialize = function(value) {
 		return JSON.stringify(value)
@@ -52,18 +53,18 @@
 		return JSON.parse(value)
 	}
 
-	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
+	// Functions to encapsulate questionable FireFox 3.6.13 behavior
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
 		try { return (localStorageName in win && win[localStorageName]) }
 		catch(err) { return false }
 	}
-	
+
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
 		catch(err) { return false }
-	}	
+	}
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
@@ -74,7 +75,14 @@
 		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
 		store.remove = function(key) { storage.removeItem(key) }
 		store.clear = function() { storage.clear() }
-
+		store.getAll = function() {
+			var ret = {}
+			for (var i=0; i<storage.length; ++i) {
+				var key = storage.key(i)
+				ret[key] = store.get(key)
+			}
+			return ret
+		}
 	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname]
 		store.set = function(key, val) {
@@ -84,6 +92,14 @@
 		store.get = function(key) { return store.deserialize(storage[key] && storage[key].value) }
 		store.remove = function(key) { delete storage[key] }
 		store.clear = function() { for (var key in storage ) { delete storage[key] } }
+		store.getAll = function() {
+			var ret = {}
+			for (var i=0; i<storage.length; ++i) {
+				var key = storage.key(i)
+				ret[key] = store.get(key)
+			}
+			return ret
+		}
 
 	} else if (doc.documentElement.addBehavior) {
 		var storageOwner,
@@ -140,13 +156,22 @@
 		store.clear = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes
 			storage.load(localStorageName)
-			for (var i=0, attr; attr = attributes[i]; i++) {
+			for (var i=0, attr; attr=attributes[i]; i++) {
 				storage.removeAttribute(attr.name)
 			}
 			storage.save(localStorageName)
 		})
+		store.getAll = withIEStorage(function(storage) {
+			var attributes = storage.XMLDocument.documentElement.attributes
+			storage.load(localStorageName)
+			var ret = {}
+			for (var i=0, attr; attr=attributes[i]; ++i) {
+				ret[attr] = store.get(attr)
+			}
+			return ret
+		})
 	}
-	
+
 	try {
 		store.set(namespace, namespace)
 		if (store.get(namespace) != namespace) { store.disabled = true }
