@@ -19,12 +19,11 @@
  * THE SOFTWARE.
  */
 
-if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
-	goog.provide('store');
-	// requires JSON
-}
-
-var store = (function(){
+(function(root, store) {
+  if (typeof module != 'undefined') { module.exports = store }
+  else if (typeof define === 'function' && define.amd) { define(store); }
+  else { root.store = store; }
+})(this, (function(){
 	var api = {},
 		win = window,
 		doc = win.document,
@@ -54,18 +53,18 @@ var store = (function(){
 		return JSON.parse(value)
 	}
 
-	// Functions to encapsulate questionable FireFox 3.6.13 behavior
+	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
 		try { return (localStorageName in win && win[localStorageName]) }
 		catch(err) { return false }
 	}
-
+	
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
 		catch(err) { return false }
-	}
+	}	
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
@@ -103,6 +102,7 @@ var store = (function(){
 				args.unshift(storage)
 				// See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
 				// and http://msdn.microsoft.com/en-us/library/ms531424(v=VS.85).aspx
+				// todo: https://github.com/appendto/amplify/issues/17 ?
 				doc.body.appendChild(storage)
 				storage.addBehavior('#default#userData')
 				storage.load(localStorageName)
@@ -134,7 +134,7 @@ var store = (function(){
 			var attributes = storage.XMLDocument.documentElement.attributes
 			storage.load(localStorageName)
 			var ret = {}
-			for (var i = 0, attr; attr = attributes[i]; ++i) {
+			for (var i=0, attr; attr = attributes[i]; i++) {
 				ret[attr] = api.get(attr)
 			}
 			return ret
@@ -146,11 +146,9 @@ var store = (function(){
 		if (api.get(namespace) != namespace) { api.disabled = true }
 		api.remove(namespace)
 	} catch(e) {
-		// todo: could fallback to in-memory storage here?
+		// could fallback to in-memory storage here?
 		api.disabled = true
 	}
-
+	
 	return api
-})();
-
-if (typeof module != 'undefined') { module.exports = store }
+})());
