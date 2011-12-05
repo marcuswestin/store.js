@@ -19,6 +19,11 @@
  * THE SOFTWARE.
  */
 
+if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
+	goog.provide('store');
+	// requires JSON
+}
+
 (function(root, store) {
   if (typeof module != 'undefined') { module.exports = store }
   else if (typeof define === 'function' && define.amd) { define(store); }
@@ -53,18 +58,18 @@
 		return JSON.parse(value)
 	}
 
-	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
+	// Functions to encapsulate questionable FireFox 3.6.13 behavior
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
 		try { return (localStorageName in win && win[localStorageName]) }
 		catch(err) { return false }
 	}
-	
+
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
 		catch(err) { return false }
-	}	
+	}
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
@@ -149,6 +154,6 @@
 		// could fallback to in-memory storage here?
 		api.disabled = true
 	}
-	
+
 	return api
 })());
