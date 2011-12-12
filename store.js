@@ -80,18 +80,43 @@
 		api.clear = function() { for (var key in storage ) { delete storage[key] } }
 
 	} else if (doc.documentElement.addBehavior) {
-		var storage = doc.createElement('div')
+		var storage,
+			storageOwner,
+			storageContainer;
+		// Since #userData storage applies only to specific paths, we need to
+		// somehow link our data to a specific path.  We choose /favicon.ico
+		// as a pretty safe option, since all browsers already make a request to
+		// this URL anyway and being a 404 will not hurt us here.  We wrap an
+		// iframe pointing to the favicon in an ActiveXObject(htmlfile) object
+		// (see: http://msdn.microsoft.com/en-us/library/aa752574(v=VS.85).aspx)
+		// since the iframe access rules appear to allow direct access and
+		// manipulation of the document element, even for a 404 page.  This
+		// document can be used instead of the current document (which would
+		// have been limited to the current path) to perform #userData storage.
+		try {
+			storageContainer = new ActiveXObject('htmlfile');
+			storageContainer.open();
+			storageContainer.write('<s' + 'cript>document.w=window</s' + 'cript><iframe src="/favicon.ico"></frame>');
+			storageContainer.close();
+			storageOwner = storageContainer.w.frames[0].document;
+			storage = storageOwner.createElement('div');
+		} catch(e) {
+			// somehow ActiveXObject instantiation failed (perhaps some special
+			// security settings or otherwse), fall back to per-path storage
+			storage = doc.createElement('div');
+			storageOwner = doc.body;
+		}
 		function withIEStorage(storeFunction) {
 			return function() {
 				var args = Array.prototype.slice.call(arguments, 0)
 				args.unshift(storage)
 				// See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
 				// and http://msdn.microsoft.com/en-us/library/ms531424(v=VS.85).aspx
-				doc.body.appendChild(storage)
+				storageOwner.appendChild(storage)
 				storage.addBehavior('#default#userData')
 				storage.load(localStorageName)
 				var result = storeFunction.apply(api, args)
-				doc.body.removeChild(storage)
+				storageOwner.removeChild(storage)
 				return result
 			}
 		}
