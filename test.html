@@ -24,6 +24,7 @@
 			function assert(truthy, msg) { 
 				if (!truthy) {
 					outputError((isSecondPass ? 'second' : 'first') + ' pass bad assert: ' + msg);
+					if (store.disabled) { outputError('<br>Note that store.disabled == true') }
 					testFailed = true
 				}
 			}
@@ -93,7 +94,7 @@
 				if (isSecondPass) { doSecondPass() }
 				else { doFirstPass() }
 			} catch(e) {
-				assert(false, 'Tests should not throw: "' + e + '"')
+				assert(false, 'Tests should not throw: "' + JSON.stringify(e) + '"')
 			}
 
 			if (!testFailed) {
