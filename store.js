@@ -52,18 +52,18 @@
 		return JSON.parse(value)
 	}
 
-	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
+	// Functions to encapsulate questionable FireFox 3.6.13 behavior
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
 		try { return (localStorageName in win && win[localStorageName]) }
 		catch(err) { return false }
 	}
-	
+
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
 		catch(err) { return false }
-	}	
+	}
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
@@ -140,7 +140,7 @@
 			storage.save(localStorageName)
 		})
 	}
-	
+
 	try {
 		api.set(namespace, namespace)
 		if (api.get(namespace) != namespace) { api.disabled = true }
@@ -148,6 +148,6 @@
 	} catch(e) {
 		api.disabled = true
 	}
-	
+
 	return api
 })());

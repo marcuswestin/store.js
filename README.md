@@ -5,19 +5,19 @@ store.js exposes a simple API for cross browser local storage
 
 	// Store 'marcus' at 'username'
 	store.set('username', 'marcus')
-	
+
 	// Get 'username'
 	store.get('username')
-	
+
 	// Remove 'username'
 	store.remove('username')
-	
+
 	// Clear all keys
 	store.clear()
-	
+
 	// Store an object literal - store.js uses JSON.stringify under the hood
 	store.set('user', { name: 'marcus', likes: 'javascript' })
-	
+
 	// Get the stored object - store.js uses JSON.parse under the hood
 	var user = store.get('user')
 	alert(user.name + ' likes ' + user.likes)
@@ -32,12 +32,12 @@ Here are some examples to demonstrate the IE6 and IE7 limitations:
 
 	// on http://example.com/path1/
 	store.set('foo', 1)
-	
+
 	// on http://example.com/path1/test.html the value of "foo"
 	// is readable because we are in the same "directory" /path1/
 	store.get('foo') == 1
 	store.set('bar', 2)
-	
+
 	// on http://example.com/path2/ the values of "foo" and "bar" are not readable
 	// because we are not in the same "directory" - the directory is not /path2/
 	store.get('foo') == null
@@ -59,10 +59,10 @@ localStorage, when used without store.js, calls toString on all stored values. T
 	localStorage.myage = 24
 	localStorage.myage != 24
 	localStorage.myage == '24'
-	
+
 	localStorage.user = { name: 'marcus', likes: 'javascript' }
 	localStorage.user == "[object Object]"
-	
+
 	localStorage.tags = ['javascript', 'localStorage', 'store.js']
 	localStorage.tags.length == 32
 	localStorage.tags == "javascript,localStorage,store.js"
@@ -71,10 +71,10 @@ What we want (and get with store.js) is
 
 	store.set('myage', 24)
 	store.get('myage') == 24
-	
+
 	store.set('user', { name: 'marcus', likes: 'javascript' })
 	alert("Hi my name is " + store.get('user').name + "!")
-	
+
 	store.set('tags', ['javascript', 'localStorage', 'store.js'])
 	alert("We've got " + store.get('tags').length + " tags here")
 
@@ -126,7 +126,7 @@ Forks
 ----
  - Original: https://github.com/marcuswestin/store.js
  - Sans JSON support (simple key/values only): https://github.com/cloudhead/store.js
- - jQueryfied version: https://github.com/whitmer/store.js 
+ - jQueryfied version: https://github.com/whitmer/store.js
  - Lint.js passing version (with semi-colons): https://github.com/StevenBlack/store.js
  
 TODO
