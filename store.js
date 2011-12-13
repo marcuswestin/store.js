@@ -63,7 +63,12 @@
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
-		api.set = function(key, val) { storage.setItem(key, api.serialize(val)) }
+		api.set = function(key, val) { 
+			if (typeof val === "undefined" || val === null)
+				api.remove(key)
+			else
+				storage.setItem(key, api.serialize(val)) 			
+		}
 		api.get = function(key) { return api.deserialize(storage.getItem(key)) }
 		api.remove = function(key) { storage.removeItem(key) }
 		api.clear = function() { storage.clear() }
