@@ -19,11 +19,7 @@
  * THE SOFTWARE.
  */
 
-(function(root, store) {
-	if (typeof module != 'undefined') { module.exports = store }
-	else if (typeof define === 'function' && define.amd) { define(store) }
-	else { root.store = store }
-})(this, (function(){
+;(function(){
 	var api = {},
 		win = window,
 		doc = win.document,
@@ -149,5 +145,7 @@
 		api.disabled = true
 	}
 	
-	return api
-})());
+	if (typeof module != 'undefined') { module.exports = api }
+	else if (typeof define === 'function' && define.amd) { define(api) }
+	else { this.store = api }
+})()
