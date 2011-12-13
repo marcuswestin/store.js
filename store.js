@@ -20,9 +20,9 @@
  */
 
 (function(root, store) {
-  if (typeof module != 'undefined') { module.exports = store }
-  else if (typeof define === 'function' && define.amd) { define(store); }
-  else { root.store = store; }
+	if (typeof module != 'undefined') { module.exports = store }
+	else if (typeof define === 'function' && define.amd) { define(store) }
+	else { root.store = store }
 })(this, (function(){
 	var api = {},
 		win = window,
@@ -82,7 +82,7 @@
 	} else if (doc.documentElement.addBehavior) {
 		var storage,
 			storageOwner,
-			storageContainer;
+			storageContainer
 		// Since #userData storage applies only to specific paths, we need to
 		// somehow link our data to a specific path.  We choose /favicon.ico
 		// as a pretty safe option, since all browsers already make a request to
@@ -94,17 +94,17 @@
 		// document can be used instead of the current document (which would
 		// have been limited to the current path) to perform #userData storage.
 		try {
-			storageContainer = new ActiveXObject('htmlfile');
-			storageContainer.open();
-			storageContainer.write('<s' + 'cript>document.w=window</s' + 'cript><iframe src="/favicon.ico"></frame>');
-			storageContainer.close();
-			storageOwner = storageContainer.w.frames[0].document;
-			storage = storageOwner.createElement('div');
+			storageContainer = new ActiveXObject('htmlfile')
+			storageContainer.open()
+			storageContainer.write('<s' + 'cript>document.w=window</s' + 'cript><iframe src="/favicon.ico"></frame>')
+			storageContainer.close()
+			storageOwner = storageContainer.w.frames[0].document
+			storage = storageOwner.createElement('div')
 		} catch(e) {
 			// somehow ActiveXObject instantiation failed (perhaps some special
 			// security settings or otherwse), fall back to per-path storage
-			storage = doc.createElement('div');
-			storageOwner = doc.body;
+			storage = doc.createElement('div')
+			storageOwner = doc.body
 		}
 		function withIEStorage(storeFunction) {
 			return function() {
