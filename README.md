@@ -79,11 +79,16 @@ Supported browsers
  - Tested in Chrome 11
  - Tested in Safari 4
  - Tested in Safari 5
- - Tested in IE6 (limited to 1MB)
- - Tested in IE7 (limited to 1MB)
+ - Tested in IE6
+ - Tested in IE7
  - Tested in IE8
  - Tested in Opera 10
    - Opera 10.54
+
+Storage limits
+--------------
+ - IE6: 1MB
+ - IE7: 1MB
 
 Supported but broken (please help fix)
 --------------------------------------
@@ -107,6 +112,7 @@ Forks
  
 TODO
 ----
+ - What are the storage capacities/restrictions per browser?
  - I believe underlying APIs can throw under certain conditions. Where do we need try/catch?
  - Test different versions of Opera 10.X explicitly
 
