@@ -1,3 +1,8 @@
+v1.2.0
++ Remove same-path restrictions in IE6/7! (Thanks @mjpizz!)
++ Support CommonJS and AMD module systems (Thanks @pereckerdal!)
++ Fix: store.set('foo', undefined); store.get('foo') no longer throws (Thanks @buger!)
+
 v1.1.1
 + Publish in npm as "store" rather than "store.js"
 + Add commonjs export for require support
