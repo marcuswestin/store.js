@@ -76,8 +76,7 @@
 		store.clear = function() { for (var key in storage ) { delete storage[key] } }
 
 	} else if (doc.documentElement.addBehavior) {
-		var storage,
-			storageOwner,
+		var storageOwner,
 			storageContainer
 		// Since #userData storage applies only to specific paths, we need to
 		// somehow link our data to a specific path.  We choose /favicon.ico
