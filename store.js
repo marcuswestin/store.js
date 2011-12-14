@@ -19,17 +19,16 @@
  * THE SOFTWARE.
  */
 
+// https://github.com/marcuswestin/store.js
+// .. including patches from my fork: https://github.com/blq/store.js
+
 if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 	goog.provide('store');
 	// requires JSON
 }
 
-(function(root, store) {
-  if (typeof module != 'undefined') { module.exports = store }
-  else if (typeof define === 'function' && define.amd) { define(store); }
-  else { root.store = store; }
-})(this, (function(){
-	var api = {},
+;(function(){
+	var store = {},
 		win = window,
 		doc = win.document,
 		localStorageName = 'localStorage',
@@ -37,47 +36,46 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 		namespace = '__storejs__',
 		storage
 
-	api.disabled = false
-	api.set = function(key, value) {}
-	api.get = function(key) {}
-	api.remove = function(key) {}
-	api.clear = function() {}
-	api.transact = function(key, transactionFn) {
-		var val = api.get(key)
+	store.disabled = false
+	store.set = function(key, value) {}
+	store.get = function(key) {}
+	store.remove = function(key) {}
+	store.clear = function() {}
+	store.transact = function(key, transactionFn) {
+		var val = store.get(key)
 		if (typeof val == 'undefined') { val = {} }
 		transactionFn(val)
-		api.set(key, val)
+		store.set(key, val)
 	}
-	api.getAll = function() {}
 
-	api.serialize = function(value) {
+	store.serialize = function(value) {
 		return JSON.stringify(value)
 	}
-	api.deserialize = function(value) {
+	store.deserialize = function(value) {
 		if (typeof value != 'string') { return undefined }
 		return JSON.parse(value)
 	}
 
-	// Functions to encapsulate questionable FireFox 3.6.13 behavior
+	// Functions to encapsulate questionable FireFox 3.6.13 behavior 
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
 		try { return (localStorageName in win && win[localStorageName]) }
 		catch(err) { return false }
 	}
-
+	
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
 		catch(err) { return false }
-	}
+	}	
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
-		api.set = function(key, val) { storage.setItem(key, api.serialize(val)) }
-		api.get = function(key) { return api.deserialize(storage.getItem(key)) }
-		api.remove = function(key) { storage.removeItem(key) }
-		api.clear = function() { storage.clear() }
-		api.getAll = function() {
+		store.set = function(key, val) { storage.setItem(key, store.serialize(val)) }
+		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
+		store.remove = function(key) { storage.removeItem(key) }
+		store.clear = function() { storage.clear() }
+		store.getAll = function() {
 			var ret = {}
 			for (var i = 0; i < storage.length; ++i) {
 				var key = storage.key(i)
@@ -88,11 +86,11 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 
 	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname]
-		api.set = function(key, val) { storage[key] = api.serialize(val) }
-		api.get = function(key) { return api.deserialize(storage[key] && storage[key].value) }
-		api.remove = function(key) { delete storage[key] }
-		api.clear = function() { for (var key in storage ) { delete storage[key] } }
-		api.getAll = function() {
+		store.set = function(key, val) { storage[key] = store.serialize(val) }
+		store.get = function(key) { return store.deserialize(storage[key] && storage[key].value) }
+		store.remove = function(key) { delete storage[key] }
+		store.clear = function() { for (var key in storage ) { delete storage[key] } }
+		store.getAll = function() {
 			var ret = {}
 			for (var key in storage) {
 				ret[key] = storage[key]
@@ -100,7 +98,31 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 			return ret
 		}
 	} else if (doc.documentElement.addBehavior) {
-		var storage = doc.createElement('div')
+		var storageOwner,
+			storageContainer
+		// Since #userData storage applies only to specific paths, we need to
+		// somehow link our data to a specific path.  We choose /favicon.ico
+		// as a pretty safe option, since all browsers already make a request to
+		// this URL anyway and being a 404 will not hurt us here.  We wrap an
+		// iframe pointing to the favicon in an ActiveXObject(htmlfile) object
+		// (see: http://msdn.microsoft.com/en-us/library/aa752574(v=VS.85).aspx)
+		// since the iframe access rules appear to allow direct access and
+		// manipulation of the document element, even for a 404 page.  This
+		// document can be used instead of the current document (which would
+		// have been limited to the current path) to perform #userData storage.
+		try {
+			storageContainer = new ActiveXObject('htmlfile')
+			storageContainer.open()
+			storageContainer.write('<s' + 'cript>document.w=window</s' + 'cript><iframe src="/favicon.ico"></frame>')
+			storageContainer.close()
+			storageOwner = storageContainer.w.frames[0].document
+			storage = storageOwner.createElement('div')
+		} catch(e) {
+			// somehow ActiveXObject instantiation failed (perhaps some special
+			// security settings or otherwse), fall back to per-path storage
+			storage = doc.createElement('div')
+			storageOwner = doc.body
+		}
 		function withIEStorage(storeFunction) {
 			return function() {
 				var args = Array.prototype.slice.call(arguments, 0)
@@ -108,26 +130,26 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 				// See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
 				// and http://msdn.microsoft.com/en-us/library/ms531424(v=VS.85).aspx
 				// todo: https://github.com/appendto/amplify/issues/17 ?
-				doc.body.appendChild(storage)
+				storageOwner.appendChild(storage)
 				storage.addBehavior('#default#userData')
 				storage.load(localStorageName)
-				var result = storeFunction.apply(api, args)
-				doc.body.removeChild(storage)
+				var result = storeFunction.apply(store, args)
+				storageOwner.removeChild(storage)
 				return result
 			}
 		}
-		api.set = withIEStorage(function(storage, key, val) {
-			storage.setAttribute(key, api.serialize(val))
+		store.set = withIEStorage(function(storage, key, val) {
+			storage.setAttribute(key, store.serialize(val))
 			storage.save(localStorageName)
 		})
-		api.get = withIEStorage(function(storage, key) {
-			return api.deserialize(storage.getAttribute(key))
+		store.get = withIEStorage(function(storage, key) {
+			return store.deserialize(storage.getAttribute(key))
 		})
-		api.remove = withIEStorage(function(storage, key) {
+		store.remove = withIEStorage(function(storage, key) {
 			storage.removeAttribute(key)
 			storage.save(localStorageName)
 		})
-		api.clear = withIEStorage(function(storage) {
+		store.clear = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes
 			storage.load(localStorageName)
 			for (var i=0, attr; attr = attributes[i]; i++) {
@@ -135,25 +157,26 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 			}
 			storage.save(localStorageName)
 		})
-		api.getAll = withIEStorage(function(storage) {
+		store.getAll = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes
 			storage.load(localStorageName)
 			var ret = {}
 			for (var i=0, attr; attr = attributes[i]; i++) {
-				ret[attr] = api.get(attr)
+				ret[attr] = store.get(attr)
 			}
 			return ret
 		})
 	}
-
 	try {
-		api.set(namespace, namespace)
-		if (api.get(namespace) != namespace) { api.disabled = true }
-		api.remove(namespace)
+		store.set(namespace, namespace)
+		if (store.get(namespace) != namespace) { store.disabled = true }
+		store.remove(namespace)
 	} catch(e) {
-		// could fallback to in-memory storage here?
-		api.disabled = true
+		// todo: could perhaps fallback to in-memory storage here?
+		store.disabled = true
 	}
-
-	return api
-})());
+	
+	if (typeof module != 'undefined') { module.exports = store }
+	else if (typeof define === 'function' && define.amd) { define(store) }
+	else { this.store = store }
+})()
