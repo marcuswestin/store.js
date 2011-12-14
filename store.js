@@ -71,7 +71,10 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
-		store.set = function(key, val) { storage.setItem(key, store.serialize(val)) }
+		store.set = function(key, val) {
+			if (val === undefined) { return store.remove(key) }
+			storage.setItem(key, store.serialize(val))
+		}
 		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
 		store.remove = function(key) { storage.removeItem(key) }
 		store.clear = function() { storage.clear() }
@@ -86,7 +89,10 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 
 	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname]
-		store.set = function(key, val) { storage[key] = store.serialize(val) }
+		store.set = function(key, val) {
+			if (val === undefined) { return store.remove(key) }
+			storage[key] = store.serialize(val)
+		}
 		store.get = function(key) { return store.deserialize(storage[key] && storage[key].value) }
 		store.remove = function(key) { delete storage[key] }
 		store.clear = function() { for (var key in storage ) { delete storage[key] } }
@@ -139,6 +145,7 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 			}
 		}
 		store.set = withIEStorage(function(storage, key, val) {
+			if (val === undefined) { return store.remove(key) }
 			storage.setAttribute(key, store.serialize(val))
 			storage.save(localStorageName)
 		})
