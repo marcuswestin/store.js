@@ -33,20 +33,20 @@ Serialization
 localStorage, when used without store.js, calls toString on all stored values. This means that you can't conveniently store and retrieve numbers, objects or arrays:
 
 	localStorage.myage = 24
-	localStorage.myage != 24
-	localStorage.myage == '24'
+	localStorage.myage !== 24
+	localStorage.myage === '24'
 	
 	localStorage.user = { name: 'marcus', likes: 'javascript' }
-	localStorage.user == "[object Object]"
+	localStorage.user === "[object Object]"
 	
 	localStorage.tags = ['javascript', 'localStorage', 'store.js']
-	localStorage.tags.length == 32
-	localStorage.tags == "javascript,localStorage,store.js"
+	localStorage.tags.length === 32
+	localStorage.tags === "javascript,localStorage,store.js"
 
 What we want (and get with store.js) is
 
 	store.set('myage', 24)
-	store.get('myage') == 24
+	store.get('myage') === 24
 	
 	store.set('user', { name: 'marcus', likes: 'javascript' })
 	alert("Hi my name is " + store.get('user').name + "!")
