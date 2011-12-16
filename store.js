@@ -27,20 +27,37 @@ if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
 	// requires JSON
 }
 
+/** @type {boolean} */
+store.disabled = false
+/**  
+ * @param {string} key
+ * @param {*} value
+ */
+store.set = function(key, value) {}
+/** 
+ * @param {string} key
+ * @return {*}
+ */ 
+store.get = function(key) {}
+/** 
+ * @param {string} key
+ */ 
+store.remove = function(key) {}
+store.clear = function() {}
+/**
+ * @return {!Object.<string, *>}
+ */
+store.getAll = function() {}
+
+
 ;(function(){
-	var store = {},
-		win = window,
+	var	win = window,
 		doc = win.document,
 		localStorageName = 'localStorage',
 		globalStorageName = 'globalStorage',
 		namespace = '__storejs__',
 		storage
 
-	store.disabled = false
-	store.set = function(key, value) {}
-	store.get = function(key) {}
-	store.remove = function(key) {}
-	store.clear = function() {}
 	store.transact = function(key, transactionFn) {
 		var val = store.get(key)
 		if (typeof val == 'undefined') { val = {} }
