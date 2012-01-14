@@ -37,7 +37,7 @@
   "directories": {
     "lib": "."
   },
-  "dependencies": {
+  "devDependencies": {
     "uglify-js": "v1.2.5"
   },
   "files": [
