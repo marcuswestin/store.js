@@ -12,6 +12,9 @@ store.js exposes a simple API for cross browser local storage
 	// Remove 'username'
 	store.remove('username')
 	
+    // Get a dictionary with all key/value pairs
+    store.getAll()
+
 	// Clear all keys
 	store.clear()
 	

@@ -19,20 +19,45 @@
  * THE SOFTWARE.
  */
 
+// https://github.com/marcuswestin/store.js
+// .. including patches from my fork: https://github.com/blq/store.js
+
+if (typeof goog != 'undefined' && typeof goog.provide == 'function') {
+	goog.provide('store');
+	// requires JSON
+}
+
+/** @type {boolean} */
+store.disabled = false
+/**  
+ * @param {string} key
+ * @param {*} value
+ */
+store.set = function(key, value) {}
+/** 
+ * @param {string} key
+ * @return {*}
+ */ 
+store.get = function(key) {}
+/** 
+ * @param {string} key
+ */ 
+store.remove = function(key) {}
+store.clear = function() {}
+/**
+ * @return {!Object.<string, *>}
+ */
+store.getAll = function() {}
+
+
 ;(function(){
-	var store = {},
-		win = window,
+	var	win = window,
 		doc = win.document,
 		localStorageName = 'localStorage',
 		globalStorageName = 'globalStorage',
 		namespace = '__storejs__',
 		storage
 
-	store.disabled = false
-	store.set = function(key, value) {}
-	store.get = function(key) {}
-	store.remove = function(key) {}
-	store.clear = function() {}
 	store.transact = function(key, transactionFn) {
 		var val = store.get(key)
 		if (typeof val == 'undefined') { val = {} }
@@ -70,6 +95,14 @@
 		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
 		store.remove = function(key) { storage.removeItem(key) }
 		store.clear = function() { storage.clear() }
+		store.getAll = function() {
+			var ret = {}
+			for (var i = 0; i < storage.length; ++i) {
+				var key = storage.key(i)
+				ret[key] = storage.getItem(key)
+			}
+			return ret
+		}
 
 	} else if (isGlobalStorageNameSupported()) {
 		storage = win[globalStorageName][win.location.hostname]
@@ -80,7 +113,13 @@
 		store.get = function(key) { return store.deserialize(storage[key] && storage[key].value) }
 		store.remove = function(key) { delete storage[key] }
 		store.clear = function() { for (var key in storage ) { delete storage[key] } }
-
+		store.getAll = function() {
+			var ret = {}
+			for (var key in storage) {
+				ret[key] = storage[key]
+			}
+			return ret
+		}
 	} else if (doc.documentElement.addBehavior) {
 		var storageOwner,
 			storageContainer
@@ -113,6 +152,7 @@
 				args.unshift(storage)
 				// See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
 				// and http://msdn.microsoft.com/en-us/library/ms531424(v=VS.85).aspx
+				// todo: https://github.com/appendto/amplify/issues/17 ?
 				storageOwner.appendChild(storage)
 				storage.addBehavior('#default#userData')
 				storage.load(localStorageName)
@@ -141,13 +181,22 @@
 			}
 			storage.save(localStorageName)
 		})
+		store.getAll = withIEStorage(function(storage) {
+			var attributes = storage.XMLDocument.documentElement.attributes
+			storage.load(localStorageName)
+			var ret = {}
+			for (var i=0, attr; attr = attributes[i]; i++) {
+				ret[attr] = store.get(attr)
+			}
+			return ret
+		})
 	}
-	
 	try {
 		store.set(namespace, namespace)
 		if (store.get(namespace) != namespace) { store.disabled = true }
 		store.remove(namespace)
 	} catch(e) {
+		// todo: could perhaps fallback to in-memory storage here?
 		store.disabled = true
 	}
 	
