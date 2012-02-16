@@ -33,9 +33,13 @@
 	store.get = function(key) {}
 	store.remove = function(key) {}
 	store.clear = function() {}
-	store.transact = function(key, transactionFn) {
+	store.transact = function(key, defaultVal, transactionFn) {
 		var val = store.get(key)
-		if (typeof val == 'undefined') { val = {} }
+		if (transactionFn == null) {
+			transactionFn = defaultVal
+			defaultVal = null
+		}
+		if (typeof val == 'undefined') { val = defaultVal || {} }
 		transactionFn(val)
 		store.set(key, val)
 	}
