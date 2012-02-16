@@ -59,7 +59,7 @@
 	function isGlobalStorageNameSupported() {
 		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
 		catch(err) { return false }
-	}	
+	}
 
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
@@ -143,12 +143,23 @@
 		})
 	}
 	
+	function memoryStorage() {
+		storage = {}
+		store.set = function(key, val) {
+			if (val === undefined) { return store.remove(key) }
+			storage[key] = store.serialize(val)
+		}
+		store.get = function(key) { return store.deserialize(storage[key]) }
+		store.remove = function(key) { delete storage[key] }
+		store.clear = function() { storage = {} }
+	}
+	
 	try {
 		store.set(namespace, namespace)
-		if (store.get(namespace) != namespace) { store.disabled = true }
+		if (store.get(namespace) != namespace) { memoryStorage() }
 		store.remove(namespace)
 	} catch(e) {
-		store.disabled = true
+		memoryStorage()
 	}
 	
 	if (typeof module != 'undefined') { module.exports = store }

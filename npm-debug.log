@@ -1,0 +1,108 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'uglify-js', '-g' ]
+info using npm@1.1.0-2
+info using node@v0.6.8
+verbose config file /home/debian/.npmrc
+verbose config file /usr/local/etc/npmrc
+verbose config file /usr/local/lib/node_modules/npm/npmrc
+verbose cache add [ 'uglify-js', null ]
+silly cache add: name, spec, args [ undefined, 'uglify-js', [ 'uglify-js', null ] ]
+verbose parsed url { pathname: 'uglify-js', path: 'uglify-js', href: 'uglify-js' }
+verbose addNamed [ 'uglify-js', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'uglify-js', '', false ]
+verbose raw, before any munging uglify-js
+verbose url resolving [ 'https://registry.npmjs.org/', './uglify-js' ]
+verbose url resolved https://registry.npmjs.org/uglify-js
+verbose etag "AMRY4OTDKKJ6ZVQE7AWUF9FDK"
+http GET https://registry.npmjs.org/uglify-js
+http 304 https://registry.npmjs.org/uglify-js
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"AMRY4OTDKKJ6ZVQE7AWUF9FDK"',
+silly get cb     date: 'Thu, 16 Feb 2012 11:51:45 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag uglify-js from cache
+silly name, range, hasData 2 [ 'uglify-js', '', true ]
+silly versions [ 'uglify-js',
+silly versions   [ '0.0.1',
+silly versions     '0.0.2',
+silly versions     '0.0.3',
+silly versions     '0.0.4',
+silly versions     '0.0.5',
+silly versions     '1.0.1',
+silly versions     '1.0.2',
+silly versions     '1.0.3',
+silly versions     '1.0.4',
+silly versions     '1.0.5',
+silly versions     '1.0.6',
+silly versions     '1.0.7',
+silly versions     '1.1.0',
+silly versions     '1.1.1',
+silly versions     '1.2.0',
+silly versions     '1.2.1',
+silly versions     '1.2.2',
+silly versions     '1.2.3',
+silly versions     '1.2.4',
+silly versions     '1.2.5' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8o-v83.6.6.19-linux-ia32-2.6.32-5-686',
+verbose bin dist   { shasum: 'b542c2c76f78efb34b200b20177634330ff702b6',
+verbose bin dist     tarball: 'http://registry.npmjs.org/uglify-js/-/uglify-js-1.2.5.tgz' } ]
+verbose caching /home/debian/.npm/uglify-js/1.2.5/package/package.json
+verbose loadDefaults uglify-js@1.2.5
+silly resolved [ { name: 'uglify-js',
+silly resolved     description: 'JavaScript parser and compressor/beautifier toolkit',
+silly resolved     author: 
+silly resolved      { name: 'Mihai Bazon',
+silly resolved        email: 'mihai.bazon@gmail.com',
+silly resolved        url: 'http://mihai.bazon.net/blog' },
+silly resolved     version: '1.2.5',
+silly resolved     main: './uglify-js.js',
+silly resolved     bin: { uglifyjs: './bin/uglifyjs' },
+silly resolved     repository: { type: 'git', url: 'git@github.com:mishoo/UglifyJS.git' },
+silly resolved     _id: 'uglify-js@1.2.5',
+silly resolved     dependencies: {},
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.0-2',
+silly resolved     _nodeVersion: 'v0.6.8',
+silly resolved     _defaultsLoaded: true } ]
+info into /usr/local/lib uglify-js@1.2.5
+info installOne uglify-js@1.2.5
+info unbuild /usr/local/lib/node_modules/uglify-js
+verbose caching /usr/local/lib/node_modules/uglify-js/package.json
+verbose loadDefaults uglify-js@1.2.5
+info preuninstall uglify-js@1.2.5
+info uninstall uglify-js@1.2.5
+verbose unbuild uglify-js@1.2.5 [ true,
+verbose unbuild uglify-js@1.2.5   '/usr/local/lib/node_modules',
+verbose unbuild uglify-js@1.2.5   '/usr/local/lib/node_modules' ]
+verbose binRoot [ '/usr/local/bin', { uglifyjs: './bin/uglifyjs' } ]
+ERR! error installing uglify-js@1.2.5
+info unbuild /usr/local/lib/node_modules/uglify-js
+verbose caching /usr/local/lib/node_modules/uglify-js/package.json
+verbose loadDefaults uglify-js@1.2.5
+info preuninstall uglify-js@1.2.5
+info uninstall uglify-js@1.2.5
+verbose unbuild uglify-js@1.2.5 [ true,
+verbose unbuild uglify-js@1.2.5   '/usr/local/lib/node_modules',
+verbose unbuild uglify-js@1.2.5   '/usr/local/lib/node_modules' ]
+verbose binRoot [ '/usr/local/bin', { uglifyjs: './bin/uglifyjs' } ]
+ERR! error rolling back uglify-js@1.2.5 Error: EACCES, permission denied '/usr/local/bin/uglifyjs'
+verbose installOne cb uglify-js@1.2.5
+ERR! Error: EACCES, permission denied '/usr/local/bin/uglifyjs'
+ERR! 
+ERR! Please try running this command again as root/Administrator.
+ERR! 
+ERR! System Linux 2.6.32-5-686
+ERR! command "node" "/usr/local/bin/npm" "install" "uglify-js" "-g"
+ERR! cwd /home/debian/Desktop/store.js
+ERR! node -v v0.6.8
+ERR! npm -v 1.1.0-2
+ERR! path /usr/local/bin/uglifyjs
+ERR! code EACCES
+ERR! message EACCES, permission denied '/usr/local/bin/uglifyjs'
+ERR! errno {}
+verbose exit [ 1, true ]
