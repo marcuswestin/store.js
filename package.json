@@ -30,7 +30,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/marcuswestin/store.js/raw/master/LICENSE"
+      "url": "https://raw.github.com/marcuswestin/store.js/master/store.js"
     }
   ],
   "main": "store",
