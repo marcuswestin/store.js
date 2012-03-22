@@ -1,3 +1,9 @@
+v1.3.3
++ Fix IE keys beginning with numeric characters (nice find @pauldwaite)
+
+v1.3.2
++ Implement store.getAll() (patch by @blq)
+
 v1.3.0
 + Use uglify.js for minifying store.min.js and store+json.min.js
 + Add build script
