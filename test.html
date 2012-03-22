@@ -82,12 +82,32 @@
 				// The following stored values get tested in doSecondPass after a page reload
 				store.set('firstPassFoo', 'bar')
 				store.set('firstPassObj', { woot: true })
+				
+				var all = store.getAll()
+				assert(all.firstPassFoo == 'bar', 'getAll gets firstPassFoo')
+				assert(countProperties(all) == 4, 'getAll gets all 4 values')
 			}
 			
 			function doSecondPass() {
 				assert(store.get('firstPassFoo') == 'bar', "first pass key 'firstPassFoo' not equal to stored value 'bar'")
+				
+				var all = store.getAll()
+				assert(all.firstPassFoo == 'bar', "getAll still gets firstPassFoo on second pass")
+				assert(countProperties(all) == 4, "getAll gets all 4 values")
+				
 				store.clear()
 				assert(store.get('firstPassFoo') == null, "first pass key 'firstPassFoo' not null after store cleared")
+				
+				var all = store.getAll()
+				assert(countProperties(all) == 0, "getAll returns 0 properties after store.clear() has been called")
+			}
+			
+			function countProperties(obj) {
+				var count = 0
+				for (var key in obj) {
+					if (obj.hasOwnProperty(key)) { count++ }
+				}
+				return count
 			}
 			
 			try {
