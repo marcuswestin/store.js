@@ -141,15 +141,23 @@
 				return result
 			}
 		}
+		function ieKeyFix(key) {
+			// In IE7, keys may not begin with numbers.
+			// See https://github.com/marcuswestin/store.js/issues/40#issuecomment-4617842
+			return '_'+key
+		}
 		store.set = withIEStorage(function(storage, key, val) {
+			key = ieKeyFix(key)
 			if (val === undefined) { return store.remove(key) }
 			storage.setAttribute(key, store.serialize(val))
 			storage.save(localStorageName)
 		})
 		store.get = withIEStorage(function(storage, key) {
+			key = ieKeyFix(key)
 			return store.deserialize(storage.getAttribute(key))
 		})
 		store.remove = withIEStorage(function(storage, key) {
+			key = ieKeyFix(key)
 			storage.removeAttribute(key)
 			storage.save(localStorageName)
 		})
