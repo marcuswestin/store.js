@@ -28,6 +28,10 @@ How does it work?
 ------------------
 store.js uses localStorage when available, and falls back on globalStorage for earlier versions of Firefox and the userData behavior in IE6 and IE7. No flash to slow down your page load. No cookies to fatten your network requests.
 
+What if localStorage isn't available?
+-------------------------------------
+You can detect that localStorage isn't available by checking the store.disabled flag. There are some conditions where localStorage may appear to be available (under Safari with private browsing mode, for example), but using it will result in a DOM exception being thrown by the browser. In general, it's good form to check store.disabled before setting a key, because localStorage may also be temporarily disabled by the user.
+
 Serialization
 -------------
 localStorage, when used without store.js, calls toString on all stored values. This means that you can't conveniently store and retrieve numbers, objects or arrays:
