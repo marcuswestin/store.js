@@ -188,7 +188,7 @@
 		store.disabled = true
 	}
 	
-	if (typeof module != 'undefined') { module.exports = store }
+	if (typeof module != 'undefined' && typeof module != 'function') { module.exports = store }
 	else if (typeof define === 'function' && define.amd) { define(store) }
 	else { this.store = store }
 })()
