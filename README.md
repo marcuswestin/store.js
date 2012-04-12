@@ -28,9 +28,17 @@ How does it work?
 ------------------
 store.js uses localStorage when available, and falls back on globalStorage for earlier versions of Firefox and the userData behavior in IE6 and IE7. No flash to slow down your page load. No cookies to fatten your network requests.
 
-What if localStorage isn't available?
--------------------------------------
-You can detect that localStorage isn't available by checking the store.disabled flag. There are some conditions where localStorage may appear to be available (under Safari with private browsing mode, for example), but using it will result in a DOM exception being thrown by the browser. In general, it's good form to check store.disabled before setting a key, because localStorage may also be temporarily disabled by the user.
+`store.disabled` - check that localStorage is available
+-------------------------------------------------------
+You should check that persistance is available, especially if your website or app depends on it. Use the `store.disabled` flag:
+
+	if (store.disabled) {
+		alert("persistance is not available")
+	} else {
+		...
+	}
+
+There are conditions where localStorage may appear to be available but will throw an error when used. For example, Safari's private browsing mode does this, and some browser allow the user to temporarily disable localStorage. Store.js detects these conditions and sets the `store.disabled` flag accordingly.
 
 Serialization
 -------------
