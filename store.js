@@ -187,6 +187,7 @@
 	} catch(e) {
 		store.disabled = true
 	}
+	store.enabled = !store.disabled
 	
 	if (typeof module != 'undefined' && typeof module != 'function') { module.exports = store }
 	else if (typeof define === 'function' && define.amd) { define(store) }
