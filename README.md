@@ -28,6 +28,11 @@ How does it work?
 ------------------
 store.js uses localStorage when available, and falls back on globalStorage for earlier versions of Firefox and the userData behavior in IE6 and IE7. No flash to slow down your page load. No cookies to fatten your network requests.
 
+Screencast
+-----------
+[Introductory Screencast to Store.js](http://javascriptplayground.com/blog/2012/06/javascript-local-storage-store-js-tutorial) by Jack Franklin.
+
+
 `store.enabled` - check that localStorage is available
 -------------------------------------------------------
 To check that persistance is available, you can use the `store.enabled` flag:
