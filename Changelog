@@ -1,3 +1,8 @@
+v1.3.4
++ Add store.enabled
++ Deprecate store.disabled
++ Add link to Jack Franklin's screencast
+
 v1.3.3
 + Fix IE keys beginning with numeric characters (nice find @pauldwaite)
 
