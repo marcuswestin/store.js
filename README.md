@@ -139,3 +139,19 @@ TODO
 
 
   [JSON.js]: http://www.json.org/json2.js
+
+Contributors
+------------
+ - [@marcuswestin](https://github.com/marcuswestin) Marcus Westin (Author)
+ - [@mjpizz](https://github.com/mjpizz) Matt Pizzimenti
+ - [@StevenBlack](https://github.com/StevenBlack) Steven Black
+ - [@ryankirkman](https://github.com/ryankirkman) Ryan Kirkman
+ - [@pereckerdal](https://github.com/pereckerdal) Per Eckerdal
+ - [@manuelvanrijn](https://github.com/manuelvanrijn) Manuel van Rijn
+ - [@StuPig](https://github.com/StuPig) Shou Qiang
+ - [@blq](https://github.com/blq) Fredrik Blomqvist
+ - [@tjarratt](https://github.com/tjarratt) Tim Jarratt
+ - [@gregwebs](https://github.com/gregwebs) Greg Weber
+ - [@jackfranklin](https://github.com/jackfranklin) Jack Franklin
+ - [@pauldwaite](https://github.com/pauldwaite) Paul D. Waite
+ - [@mferretti](https://github.com/mferretti) Marco Ferretti
