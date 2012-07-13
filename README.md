@@ -106,6 +106,8 @@ Supported browsers
  - Tested in Opera 10
    - Opera 10.54
 
+*Important note:* In IE6 and IE7, many special characters are not allowed in the keys used to store any key/value pair. With [@mferretti](https://github.com/mferretti)'s help, there's a suitable workaround which replaces most forbidden characters with "___".
+
 Storage limits
 --------------
  - IE6: 1MB
