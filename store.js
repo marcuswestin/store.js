@@ -19,6 +19,51 @@
  * THE SOFTWARE.
  */
 
+ 
+ 
+/* 
+ * Marco Ferretti (marco.ferretti@gmail.com) : 
+ * Internet Explorer does not support indexOf feature 
+ * thus we're copying Mozilla's ECMA version of it and 
+ * add the function to the Array prototype
+ * see http://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
+ */
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
+        "use strict";
+        if (this == null) {
+            throw new TypeError();
+        }
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (len === 0) {
+            return -1;
+        }
+        var n = 0;
+        if (arguments.length > 0) {
+            n = Number(arguments[1]);
+            if (n != n) { // shortcut for verifying if it's NaN
+                n = 0;
+            } else if (n != 0 && n != Infinity && n != -Infinity) {
+                n = (n > 0 || -1) * Math.floor(Math.abs(n));
+            }
+        }
+        if (n >= len) {
+            return -1;
+        }
+        var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+        for (; k < len; k++) {
+            if (k in t && t[k] === searchElement) {
+                return k;
+            }
+        }
+        return -1;
+    }
+} 
+ 
+ 
+ 
+
 ;(function(){
 	var store = {},
 		win = window,
@@ -26,8 +71,12 @@
 		localStorageName = 'localStorage',
 		globalStorageName = 'globalStorage',
 		namespace = '__storejs__',
-		storage
+		storage,
+		// See https://github.com/marcuswestin/store.js/issues/40#issuecomment-4617842
+		// In IE7, keys may not contain special chars.
+		forbiddenChars = new Array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,47,58,59,60,61,62,63,64,91,92,93,94,96,123,124,125,126,127);
 
+		
 	store.disabled = false
 	store.set = function(key, value) {}
 	store.get = function(key) {}
@@ -141,10 +190,34 @@
 				return result
 			}
 		}
+		
 		function ieKeyFix(key) {
-			// In IE7, keys may not begin with numbers.
 			// See https://github.com/marcuswestin/store.js/issues/40#issuecomment-4617842
-			return '_'+key
+			// In IE7, keys may not contain special chars.
+			var temp = key.replace(/\W/g, "") ;
+			if ( temp != key ) {
+			    // if the key contains chars that are not letters, digits, and underscores
+			    // we need to remove them keeping an eye to not simply wipe due to 
+			    // possible collisions of keys
+			    var i = 0, ch = -1;
+			    temp = '';
+			    for ( i = 0; i < key.length;i++){
+			        ch = key.charCodeAt(i);
+			        if ( forbiddenChars.indexOf(ch) > -1 ) {
+			            // if such a char exists in the key we change it to 
+			            // '_' + ascii char code +'_'
+			            // the '_' before and after are just for ease 
+			            // of visualization in case you need to debug 
+			            temp = temp + '_' + ch + '_';
+			        }else{
+			            temp = temp + key.charAt(i);
+			        }
+			    }
+			    key = temp;
+			} 
+			// See https://github.com/marcuswestin/store.js/issues/40#issuecomment-4617842
+			// In IE7, keys may not begin with numbers.
+            return '_' + key
 		}
 		store.set = withIEStorage(function(storage, key, val) {
 			key = ieKeyFix(key)
