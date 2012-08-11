@@ -110,9 +110,8 @@ Supported browsers
 
 Storage limits
 --------------
- - IE6: 1MB
- - IE7: 1MB
-
+ - IE6 & IE7: 1MB total, but 128kb per "path" or "document" (see http://msdn.microsoft.com/en-us/library/ms531424(v=vs.85).aspx)
+ 
 Supported but broken (please help fix)
 --------------------------------------
  - Chrome 4
