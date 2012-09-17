@@ -50,7 +50,8 @@
 	}
 	store.deserialize = function(value) {
 		if (typeof value != 'string') { return undefined }
-		return JSON.parse(value)
+		try { return JSON.parse(value) }
+		catch(e) { return value }
 	}
 
 	// Functions to encapsulate questionable FireFox 3.6.13 behavior
