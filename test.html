@@ -38,6 +38,8 @@
 				store.remove('foo')
 				assert(store.get('foo') == null, "removed key 'foo' not null")
 
+				assert(store.set('foo','value') == 'value', "store#set returns the stored value")
+
 				store.set('foo', 'bar1')
 				store.set('foo', 'bar2')
 				assert(store.get('foo') == 'bar2', "key 'foo' is not equal to second value set 'bar2'")
