@@ -156,3 +156,4 @@ Contributors
  - [@jackfranklin](https://github.com/jackfranklin) Jack Franklin
  - [@pauldwaite](https://github.com/pauldwaite) Paul D. Waite
  - [@mferretti](https://github.com/mferretti) Marco Ferretti
+ - [@whitehat101](https://github.com/whitehat101) Jeremy Ebler
