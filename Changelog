@@ -1,3 +1,7 @@
+v1.3.5
++ Now store.set returns the set value: `store.set(key, value) == value`
++ Values previously set with localStorage directly are now parsed handler by store.js: `localStorage['foo'] = 1; assert(store.get('foo') == 1)`
+
 v1.3.4
 + Add store.enabled
 + Deprecate store.disabled
