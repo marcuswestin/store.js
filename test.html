@@ -81,6 +81,28 @@
 				assert(threw, "storing object with circular reference did not throw")
 				assert(!store.get('circularReference'), "attempting to store object with circular reference which should have faile affected store state")
 
+				// If plain local storage was used before, auto-promote existing values
+				// can I use store.storage[key] (or something) for this?
+				if(window.localStorage) {
+					// Items set before store.js added
+					window.localStorage['promote'] = Math.PI
+					assert(store.get('promote') == Math.PI, "float was not correctly promoted to valid JSON")
+
+					window.localStorage['promote'] = 42
+					assert(store.get('promote') == 42, "int was not correctly promoted to valid JSON")
+
+					window.localStorage['promote'] = true
+					assert(store.get('promote') == true, "bool was not correctly promoted to valid JSON")
+
+					window.localStorage['promote'] = "Don't Panic"
+					assert(store.get('promote') == "Don't Panic", "a simple string was not correctly promoted to valid JSON")
+
+					window.localStorage['promote'] = "{ZYX' abc:;::)))"
+					assert(store.get('promote') == "{ZYX' abc:;::)))", "an odd string was not correctly promoted to valid JSON")
+				}
+				store.remove('promote')
+
+
 				// The following stored values get tested in doSecondPass after a page reload
 				store.set('firstPassFoo', 'bar')
 				store.set('firstPassObj', { woot: true })
