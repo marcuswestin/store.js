@@ -72,6 +72,7 @@
 		store.set = function(key, val) {
 			if (val === undefined) { return store.remove(key) }
 			storage.setItem(key, store.serialize(val))
+			return val
 		}
 		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
 		store.remove = function(key) { storage.removeItem(key) }
@@ -89,6 +90,7 @@
 		store.set = function(key, val) {
 			if (val === undefined) { return store.remove(key) }
 			storage[key] = store.serialize(val)
+			return val
 		}
 		store.get = function(key) { return store.deserialize(storage[key] && storage[key].value) }
 		store.remove = function(key) { delete storage[key] }
@@ -153,6 +155,7 @@
 			if (val === undefined) { return store.remove(key) }
 			storage.setAttribute(key, store.serialize(val))
 			storage.save(localStorageName)
+			return val
 		})
 		store.get = withIEStorage(function(storage, key) {
 			key = ieKeyFix(key)
