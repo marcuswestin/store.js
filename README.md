@@ -111,6 +111,7 @@ Supported browsers
 Storage limits
 --------------
  - IE6 & IE7: 1MB total, but 128kb per "path" or "document" (see http://msdn.microsoft.com/en-us/library/ms531424(v=vs.85).aspx)
+ - See http://dev-test.nemikor.com/web-storage/support-test/ for a list of limits per browser
  
 Supported but broken (please help fix)
 --------------------------------------
@@ -158,3 +159,4 @@ Contributors
  - [@mferretti](https://github.com/mferretti) Marco Ferretti
  - [@whitehat101](https://github.com/whitehat101) Jeremy Ebler
  - [@lepture](https://github.com/lepture) Hsiaoming Yang
+ - [@lovejs](https://github.com/lovejs) Ruslan G
