@@ -24,7 +24,6 @@
 		win = window,
 		doc = win.document,
 		localStorageName = 'localStorage',
-		globalStorageName = 'globalStorage',
 		namespace = '__storejs__',
 		storage
 
@@ -62,11 +61,6 @@
 		catch(err) { return false }
 	}
 
-	function isGlobalStorageNameSupported() {
-		try { return (globalStorageName in win && win[globalStorageName] && win[globalStorageName][win.location.hostname]) }
-		catch(err) { return false }
-	}
-
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
 		store.set = function(key, val) {
@@ -85,25 +79,6 @@
 			}
 			return ret
 		}
-	} else if (isGlobalStorageNameSupported()) {
-		storage = win[globalStorageName][win.location.hostname]
-		store.set = function(key, val) {
-			if (val === undefined) { return store.remove(key) }
-			storage[key] = store.serialize(val)
-			return val
-		}
-		store.get = function(key) { return store.deserialize(storage[key] && storage[key].value) }
-		store.remove = function(key) { delete storage[key] }
-		store.clear = function() { for (var key in storage ) { delete storage[key] } }
-		store.getAll = function() {
-			var ret = {}
-			for (var i=0; i<storage.length; ++i) {
-				var key = storage.key(i)
-				ret[key] = store.get(key)
-			}
-			return ret
-		}
-
 	} else if (doc.documentElement.addBehavior) {
 		var storageOwner,
 			storageContainer

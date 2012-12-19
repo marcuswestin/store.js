@@ -85,7 +85,7 @@
 				assert(!store.get('circularReference'), "attempting to store object with circular reference which should have faile affected store state")
 
 				// If plain local storage was used before store.js, we should attempt to JSON.parse them into javascript values.
-				// Store values using vanilla local/globalStorage, then read them out using store.js
+				// Store values using vanilla localStorage, then read them out using store.js
 				var promoteValues = {
 					'int'         : 42,
 					'bool'        : true,
@@ -96,8 +96,6 @@
 				for (key in promoteValues) {
 					if (window.localStorage) {
 						window.localStorage[key] = promoteValues[key]
-					} else if (window.globalStorage) {
-						window.globalStorage[location.hostname][key] = promoteValues[key]
 					}
 				}
 				for(key in promoteValues) {

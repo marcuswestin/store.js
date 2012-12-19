@@ -26,7 +26,7 @@ store.js depends on JSON for serialization.
 
 How does it work?
 ------------------
-store.js uses localStorage when available, and falls back on globalStorage for earlier versions of Firefox and the userData behavior in IE6 and IE7. No flash to slow down your page load. No cookies to fatten your network requests.
+store.js uses localStorage when available, and falls back on the userData behavior in IE6 and IE7. No flash to slow down your page load. No cookies to fatten your network requests.
 
 Screencast
 -----------
@@ -160,3 +160,4 @@ Contributors
  - [@whitehat101](https://github.com/whitehat101) Jeremy Ebler
  - [@lepture](https://github.com/lepture) Hsiaoming Yang
  - [@lovejs](https://github.com/lovejs) Ruslan G
+ - [@rmg](https://github.com/rmg) Ryan Graham
