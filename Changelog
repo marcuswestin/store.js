@@ -1,3 +1,6 @@
+Intended v1.3.6
++ Remove globalStorage and drop FF 2.0/3.0 support (See https://github.com/marcuswestin/store.js/issues/44)
+
 v1.3.5
 + Now store.set returns the set value: `store.set(key, value) == value`
 + Values previously set with localStorage directly are now parsed handler by store.js: `localStorage['foo'] = 1; assert(store.get('foo') == 1)`

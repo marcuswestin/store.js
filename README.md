@@ -87,8 +87,6 @@ Go to test.html in your browser.
 
 Supported browsers
 ------------------
- - Tested in Firefox 2.0
- - Tested in Firefox 3.0
  - Tested in Firefox 3.5
  - Tested in Firefox 3.6
  - Tested in Firefox 4.0
@@ -105,6 +103,8 @@ Supported browsers
  - Tested in IE8
  - Tested in Opera 10
    - Opera 10.54
+
+*Firefox 3.0 & 2.0:* Support for FF 2 & 3 was dropped in v1.3.6. If you require support for ancient versions of FF, use v1.3.5 of store.js.
 
 *Important note:* In IE6 and IE7, many special characters are not allowed in the keys used to store any key/value pair. With [@mferretti](https://github.com/mferretti)'s help, there's a suitable workaround which replaces most forbidden characters with "___".
 
