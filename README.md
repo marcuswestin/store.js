@@ -1,3 +1,5 @@
+*Note:* This is a backwards compatibility branch for support for Firefox 2.0 and Firefox 3.0. It is not actively maintained, and new features in store.js will not be back-ported to this branch. Cheers!
+
 store.js
 ========
 

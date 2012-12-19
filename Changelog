@@ -1,3 +1,6 @@
+v1.3.5-firefox-2-and-3-support
++ Created branch off of tag v1.3.5 (b12b5a77182dffed4c875652aef8e302468b70a3) with support for firefox 2.0 and 3.0 via globalStorage.
+
 v1.3.5
 + Now store.set returns the set value: `store.set(key, value) == value`
 + Values previously set with localStorage directly are now parsed handler by store.js: `localStorage['foo'] = 1; assert(store.get('foo') == 1)`
