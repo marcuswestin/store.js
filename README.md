@@ -77,7 +77,7 @@ What we want (and get with store.js) is
 
 The native serialization engine of javascript is JSON. Rather than leaving it up to you to serialize and deserialize your values, store.js uses JSON.stringify() and JSON.parse() on each call to store.set() and store.get(), respectively.
 
-Some browsers do not have native support for JSON. For those browsers you should include [JSON.js] (non-minified copy is included in this repo).
+Some browsers do not have native support for JSON. For those browsers you should include [JSON.js](non-minified copy is included in this repo).
 
 Tests
 -----
