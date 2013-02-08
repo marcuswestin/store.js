@@ -21,7 +21,10 @@ store.js exposes a simple API for cross browser local storage
 	// Get the stored object - store.js uses JSON.parse under the hood
 	var user = store.get('user')
 	alert(user.name + ' likes ' + user.likes)
-
+	
+	// Get all stored values
+	store.getAll().user.name == 'marcus'
+	
 store.js depends on JSON for serialization.
 
 How does it work?
