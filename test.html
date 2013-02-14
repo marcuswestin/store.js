@@ -32,7 +32,9 @@
 
 			function doFirstPass() {
 				store.clear()
-
+				
+				store.get('unsetValue') // see https://github.com/marcuswestin/store.js/issues/63
+				
 				store.set('foo', 'bar')
 				assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
 
