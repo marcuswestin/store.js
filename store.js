@@ -79,6 +79,14 @@
 			}
 			return ret
 		}
+    store.getAllValues = function() {
+      var ret = []
+			for (var i=0, l=storage.length; i<l; ++i) {
+				var key = storage.key(i)
+				ret[i] = store.get(key)
+			}
+			return ret
+    }
 	} else if (doc.documentElement.addBehavior) {
 		var storageOwner,
 			storageContainer
@@ -155,6 +163,15 @@
 			var ret = {}
 			for (var i=0, attr; attr=attributes[i]; ++i) {
 				ret[attr] = store.get(attr)
+			}
+			return ret
+		})
+    store.getAllValues = withIEStorage(function(storage) {
+			var attributes = storage.XMLDocument.documentElement.attributes
+			storage.load(localStorageName)
+			var ret = []
+			for (var i=0, attr; attr=attributes[i]; ++i) {
+				ret[i] = store.get(attr)
 			}
 			return ret
 		})
