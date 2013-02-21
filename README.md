@@ -136,13 +136,6 @@ Forks
  - jQueryfied version: https://github.com/whitmer/store.js 
  - Lint.js passing version (with semi-colons): https://github.com/StevenBlack/store.js
  
-TODO
-----
- - What are the storage capacities/restrictions per browser?
- - I believe underlying APIs can throw under certain conditions. Where do we need try/catch?
- - Test different versions of Opera 10.X explicitly
-
-
   [JSON.js]: http://www.json.org/json2.js
 
 Contributors
