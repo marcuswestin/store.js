@@ -39,7 +39,7 @@
     "lib": "."
   },
   "devDependencies": {
-    "uglify-js": "v1.2.5"
+    "uglify-js": "v1.3.4"
   },
   "files": [
     ""
