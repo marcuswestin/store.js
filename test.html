@@ -32,9 +32,9 @@
 
 			function doFirstPass() {
 				store.clear()
-				
+
 				store.get('unsetValue') // see https://github.com/marcuswestin/store.js/issues/63
-				
+
 				store.set('foo', 'bar')
 				assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
 
@@ -126,6 +126,24 @@
 
 				var all = store.getAll()
 				assert(countProperties(all) == 0, "getAll returns 0 properties after store.clear() has been called")
+
+				store.clear()
+				store.setAll({
+					'foo': 'bar',
+					'bar': 'foo'
+				})
+				assert(store.get('foo') == 'bar', "setAll key 'foo' not equal to stored value 'bar'")
+				assert(store.get('bar') == 'foo', "setAll key 'bar' not equal to stored value 'foo'")
+
+				store.clear()
+				store.set({
+					'foo': 'bar',
+					'bar': 'foo'
+				})
+				assert(store.get('foo') == 'bar' && store.get('bar') == 'foo', "set with 1 argument does not set all values")
+
+				var all = store.get()
+				assert(all.foo == 'bar' && all.bar == 'foo', "get with 0 arguments does not get all values")
 			}
 
 			function countProperties(obj) {
