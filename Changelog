@@ -1,4 +1,7 @@
-Intended v1.3.6
+v1.3.7
++ Fix store.getAll for IE6
+
+v1.3.6
 + Remove globalStorage and drop FF 2.0/3.0 support (See https://github.com/marcuswestin/store.js/issues/44)
 
 v1.3.5
