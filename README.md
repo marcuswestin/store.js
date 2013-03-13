@@ -90,22 +90,31 @@ Go to test.html in your browser.
 
 Supported browsers
 ------------------
+ - Tested in iOS 4
+ - Tested in iOS 5
+ - Tested in iOS 6
  - Tested in Firefox 3.5
  - Tested in Firefox 3.6
- - Tested in Firefox 4.0
+ - Tested in Firefox 4.0+
+ - Support dropped for Firefox < 3.5 (see notes below)
  - Tested in Chrome 5
  - Tested in Chrome 6
  - Tested in Chrome 7
  - Tested in Chrome 8
  - Tested in Chrome 10
- - Tested in Chrome 11
+ - Tested in Chrome 11+
  - Tested in Safari 4
  - Tested in Safari 5
  - Tested in IE6
  - Tested in IE7
  - Tested in IE8
+ - Tested in IE9
+ - Tested in IE10
  - Tested in Opera 10
-   - Opera 10.54
+ - Tested in Opera 11
+ - Tested in Opera 12
+
+*Saucelabs.com rocks* Extensive browser testing of store.js is possible thanks to Saucelabs.com. Check them out, they're awesome.
 
 *Firefox 3.0 & 2.0:* Support for FF 2 & 3 was dropped in v1.3.6. If you require support for ancient versions of FF, use v1.3.5 of store.js.
 
@@ -115,11 +124,6 @@ Storage limits
 --------------
  - IE6 & IE7: 1MB total, but 128kb per "path" or "document" (see http://msdn.microsoft.com/en-us/library/ms531424(v=vs.85).aspx)
  - See http://dev-test.nemikor.com/web-storage/support-test/ for a list of limits per browser
- 
-Supported but broken (please help fix)
---------------------------------------
- - Chrome 4
- - Opera 10.10
 
 Unsupported browsers
 -------------------
