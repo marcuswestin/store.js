@@ -21,6 +21,7 @@
 		transactionFn(val)
 		store.set(key, val)
 	}
+	store.setAll = function() {}
 	store.getAll = function() {}
 
 	store.serialize = function(value) {
@@ -43,13 +44,22 @@
 	if (isLocalStorageNameSupported()) {
 		storage = win[localStorageName]
 		store.set = function(key, val) {
+			if (typeof key == "object") { return store.setAll(key) }
 			if (val === undefined) { return store.remove(key) }
 			storage.setItem(key, store.serialize(val))
 			return val
 		}
-		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
+		store.get = function(key) {
+			if (key === undefined) { return store.getAll() }
+			return store.deserialize(storage.getItem(key))
+		}
 		store.remove = function(key) { storage.removeItem(key) }
 		store.clear = function() { storage.clear() }
+		store.setAll = function (vals) {
+			for (var i in vals) {
+				vals[i] = store.set(i, vals[i])
+			}
+		}
 		store.getAll = function() {
 			var ret = {}
 			for (var i=0; i<storage.length; ++i) {
@@ -105,6 +115,7 @@
 			return key.replace(forbiddenCharsRegex, '___')
 		}
 		store.set = withIEStorage(function(storage, key, val) {
+			if (typeof key == "object") { return store.setAll(key) }
 			key = ieKeyFix(key)
 			if (val === undefined) { return store.remove(key) }
 			storage.setAttribute(key, store.serialize(val))
@@ -112,6 +123,7 @@
 			return val
 		})
 		store.get = withIEStorage(function(storage, key) {
+			if (key === undefined) { return store.getAll() }
 			key = ieKeyFix(key)
 			return store.deserialize(storage.getAttribute(key))
 		})
@@ -127,6 +139,12 @@
 				storage.removeAttribute(attr.name)
 			}
 			storage.save(localStorageName)
+		})
+		store.setAll = withIEStorage(function(storage, vals) {
+			for (var i in vals) {
+				vals[i] = store.set(i, vals[i])
+			}
+			return vals
 		})
 		store.getAll = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes
