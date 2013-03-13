@@ -122,7 +122,6 @@
 		})
 		store.clear = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes
-			storage.load(localStorageName)
 			for (var i=0, attr; attr=attributes[i]; i++) {
 				storage.removeAttribute(attr.name)
 			}
@@ -130,10 +129,10 @@
 		})
 		store.getAll = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes
-			storage.load(localStorageName)
 			var ret = {}
 			for (var i=0, attr; attr=attributes[i]; ++i) {
-				ret[attr] = store.get(attr)
+				var key = ieKeyFix(attr.name)
+				ret[attr.name] = store.deserialize(storage.getAttribute(key))
 			}
 			return ret
 		})
