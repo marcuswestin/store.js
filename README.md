@@ -95,7 +95,7 @@ No sessionStorage/auto-expiration?
 No. I believe there is no way to provide sessionStorage semantics cross browser. However, it is trivial to expire values on read on top of store.js:
 
 ```js
-var state = {
+var storeWithExpiration = {
 	set: function(key, val, exp) {
 		store.set(key, { val:val, exp:exp, time:new Date().getTime() })
 	},
@@ -106,9 +106,9 @@ var state = {
 		return info.val
 	}
 }
-store.set('foo', 'bar', 1000)
-setTimeout(function() { console.log(store.get('foo') }, 500) // -> "bar"
-setTimeout(function() { console.log(store.get('foo') }, 1500) // -> null
+storeWithExpiration.set('foo', 'bar', 1000)
+setTimeout(function() { console.log(storeWithExpiration.get('foo') }, 500) // -> "bar"
+setTimeout(function() { console.log(storeWithExpiration.get('foo') }, 1500) // -> null
 ```
 
 Tests
