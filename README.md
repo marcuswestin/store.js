@@ -3,27 +3,29 @@ store.js
 
 store.js exposes a simple API for cross browser local storage
 
-	// Store 'marcus' at 'username'
-	store.set('username', 'marcus')
-	
-	// Get 'username'
-	store.get('username')
-	
-	// Remove 'username'
-	store.remove('username')
-	
-	// Clear all keys
-	store.clear()
-	
-	// Store an object literal - store.js uses JSON.stringify under the hood
-	store.set('user', { name: 'marcus', likes: 'javascript' })
-	
-	// Get the stored object - store.js uses JSON.parse under the hood
-	var user = store.get('user')
-	alert(user.name + ' likes ' + user.likes)
-	
-	// Get all stored values
-	store.getAll().user.name == 'marcus'
+```js
+// Store 'marcus' at 'username'
+store.set('username', 'marcus')
+
+// Get 'username'
+store.get('username')
+
+// Remove 'username'
+store.remove('username')
+
+// Clear all keys
+store.clear()
+
+// Store an object literal - store.js uses JSON.stringify under the hood
+store.set('user', { name: 'marcus', likes: 'javascript' })
+
+// Get the stored object - store.js uses JSON.parse under the hood
+var user = store.get('user')
+alert(user.name + ' likes ' + user.likes)
+
+// Get all stored values
+store.getAll().user.name == 'marcus'
+```
 	
 store.js depends on JSON for serialization.
 
@@ -40,11 +42,13 @@ Screencast
 -------------------------------------------------------
 To check that persistance is available, you can use the `store.enabled` flag:
 
-	if( store.enabled ) {
-		console.log("localStorage is available");
-	} else {
-		//time to fallback
-	}
+```js
+if( store.enabled ) {
+	console.log("localStorage is available");
+} else {
+	//time to fallback
+}
+```
 
 Please note that `store.disabled` does exist but is deprecated in favour of `store.enabled`.
 
@@ -56,27 +60,31 @@ Serialization
 -------------
 localStorage, when used without store.js, calls toString on all stored values. This means that you can't conveniently store and retrieve numbers, objects or arrays:
 
-	localStorage.myage = 24
-	localStorage.myage !== 24
-	localStorage.myage === '24'
-	
-	localStorage.user = { name: 'marcus', likes: 'javascript' }
-	localStorage.user === "[object Object]"
-	
-	localStorage.tags = ['javascript', 'localStorage', 'store.js']
-	localStorage.tags.length === 32
-	localStorage.tags === "javascript,localStorage,store.js"
+```js
+localStorage.myage = 24
+localStorage.myage !== 24
+localStorage.myage === '24'
+
+localStorage.user = { name: 'marcus', likes: 'javascript' }
+localStorage.user === "[object Object]"
+
+localStorage.tags = ['javascript', 'localStorage', 'store.js']
+localStorage.tags.length === 32
+localStorage.tags === "javascript,localStorage,store.js"
+```
 
 What we want (and get with store.js) is
 
-	store.set('myage', 24)
-	store.get('myage') === 24
-	
-	store.set('user', { name: 'marcus', likes: 'javascript' })
-	alert("Hi my name is " + store.get('user').name + "!")
-	
-	store.set('tags', ['javascript', 'localStorage', 'store.js'])
-	alert("We've got " + store.get('tags').length + " tags here")
+```js
+store.set('myage', 24)
+store.get('myage') === 24
+
+store.set('user', { name: 'marcus', likes: 'javascript' })
+alert("Hi my name is " + store.get('user').name + "!")
+
+store.set('tags', ['javascript', 'localStorage', 'store.js'])
+alert("We've got " + store.get('tags').length + " tags here")
+```
 
 The native serialization engine of javascript is JSON. Rather than leaving it up to you to serialize and deserialize your values, store.js uses JSON.stringify() and JSON.parse() on each call to store.set() and store.get(), respectively.
 
@@ -86,20 +94,22 @@ No sessionStorage/auto-expiration?
 ----------------------------------
 No. I believe there is no way to provide sessionStorage semantics cross browser. However, it is trivial to expire values on read on top of store.js:
 
-	var state = {
-		set: function(key, val, exp) {
-			store.set(key, { val:val, exp:exp, time:new Date().getTime() })
-		},
-		get: function(key) {
-			var info = store.get(key)
-			if (!info) { return null }
-			if (new Date().getTime() - info.time > info.exp) { return null }
-			return info.val
-		}
+```js
+var state = {
+	set: function(key, val, exp) {
+		store.set(key, { val:val, exp:exp, time:new Date().getTime() })
+	},
+	get: function(key) {
+		var info = store.get(key)
+		if (!info) { return null }
+		if (new Date().getTime() - info.time > info.exp) { return null }
+		return info.val
 	}
-	store.set('foo', 'bar', 1000)
-	setTimeout(function() { console.log(store.get('foo') }, 500) // -> "bar"
-	setTimeout(function() { console.log(store.get('foo') }, 1500) // -> null
+}
+store.set('foo', 'bar', 1000)
+setTimeout(function() { console.log(store.get('foo') }, 500) // -> "bar"
+setTimeout(function() { console.log(store.get('foo') }, 1500) // -> null
+```
 
 Tests
 -----
