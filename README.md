@@ -82,6 +82,25 @@ The native serialization engine of javascript is JSON. Rather than leaving it up
 
 Some browsers do not have native support for JSON. For those browsers you should include [JSON.js](non-minified copy is included in this repo).
 
+No sessionStorage/auto-expiration?
+----------------------------------
+No. I believe there is no way to provide sessionStorage semantics cross browser. However, it is trivial to expire values on read on top of store.js:
+
+	var state = {
+		set: function(key, val, exp) {
+			store.set(key, { val:val, exp:exp, time:new Date().getTime() })
+		},
+		get: function(key) {
+			var info = store.get(key)
+			if (!info) { return null }
+			if (new Date().getTime() - info.time > info.exp) { return null }
+			return info.val
+		}
+	}
+	store.set('foo', 'bar', 1000)
+	setTimeout(function() { console.log(store.get('foo') }, 500) // -> "bar"
+	setTimeout(function() { console.log(store.get('foo') }, 1500) // -> null
+
 Tests
 -----
 Go to test.html in your browser.
