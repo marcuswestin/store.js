@@ -191,3 +191,4 @@ Contributors
  - [@lovejs](https://github.com/lovejs) Ruslan G
  - [@rmg](https://github.com/rmg) Ryan Graham
  - [@MatthewMueller](https://github.com/MatthewMueller) Matthew Mueller
+ - [@robinator](https://github.com/robinator) Rob Law
