@@ -107,8 +107,8 @@ var storeWithExpiration = {
 	}
 }
 storeWithExpiration.set('foo', 'bar', 1000)
-setTimeout(function() { console.log(storeWithExpiration.get('foo') }, 500) // -> "bar"
-setTimeout(function() { console.log(storeWithExpiration.get('foo') }, 1500) // -> null
+setTimeout(function() { console.log(storeWithExpiration.get('foo')) }, 500) // -> "bar"
+setTimeout(function() { console.log(storeWithExpiration.get('foo')) }, 1500) // -> null
 ```
 
 Tests
