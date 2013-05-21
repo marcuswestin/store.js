@@ -1,3 +1,6 @@
+v1.3.8
++ Fix closing </iframe> tag for IE7 (GH issue #67)
+
 v1.3.7
 + Fix store.getAll for IE6
 
