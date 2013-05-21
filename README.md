@@ -113,7 +113,7 @@ setTimeout(function() { console.log(storeWithExpiration.get('foo')) }, 1500) // 
 
 Tests
 -----
-Go to test.html in your browser.
+Go to test.html in your browser. (Or http://marcuswestin.github.io/store.js/test.html to test the latest version of store.js)
 
 (Note that test.html must be served over http:// or https://. This is because localStore does not work in some browsers when using the file:// protocol)
 
