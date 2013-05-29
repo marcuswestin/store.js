@@ -1,6 +1,5 @@
-;(function(){
+;(function(win){
 	var store = {},
-		win = window,
 		doc = win.document,
 		localStorageName = 'localStorage',
 		namespace = '__storejs__',
@@ -149,5 +148,5 @@
 	store.enabled = !store.disabled
 	if (typeof module != 'undefined' && module.exports) { module.exports = store }
 	else if (typeof define === 'function' && define.amd) { define(store) }
-	else { this.store = store }
-})();
+	else { win.store = store }
+})(this.window || global);

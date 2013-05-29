@@ -111,6 +111,17 @@ setTimeout(function() { console.log(storeWithExpiration.get('foo')) }, 500) // -
 setTimeout(function() { console.log(storeWithExpiration.get('foo')) }, 1500) // -> null
 ```
 
+Node.js
+-------
+store.js works as expected in node.js, assuming that global.localStorage has been set:
+
+```
+global.localStorage = require('localStorage')
+var store = require('./store')
+store.set('foo', 1)
+console.log(store.get('foo'))
+```
+
 Tests
 -----
 Go to test.html in your browser. (Or http://marcuswestin.github.io/store.js/test.html to test the latest version of store.js)
