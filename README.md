@@ -122,11 +122,15 @@ store.set('foo', 1)
 console.log(store.get('foo'))
 ```
 
-Tests
------
-Go to test.html in your browser. (Or http://marcuswestin.github.io/store.js/test.html to test the latest version of store.js)
+Run tests
+---------
+For a browser: Go to http://marcuswestin.github.io/store.js/test.html to test the latest version of store.js.
 
-(Note that test.html must be served over http:// or https://. This is because localStore does not work in some browsers when using the file:// protocol)
+For a browser, locally: do `npm install node-static && ./node_modules/node-static/bin/cli.js` and go to http://localhost:8080
+
+(Note that test.html must be served over http:// or https://. This is because localStore does not work in some browsers when using the file:// protocol.)
+
+For Nodejs: do `npm install . localStorage && node test-node.js`
 
 Supported browsers
 ------------------
@@ -153,6 +157,7 @@ Supported browsers
  - Tested in Opera 10
  - Tested in Opera 11
  - Tested in Opera 12
+ - Tested in Node.js v0.10.4 (with https://github.com/coolaj86/node-localStorage 1.0.2)
 
 *Saucelabs.com rocks* Extensive browser testing of store.js is possible thanks to Saucelabs.com. Check them out, they're awesome.
 
