@@ -1,3 +1,6 @@
+v1.3.9
++ Make store.js work in Node.js (using any working localStorage shim for Node.js)
+
 v1.3.8
 + Fix closing </iframe> tag for IE7 (GH issue #67)
 
