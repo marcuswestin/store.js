@@ -26,7 +26,7 @@ alert(user.name + ' likes ' + user.likes)
 // Get all stored values
 store.getAll().user.name == 'marcus'
 ```
-	
+
 store.js depends on JSON for serialization.
 
 How does it work?
