@@ -45,19 +45,26 @@ Installation
 Just grab [store.min.js] or [store+json2.min.js] and include them with a script tag.
 
 
-`store.enabled` - check that localStorage is available
--------------------------------------------------------
-To check that persistance is available, you can use the `store.enabled` flag:
+`store.enabled` flag
+--------------------
+If your product depends on store.js, you must check the `store.enabled` flag first:
 
-```js
-if( store.enabled ) {
-	console.log("localStorage is available");
-} else {
-	//time to fallback
-}
+```html
+<script src="store.min.js"></script>
+<script>
+	init()
+	function init() {
+		if (!store.enabled) {
+			alert('Local storage is not supported by your browser. Please disabled "Private Mode", or upgrade to a modern browser')
+			return
+		}
+		var user = store.get('user')
+		// ... and so on ...
+	}
+</script>
 ```
 
-There are conditions where localStorage may appear to be available but will throw an error when used. For example, Safari's private browsing mode does this, and some browser allow the user to temporarily disable localStorage. Store.js detects these conditions and sets the `store.enabled` flag accordingly.
+LocalStorage may sometimes appear to be available but throw an error when used. An example is Safari's private browsing mode. Other browsers allow the user to temporarily disable localStorage. Store.js detects these conditions and sets the `store.enabled` flag appropriately.
 
 
 Screencast
