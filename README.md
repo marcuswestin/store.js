@@ -25,6 +25,11 @@ alert(user.name + ' likes ' + user.likes)
 
 // Get all stored values
 store.getAll().user.name == 'marcus'
+
+// Loop over all stored values
+store.forEach(function(val, key) {
+	console.log(key, '==', val)
+})
 ```
 
 store.js depends on JSON for serialization.
@@ -37,6 +42,26 @@ Screencast
 -----------
 [Introductory Screencast to Store.js](http://javascriptplayground.com/blog/2012/06/javascript-local-storage-store-js-tutorial) by Jack Franklin.
 
+Contributors & Users
+--------------------
+Contributors: https://github.com/marcuswestin/store.js/graphs/contributors
+
+Forks: https://github.com/marcuswestin/store.js/network/members
+
+Installation
+------------
+Just grab [store.min.js] or [store+json2.min.js] and include them with a script tag.
+
+In node.js
+----------
+store.js works as expected in node.js, assuming that global.localStorage has been set:
+
+```
+global.localStorage = require('localStorage')
+var store = require('./store')
+store.set('foo', 1)
+console.log(store.get('foo'))
+```
 
 `store.enabled` - check that localStorage is available
 -------------------------------------------------------
@@ -50,11 +75,7 @@ if( store.enabled ) {
 }
 ```
 
-Please note that `store.disabled` does exist but is deprecated in favour of `store.enabled`.
-
 There are conditions where localStorage may appear to be available but will throw an error when used. For example, Safari's private browsing mode does this, and some browser allow the user to temporarily disable localStorage. Store.js detects these conditions and sets the `store.enabled` flag accordingly.
-
-
 
 Serialization
 -------------
@@ -111,19 +132,8 @@ setTimeout(function() { console.log(storeWithExpiration.get('foo')) }, 500) // -
 setTimeout(function() { console.log(storeWithExpiration.get('foo')) }, 1500) // -> null
 ```
 
-Node.js
+Testing
 -------
-store.js works as expected in node.js, assuming that global.localStorage has been set:
-
-```
-global.localStorage = require('localStorage')
-var store = require('./store')
-store.set('foo', 1)
-console.log(store.get('foo'))
-```
-
-Run tests
----------
 For a browser: Go to http://marcuswestin.github.io/store.js/test.html to test the latest version of store.js.
 
 For a browser, locally: do `npm install node-static && ./node_modules/node-static/bin/cli.js` and go to http://localhost:8080
@@ -180,33 +190,6 @@ Unsupported browsers
  - Opera 9: don't know if there is synchronous api for storing data locally
  - Firefox 1.5: don't know if there is synchronous api for storing data locally
 
-Forks
-----
- - Original: https://github.com/marcuswestin/store.js
- - Sans JSON support (simple key/values only): https://github.com/cloudhead/store.js
- - jQueryfied version: https://github.com/whitmer/store.js 
- - Lint.js passing version (with semi-colons): https://github.com/StevenBlack/store.js
- 
   [JSON.js]: http://www.json.org/json2.js
-
-Contributors
-------------
- - [@marcuswestin](https://github.com/marcuswestin) Marcus Westin (Author)
- - [@mjpizz](https://github.com/mjpizz) Matt Pizzimenti
- - [@StevenBlack](https://github.com/StevenBlack) Steven Black
- - [@ryankirkman](https://github.com/ryankirkman) Ryan Kirkman
- - [@pereckerdal](https://github.com/pereckerdal) Per Eckerdal
- - [@manuelvanrijn](https://github.com/manuelvanrijn) Manuel van Rijn
- - [@StuPig](https://github.com/StuPig) Shou Qiang
- - [@blq](https://github.com/blq) Fredrik Blomqvist
- - [@tjarratt](https://github.com/tjarratt) Tim Jarratt
- - [@gregwebs](https://github.com/gregwebs) Greg Weber
- - [@jackfranklin](https://github.com/jackfranklin) Jack Franklin
- - [@pauldwaite](https://github.com/pauldwaite) Paul D. Waite
- - [@mferretti](https://github.com/mferretti) Marco Ferretti
- - [@whitehat101](https://github.com/whitehat101) Jeremy Ebler
- - [@lepture](https://github.com/lepture) Hsiaoming Yang
- - [@lovejs](https://github.com/lovejs) Ruslan G
- - [@rmg](https://github.com/rmg) Ryan Graham
- - [@MatthewMueller](https://github.com/MatthewMueller) Matthew Mueller
- - [@robinator](https://github.com/robinator) Rob Law
+  [store.min.js] https://raw.github.com/marcuswestin/store.js/master/store.min.js
+  [store+json2.min.js] https://raw.github.com/marcuswestin/store.js/master/store+json2.min.js
