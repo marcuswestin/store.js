@@ -21,6 +21,7 @@
 		store.set(key, val)
 	}
 	store.getAll = function() {}
+	store.each=function() {}
 
 	store.serialize = function(value) {
 		return JSON.stringify(value)
@@ -51,11 +52,16 @@
 		store.clear = function() { storage.clear() }
 		store.getAll = function() {
 			var ret = {}
+			store.forEach(function(key,value){
+				ret[key]=value;
+			})
+			return ret
+		}
+		store.forEach = function(callback) {
 			for (var i=0; i<storage.length; ++i) {
 				var key = storage.key(i)
-				ret[key] = store.get(key)
+				callback(key, store.get(key))
 			}
-			return ret
 		}
 	} else if (doc.documentElement.addBehavior) {
 		var storageOwner,
@@ -128,13 +134,18 @@
 			storage.save(localStorageName)
 		})
 		store.getAll = withIEStorage(function(storage) {
-			var attributes = storage.XMLDocument.documentElement.attributes
 			var ret = {}
+			store.forEach(function(key, value){
+				ret[key]=value	
+			})
+			return ret
+		})
+		store.forEach = withIEStorage(function(storage, callback) {
+			var attributes = storage.XMLDocument.documentElement.attributes
 			for (var i=0, attr; attr=attributes[i]; ++i) {
 				var key = ieKeyFix(attr.name)
-				ret[attr.name] = store.deserialize(storage.getAttribute(key))
+				callback(ret[attr.name], store.deserialize(storage.getAttribute(key)))
 			}
-			return ret
 		})
 	}
 
