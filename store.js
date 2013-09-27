@@ -21,7 +21,7 @@
 		store.set(key, val)
 	}
 	store.getAll = function() {}
-	store.each=function() {}
+	store.forEach = function() {}
 
 	store.serialize = function(value) {
 		return JSON.stringify(value)
@@ -52,13 +52,13 @@
 		store.clear = function() { storage.clear() }
 		store.getAll = function() {
 			var ret = {}
-			store.forEach(function(key,value){
-				ret[key]=value;
+			store.forEach(function(key, val) {
+				ret[key] = val
 			})
 			return ret
 		}
 		store.forEach = function(callback) {
-			for (var i=0; i<storage.length; ++i) {
+			for (var i=0; i<storage.length; i++) {
 				var key = storage.key(i)
 				callback(key, store.get(key))
 			}
@@ -135,8 +135,8 @@
 		})
 		store.getAll = withIEStorage(function(storage) {
 			var ret = {}
-			store.forEach(function(key, value){
-				ret[key]=value	
+			store.forEach(function(key, val) {
+				ret[key] = val
 			})
 			return ret
 		})
