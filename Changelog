@@ -1,3 +1,8 @@
+v1.3.10
++ Add store.forEach
++ Add bower.json (sign, I know, yet another package file to maintain)
++ Add MIT license header
+
 v1.3.9
 + Make store.js work in Node.js (using any working localStorage shim for Node.js)
 

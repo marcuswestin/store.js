@@ -159,6 +159,8 @@ Supported browsers
  - Tested in Opera 12
  - Tested in Node.js v0.10.4 (with https://github.com/coolaj86/node-localStorage 1.0.2)
 
+*Private mode* Store.js may not work while browsing in private mode. This is as it should be. Check the `store.enabled` flag before relying on store.js.
+
 *Saucelabs.com rocks* Extensive browser testing of store.js is possible thanks to Saucelabs.com. Check them out, they're awesome.
 
 *Firefox 3.0 & 2.0:* Support for FF 2 & 3 was dropped in v1.3.6. If you require support for ancient versions of FF, use v1.3.5 of store.js.
