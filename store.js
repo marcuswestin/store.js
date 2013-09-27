@@ -2,7 +2,6 @@
 	var store = {},
 		doc = win.document,
 		localStorageName = 'localStorage',
-		namespace = '__storejs__',
 		storage
 
 	store.disabled = false
@@ -150,14 +149,17 @@
 	}
 
 	try {
-		store.set(namespace, namespace)
-		if (store.get(namespace) != namespace) { store.disabled = true }
-		store.remove(namespace)
+		var testKey = '__storejs__'
+		store.set(testKey, testKey)
+		if (store.get(testKey) != testKey) { store.disabled = true }
+		store.remove(testKey)
 	} catch(e) {
 		store.disabled = true
 	}
 	store.enabled = !store.disabled
+	
 	if (typeof module != 'undefined' && module.exports) { module.exports = store }
 	else if (typeof define === 'function' && define.amd) { define(store) }
 	else { win.store = store }
+	
 })(this.window || global);
