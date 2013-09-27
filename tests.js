@@ -9,7 +9,7 @@ tests = {
 function assert(truthy, msg) {
 	if (!truthy) {
 		tests.outputError('bad assert: ' + msg);
-		if (store.disabled) { outputError('<br>Note that store.disabled == true') }
+		if (store.disabled) { tests.outputError('<br>Note that store.disabled == true') }
 		tests.failed = true
 	}
 }
