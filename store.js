@@ -142,8 +142,7 @@
 		store.forEach = withIEStorage(function(storage, callback) {
 			var attributes = storage.XMLDocument.documentElement.attributes
 			for (var i=0, attr; attr=attributes[i]; ++i) {
-				var key = ieKeyFix(attr.name)
-				callback(ret[attr.name], store.deserialize(storage.getAttribute(key)))
+				callback(attr.name, store.deserialize(storage.getAttribute(key)))
 			}
 		})
 	}
