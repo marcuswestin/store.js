@@ -1,3 +1,6 @@
+v1.3.11
++ Fix old-IE forEach
+
 v1.3.10
 + Add store.forEach
 + Add bower.json (sign, I know, yet another package file to maintain)
