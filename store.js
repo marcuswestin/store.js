@@ -132,13 +132,13 @@
 			}
 			storage.save(localStorageName)
 		})
-		store.getAll = withIEStorage(function(storage) {
+		store.getAll = function(storage) {
 			var ret = {}
 			store.forEach(function(key, val) {
 				ret[key] = val
 			})
 			return ret
-		})
+		}
 		store.forEach = withIEStorage(function(storage, callback) {
 			var attributes = storage.XMLDocument.documentElement.attributes
 			for (var i=0, attr; attr=attributes[i]; ++i) {
