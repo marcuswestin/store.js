@@ -1,3 +1,7 @@
+v1.3.13
++ Makefile
++ Fix old-IE getAll/forEach, actually this time. I think
+
 v1.3.12
 + Fix old-IE forEach again. Hrm...
 
