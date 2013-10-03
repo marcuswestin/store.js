@@ -1,3 +1,6 @@
+v1.3.12
++ Fix old-IE forEach again. Hrm...
+
 v1.3.11
 + Fix old-IE forEach
 
