@@ -1,3 +1,6 @@
+v1.3.15
++ Enable inlining the minified build
+
 v1.3.14
 + Makefile
 + Fix old-IE getAll/forEach, actually this time. I think
