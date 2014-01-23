@@ -164,4 +164,4 @@
 	else if (typeof define === 'function' && define.amd) { define(store) }
 	else { win.store = store }
 	
-})(this.window || global);
+})(Function('return this')());
