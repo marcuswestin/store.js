@@ -1,5 +1,7 @@
-Upcoming v1.3.15
+v1.3.15
 + Enable inlining the minified build
++ Fix AMD issue (https://github.com/marcuswestin/store.js/issues/85)
++ Fix for keys starting with a digit in IE7 (https://github.com/marcuswestin/store.js/issues/83)
 
 v1.3.14
 + Makefile
