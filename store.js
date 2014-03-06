@@ -159,9 +159,9 @@
 		store.disabled = true
 	}
 	store.enabled = !store.disabled
-	
-	if (typeof module != 'undefined' && module.exports) { module.exports = store }
+
+	if (typeof module != 'undefined' && module.exports && this.module !== module) { module.exports = store }
 	else if (typeof define === 'function' && define.amd) { define(store) }
 	else { win.store = store }
-	
+
 })(Function('return this')());
