@@ -1,3 +1,6 @@
+v1.3.16
++ Improve environment/module.exports detection (#88, github.com/benrudolph)
+
 v1.3.15
 + Enable inlining the minified build
 + Fix AMD issue (https://github.com/marcuswestin/store.js/issues/85)
