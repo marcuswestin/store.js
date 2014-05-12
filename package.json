@@ -45,5 +45,8 @@
   },
   "files": [
     ""
-  ]
+  ],
+  "spm": {
+    "main": "store.js"
+  }
 }
