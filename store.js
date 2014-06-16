@@ -120,7 +120,7 @@
 		})
 		store.get = withIEStorage(function(storage, key) {
 			key = ieKeyFix(key)
-			return store.deserialize(storage.getAttribute(key))
+			return store.deserialize(storage.getAttribute(key)) === undefined ? null : store.deserialize(storage.getAttribute(key));
 		})
 		store.remove = withIEStorage(function(storage, key) {
 			key = ieKeyFix(key)
@@ -140,7 +140,7 @@
 			store.forEach(function(key, val) {
 				ret[key] = val
 			})
-			return ret
+			return ret === undefined ? null : ret;
 		}
 		store.forEach = withIEStorage(function(storage, callback) {
 			var attributes = storage.XMLDocument.documentElement.attributes
