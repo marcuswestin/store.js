@@ -36,8 +36,17 @@
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
-		try { return (localStorageName in win && win[localStorageName]) }
-		catch(err) { return false }
+		try {
+			if(localStorageName in win && win[localStorageName]) {
+				var testKey = 'test', storage = window.sessionStorage
+				// in safari private mode, localStorage object is available but fails to store objects
+				// see http://stackoverflow.com/questions/14555347/html5-localstorage-error-with-safari-quota-exceeded-err-dom-exception-22-an
+				storage.setItem(testKey, '1')
+	        		storage.removeItem(testKey)
+	        		return true
+	        	}
+		} catch(err) {}
+		return false
 	}
 
 	if (isLocalStorageNameSupported()) {
