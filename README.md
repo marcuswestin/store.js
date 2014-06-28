@@ -139,6 +139,7 @@ Unsupported browsers
  - Safari 3: no synchronous api (has asynch sqlite api, but store.js is synch)
  - Opera 9: don't know if there is synchronous api for storing data locally
  - Firefox 1.5: don't know if there is synchronous api for storing data locally
+ - Microsoft IIS & IE7: With meta tag & "charset=iso-8859-1", things stop working. See issue #47.
 
 
 Some notes on serialization
