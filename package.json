@@ -43,9 +43,6 @@
   "devDependencies": {
     "uglify-js": "v1.3.4"
   },
-  "files": [
-    ""
-  ],
   "spm": {
     "main": "store.js"
   }
