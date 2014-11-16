@@ -16,14 +16,16 @@ function assert(truthy, msg) {
 
 function runFirstPass() {
 	store.clear()
-	
+
 	store.get('unsetValue') // see https://github.com/marcuswestin/store.js/issues/63
-	
+
 	store.set('foo', 'bar')
 	assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
 
 	store.remove('foo')
 	assert(store.get('foo') == null, "removed key 'foo' not null")
+
+	assert(store.get('foo', 'default') == 'default', "removed key 'foo' not returning default value")
 
 	assert(store.set('foo','value') == 'value', "store#set returns the stored value")
 
