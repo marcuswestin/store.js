@@ -51,10 +51,11 @@
 		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
 		store.has = function(key) {
 			var val = store.deserialize(storage.getItem(key))
-			if ( val != null )
+			if ( val != null ) {
 				return true
-			else
+			}	else {
 				return false
+			}
 		}
 		store.remove = function(key) { storage.removeItem(key) }
 		store.clear = function() { storage.clear() }
