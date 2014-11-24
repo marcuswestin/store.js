@@ -1,3 +1,7 @@
+Intended v1.3.17
++ Add store.has
++ Add store.get default value, e.g `store.get('foo', 1)`
+
 v1.3.16
 + Improve environment/module.exports detection (#88, github.com/benrudolph)
 
