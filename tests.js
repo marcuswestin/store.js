@@ -44,6 +44,8 @@ function runFirstPass() {
 	store.clear()
 	assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
 
+	assert(store.get('defaultVal', 123) == 123, "store.get should return default value")
+
 	store.transact('foosact', function(val) {
 		assert(typeof val == 'object', "new key is not an object at beginning of transaction")
 		val.foo = 'foo'
