@@ -6,6 +6,7 @@
 		storage
 
 	store.disabled = false
+	store.version = '1.3.17'
 	store.set = function(key, value) {}
 	store.get = function(key, defaultVal) {}
 	store.has = function(key) { return store.get(key) !== undefined }

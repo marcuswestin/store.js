@@ -2,6 +2,7 @@ Intended v1.3.17
 + Add store.has
 + Add store.get default value, e.g `store.get('foo', 1)`
 + Fix IE strict mode compatability issue (#105)
++ Added store.version
 
 v1.3.16
 + Improve environment/module.exports detection (#88, github.com/benrudolph)
