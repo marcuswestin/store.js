@@ -1,4 +1,4 @@
-Intended v1.3.17
+v1.3.17
 + Add store.has
 + Add store.get default value, e.g `store.get('foo', 1)`
 + Fix IE strict mode compatability issue (#105)
