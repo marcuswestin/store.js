@@ -95,7 +95,7 @@
 			storage = doc.createElement('div')
 			storageOwner = doc.body
 		}
-		function withIEStorage(storeFunction) {
+		var withIEStorage = function(storeFunction) {
 			return function() {
 				var args = Array.prototype.slice.call(arguments, 0)
 				args.unshift(storage)
