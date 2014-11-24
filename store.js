@@ -8,6 +8,7 @@
 	store.disabled = false
 	store.set = function(key, value) {}
 	store.get = function(key) {}
+	store.has = function(key) {}
 	store.remove = function(key) {}
 	store.clear = function() {}
 	store.transact = function(key, defaultVal, transactionFn) {
@@ -48,6 +49,14 @@
 			return val
 		}
 		store.get = function(key) { return store.deserialize(storage.getItem(key)) }
+		store.has = function(key) {
+			var val = store.deserialize(storage.getItem(key))
+			if ( val != null ) {
+				return true
+			}	else {
+				return false
+			}
+		}
 		store.remove = function(key) { storage.removeItem(key) }
 		store.clear = function() { storage.clear() }
 		store.getAll = function() {
@@ -121,6 +130,15 @@
 		store.get = withIEStorage(function(storage, key) {
 			key = ieKeyFix(key)
 			return store.deserialize(storage.getAttribute(key))
+		})
+		store.has = withIEStorage(function(storage, key) {
+			key = ieKeyFix(key)
+			var val = store.deserialize(storage.getAttribute(key))
+			if ( val != null ) {
+				return true
+			}	else {
+				return false
+			}
 		})
 		store.remove = withIEStorage(function(storage, key) {
 			key = ieKeyFix(key)
