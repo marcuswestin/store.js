@@ -93,9 +93,7 @@ console.log(store.get('foo'))
 
 Supported browsers
 ------------------
- - Tested in iOS 4
- - Tested in iOS 5
- - Tested in iOS 6
+ - Tested in iOS 4+
  - Tested in Firefox 3.5
  - Tested in Firefox 3.6
  - Tested in Firefox 4.0+
