@@ -1,5 +1,5 @@
 Intended v1.3.18
-+ Use umdjs to export store.js
++ Use umdjs to export store.js (#116, #111, #96, #91, #78, ...)
 + Make compatible with "use strict" mode (#111)
 + Fix store.clear in legacy-IE code path (#103)
 
