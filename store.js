@@ -1,3 +1,4 @@
+"use strict"
 // Module export pattern from
 // https://github.com/umdjs/umd/blob/master/returnExports.js
 ;(function (root, factory) {
@@ -133,7 +134,7 @@
 		// See https://github.com/marcuswestin/store.js/issues/40
 		// See https://github.com/marcuswestin/store.js/issues/83
 		var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g")
-		function ieKeyFix(key) {
+		var ieKeyFix = function(key) {
 			return key.replace(/^d/, '___$&').replace(forbiddenCharsRegex, '___')
 		}
 		store.set = withIEStorage(function(storage, key, val) {
