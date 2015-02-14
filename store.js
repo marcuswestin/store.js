@@ -31,6 +31,7 @@
 	store.has = function(key) { return store.get(key) !== undefined }
 	store.remove = function(key) {}
 	store.clear = function() {}
+	store.key = function(index) {}
 	store.transact = function(key, defaultVal, transactionFn) {
 		if (transactionFn == null) {
 			transactionFn = defaultVal
@@ -88,6 +89,9 @@
 				var key = storage.key(i)
 				callback(key, store.get(key))
 			}
+		}
+		store.key = function(index) {
+			return storage.key(index);
 		}
 	} else if (doc.documentElement.addBehavior) {
 		var storageOwner,
@@ -175,13 +179,28 @@
 				callback(attr.name, store.deserialize(storage.getAttribute(attr.name)))
 			}
 		})
+		store.key = withIEStorage(function(storage, index) {
+			var keys = []
+			store.forEach(function(key, val) {
+				keys.push(key)
+			})
+			return keys[0]
+		})
 	}
 
 	try {
-		var testKey = '__storejs__'
-		store.set(testKey, testKey)
-		if (store.get(testKey) != testKey) { store.disabled = true }
-		store.remove(testKey)
+		//精确检测，防止我们自己cache大于storage的上限以后,检测不准
+        var tempKey = store.key(0)
+        var tempData = store.get(tempKey)
+        if(tempKey) {
+        	store.remove(tempKey)
+        	store.set(tempKey, tempData)
+        } else {
+        	var testKey = '__storejs__'
+			store.set(testKey, 1)//字节要足够小
+			if (store.get(testKey) != 1) { store.disabled = true }
+			store.remove(testKey)
+        }
 	} catch(e) {
 		store.disabled = true
 	}
