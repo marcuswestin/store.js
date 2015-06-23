@@ -21,6 +21,7 @@
 		win = window,
 		doc = win.document,
 		localStorageName = 'localStorage',
+		localStorageTestKey = 'testLocalStorage',
 		scriptTag = 'script',
 		storage
 
@@ -59,7 +60,19 @@
 	// when about.config::dom.storage.enabled === false
 	// See https://github.com/marcuswestin/store.js/issues#issue/13
 	function isLocalStorageNameSupported() {
-		try { return (localStorageName in win && win[localStorageName]) }
+		try { 
+			// When Safari (OS X or iOS) is in private mode, 
+			// it appears as though localStorage is available, but trying to call "setItem" throws an exception.
+			var localStorageExists = (localStorageName in win && win[localStorageName])
+			if (localStorageExists) {
+			        var storage = win[localStorageName]
+				storage.setItem(localStorageTestKey, 1)
+				storage.removeItem(localStorageTestKey)
+				return true
+			}
+			return false
+			
+		}
 		catch(err) { return false }
 	}
 
