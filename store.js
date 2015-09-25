@@ -18,7 +18,7 @@
 	
 	// Store.js
 	var store = {},
-		win = window,
+		win = typeof window !== 'undefined' ? window : { document: null },
 		doc = win.document,
 		localStorageName = 'localStorage',
 		scriptTag = 'script',
@@ -89,7 +89,7 @@
 				callback(key, store.get(key))
 			}
 		}
-	} else if (doc.documentElement.addBehavior) {
+	} else if (doc && doc.documentElement.addBehavior) {
 		var storageOwner,
 			storageContainer
 		// Since #userData storage applies only to specific paths, we need to
