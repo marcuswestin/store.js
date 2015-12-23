@@ -1,7 +1,8 @@
-Intended v1.3.18
+v1.3.19
 + Use umdjs to export store.js (#116, #111, #96, #91, #78, ...)
 + Make compatible with "use strict" mode (#111)
 + Fix store.clear in legacy-IE code path (#103)
++ Roadmap for v1.4.x and v2.x.x
 
 v1.3.17
 + Add store.has
