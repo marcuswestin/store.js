@@ -1,49 +1,29 @@
 {
   "name": "store",
-  "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
   "version": "1.3.17",
-  "homepage": "https://github.com/marcuswestin/store.js",
-  "author": "Marcus Westin <narcvs@gmail.com> (http://marcuswest.in)",
-  "contributors": [
-    "Matt Pizzimenti <mjpizz+github@gmail.com> (http://mjpizz.com)",
-    "Long Ouyang (https://github.com/longouyang)",
-    "Paul Irish (http://paulirish.com)",
-    "Guillermo Rauch <rauchg@gmail.com> (https://github.com/guille)",
-    "whitmer (https://github.com/whitmer)",
-    "Steven Black <steveb@stevenblack.com> (https://github.com/StevenBlack)",
-    "Marcus Tucker <info@marcustucker.com> (https://github.com/MarcusJT)",
-    "Leonid Bugaev <leonsbox@gmail.com> (https://github.com/buger)",
-    "Per Eckerdal <per.eckerdal@gmail.com> (https://github.com/pereckerdal)",
-    "Fredrik Blomqvist (https://github.com/blq)",
-    "Ryan Graham (https://github.com/rmg)",
-    "Ben Rudolph (https://github.com/benrudolph)",
-    "Haoliang Gao (https://github.com/popomore)"
-  ],
+  "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
+  "main": "store.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/marcuswestin/store.js.git"
   },
+  "author": "Marcus Westin <narcvs@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "http://github.com/marcuswestin/store.js/issues"
+  },
+  "homepage": "https://github.com/marcuswestin/store.js#readme",
+  "devDependencies": {
+    "uglify-js": "v1.3.4"
   },
   "engines": {
     "browser": "*",
     "node": "*"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.github.com/marcuswestin/store.js/master/store.js"
-    }
-  ],
-  "main": "store",
   "directories": {
     "lib": "."
-  },
-  "devDependencies": {
-    "uglify-js": "v1.3.4"
-  },
-  "spm": {
-    "main": "store.js"
   }
 }
