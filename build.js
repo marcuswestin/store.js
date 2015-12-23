@@ -17,6 +17,6 @@ function buildFile(js, name) {
 	ast = uglify.uglify.ast_mangle(ast)
 	ast = uglify.uglify.ast_squeeze(ast)
 	var minifiedJS = uglify.uglify.gen_code(ast)
-	fs.writeFile(__dirname + '/' + name, copy + '\n' + minifiedJS)
+	fs.writeFile(__dirname + '/' + name, copy + '\n' + minifiedJS + ';')
 }
 
