@@ -1,22 +1,6 @@
 Roadmap
 =======
 
-v1.3.19:
---------
-
-Fix, bump & publish:
-- [X] #122: Fix JSON.js link
-	- [X] Probably use this link: https://github.com/douglascrockford/JSON-js
-- [X] #123: Fix bower name
-	- [X] Investigate why it was "store" in the first place
-- [X] #127: Remove `version` property from bower.json
-	- [X] Read up on bower spec
-- [X] #143: Update json.js
-- [X] #125: Uncaught TypeError: Cannot read property 'module' of undefined
-- [X] #131: Error on concatenating multiple js files with store.js
-- [X] #139: New release needed please!
-- [X] #141: Still 1.3.17 version, even if 1.3.18 is ready. Wrong installation by bower.
-
 v1.4.x:
 -------
 
