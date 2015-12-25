@@ -85,10 +85,10 @@ function runFirstPass() {
 			'string'      : "Don't Panic",
 			'odd_string'  : "{ZYX'} abc:;::)))"
 		}
-		for (key in promoteValues) {
+		for (var key in promoteValues) {
 			localStorage[key] = promoteValues[key]
 		}
-		for (key in promoteValues) {
+		for (var key in promoteValues) {
 			assert(store.get(key) == promoteValues[key], key+" was not correctly promoted to valid JSON")
 			store.remove(key)
 		}
