@@ -18,6 +18,7 @@
   "homepage": "https://github.com/marcuswestin/store.js#readme",
   "devDependencies": {
     "budo": "^7.1.0",
+    "node-localstorage": "^0.6.0",
     "uglify-js": "v1.3.4"
   },
   "engines": {

@@ -18,7 +18,7 @@
 	
 	// Store.js
 	var store = {},
-		win = typeof window !== 'undefined' ? window : { document: null },
+		win = (typeof window != 'undefined' ? window : global),
 		doc = win.document,
 		localStorageName = 'localStorage',
 		scriptTag = 'script',
