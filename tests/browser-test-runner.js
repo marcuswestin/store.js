@@ -1,22 +1,10 @@
-<!DOCTYPE html>
-<head>
-	<title>store.js test</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<style type="text/css">
-		body { margin: 50px; font-family: helvetica; color: #333; }
-		div { color: green; }
-		#errorOutput div { color: red; }
-	</style>
-	<script src="./json.js"></script>
-	<script src="./store.js"></script>
-	<script src="./tests.js"></script>
-</head>
-<body>
-	tests for <a href="http://github.com/marcuswestin/store.js">store.js</a>
-	<div id="errorOutput"></div>
+var tests = require('./tests')
 
-	<script>
-		(function() {
+document.body.innerHTML = [
+	'tests for <a href="http://github.com/marcuswestin/store.js">store.js</a>',
+	'<div id="errorOutput"></div>'].join('\n')
+
+		;(function() {
 			var doc = document,
 				errorOutput = doc.getElementById('errorOutput'),
 				isSecondPass = (doc.location.hash == '#secondPass')
@@ -43,6 +31,3 @@
 				}
 			}
 		})()
-	</script>
-</body>
-</html>

@@ -1,4 +1,7 @@
-tests = {
+require('../json')
+var store = require('../store')
+
+var tests = module.exports = {
 	outputError:null,
 	assert:assert,
 	runFirstPass:runFirstPass,
@@ -8,8 +11,10 @@ tests = {
 
 function assert(truthy, msg) {
 	if (!truthy) {
+		if (store.disabled) {
+			msg += '\n(Note that store.disabled == true)'
+		}
 		tests.outputError('bad assert: ' + msg);
-		if (store.disabled) { tests.outputError('<br>Note that store.disabled == true') }
 		tests.failed = true
 	}
 }
