@@ -5,11 +5,11 @@ v1.4.x:
 -------
 
 Dev env:
-- [ ] browserify, budo, babelify, uglifyify
-- [ ] scripts/open-live-tests.sh live reload of tests page
+- [X] browserify, budo, babelify, uglifyify
+- [X] scripts/open-live-tests.sh live reload of tests page
 - [ ] scripts/compile-lib.sh compile store.js, store.min.js
-- [ ] VMs for all target environments (all browsers, node, etc)
-- [ ] automatic tests. CICircle?
+- [X] figure out automatic test strategy.
+- [ ] implement full test suite and runner
 - [ ] enforce js style in compilation/tests
 
 Open pull requests & issues:
