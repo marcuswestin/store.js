@@ -12,6 +12,23 @@ var platforms = module.exports = {
 			'chrome': [CURRENT_VERSION]
 		}
 	},
+	ie6: { 'Windows XP': { 'internet explorer': ['6'] } },
+	ie7: { 'Windows XP': { 'internet explorer': ['7'] } },
+	ie8: { 'Windows XP': { 'internet explorer': ['8'] } },
+	allInternetExplorer: {
+		'Windows XP': {
+			'internet explorer': ['6', '7', '8']
+		},
+		'Windows 7': {
+			'internet explorer': ['9']
+		},
+		'Windows 8': {
+			'internet explorer': ['10']
+		},
+		'Windows 10': {
+			'internet explorer': ['11', CURRENT_VERSION]
+		}
+	},
 	windowsXPRun: {
 		'Windows XP': {
 			'internet explorer': ['6', '7', '8'],

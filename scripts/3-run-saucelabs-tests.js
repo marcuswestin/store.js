@@ -12,6 +12,10 @@ var allPlatformSets = require('./saucelabs-platformSets')
 
 runPlatformsTest('_'
 	, allPlatformSets.singleBrowserRun
+	// , allPlatformSets.allInternetExplorer
+	// , allPlatformSets.ie6
+	// , allPlatformSets.ie7
+	// , allPlatformSets.ie8
 	// , allPlatformSets.windows7Run
 	// , allPlatformSets.majorDesktopRun
 	// , allPlatformSets.androidRun
