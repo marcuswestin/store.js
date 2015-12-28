@@ -6,43 +6,69 @@ var _ = require('lodash')
 var username = 'storejs'
 var password = new Buffer('ZjhjMzUyNjgtNzc2ZC00ZjlkLWEwNWUtN2FkM2Q0ZDgyNzk5', 'base64').toString('utf8')
 
-var platformSets = require('./saucelabs-platformSets')
+var allPlatformSets = require('./saucelabs-platformSets')
 
-// runPlatformsTest(platformSets.singleBrowserRun)
-// runPlatformsTest(platformSets.windows7Run)
-// runPlatformsTest(platformSets.majorDesktopRun)
-// runPlatformsTest(platformSets.androidRun)
-// runPlatformsTest(platformSets.iOSRun)
-runPlatformsTest(platformSets.OSXRun)
+// listAllSupportedPlatforms()
 
-function getPlatformsArg(platformsSet, callback) {
-	var res = _.map(platformsSet, function(browserSpecs, osName) {
-		return _.map(browserSpecs, function(browserVersions, browserName) {
-			return _.map(browserVersions, function(browserVersion) {
-				return [osName, browserName, browserVersion]
+runPlatformsTest('_'
+	, allPlatformSets.singleBrowserRun
+	// , allPlatformSets.windows7Run
+	// , allPlatformSets.majorDesktopRun
+	// , allPlatformSets.androidRun
+	// , allPlatformSets.iOSRun
+	// , allPlatformSets.OSXRun
+)
+
+function listAllSupportedPlatforms() {
+	get('info/platforms/webdriver', function(platformsInfo) {
+		var res = _.map(platformsInfo, function(info) {
+			return [info['os'], info['api_name'], info['short_version']]
+		})
+		console.log(res)
+	})
+}
+
+function getPlatformsArg(platformSets, callback) {
+	var flattened = _.flatten(_.flatten(_.flatten(
+		_.map(platformSets, function(platformSet) {
+			return _.map(platformSet, function(browserSpecs, osName) {
+				return _.map(browserSpecs, function(browserVersions, browserName) {
+					return _.map(browserVersions, function(browserVersion) {
+						return [osName, browserName, browserVersion]
+					})
+				})
 			})
 		})
-	})
-	res = _.flatten(_.flatten(res))
+	)))
 	get('info/platforms/webdriver', function(platformsInfo) {
 		var allSupportedPlatforms = {}
 		_.each(platformsInfo, function(info) {
 			var platform = [info['os'], info['api_name'], info['short_version']]
 			allSupportedPlatforms[platform.join('-')] = true
 		})
-		_.each(res, function(platform) {
-			if (!platform[2]) { return } // Skip CURRENT_VERSION
-			var platformId = platform.join('-').replace('OS X', 'Mac')
+		var seen = {}
+		var platformsArg = []
+		_.each(flattened, function(platform) {
+			var platformId = platform.join('-')
+				.replace('OS X', 'Mac')
+				.replace('Windows XP', 'Windows 2003')
+				.replace('Windows 7', 'Windows 2008')
+				.replace('Windows 8', 'Windows 2012')
+			if (seen[platformId]) { return }
+			seen[platformId] = true
+			platformsArg.push(platform)
+			if (!platform[2]) { return } // Don't sanity-check CURRENT_VERSION
 			if (!allSupportedPlatforms[platformId]) {
-				throw new Error('Unsupported platform: '+platform.join(', '))
+				throw new Error('Unsupported platform: '+platform.join(', ')+' ('+platformId+')')
 			}
 		})
-		callback(res)
+		callback(platformsArg)
 	})
 }
 
-function runPlatformsTest(platformsSet) {
-	getPlatformsArg(platformsSet, function(platforms) {
+function runPlatformsTest(___, platformsSet1, platformSet2, platformSetN) {
+	var platformSets = Array.prototype.slice.call(arguments, 1)
+	getPlatformsArg(platformSets, function(platforms) {
 		var runTestsRes
 		runTests('https://6d5bd3c9.ngrok.io/', platforms, function(res) {
 			runTestsRes = res

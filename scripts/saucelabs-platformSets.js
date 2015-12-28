@@ -1,11 +1,10 @@
 // See https://wiki.saucelabs.com/display/DOCS/Platform+Configurator?_ga=1.24059122.934400320.1451142104#/
 // See ./list-saucelabs-platforms.js
 var CURRENT_VERSION = ''
-var DEV_VERSION = 'dev'
 var BETA_VERSION = 'beta'
-var CHROME_VERSIONS = ['31', CURRENT_VERSION, BETA_VERSION, DEV_VERSION]
-var FIREFOX_VERSIONS = ['4', '5', '6', '7', CURRENT_VERSION, BETA_VERSION, DEV_VERSION]
-var OPERA_VERSIONS = ['11.64', '12.12']
+var CHROME_VERSIONS = ['31', CURRENT_VERSION, BETA_VERSION]
+var FIREFOX_VERSIONS = ['4', '5', '6', '7', CURRENT_VERSION, BETA_VERSION]
+var OPERA_VERSIONS = ['11', '12']
 
 var platforms = module.exports = {
 	singleBrowserRun: {
@@ -17,7 +16,7 @@ var platforms = module.exports = {
 		'Windows XP': {
 			'internet explorer': ['6', '7', '8'],
 			'firefox': ['4', '5', CURRENT_VERSION],
-			'opera': ['11.64'],
+			'opera': ['11'],
 			'chrome': ['26', '36', CURRENT_VERSION]
 		}
 	},
@@ -26,8 +25,8 @@ var platforms = module.exports = {
 			'internet explorer': ['8'],
 			'chrome': ['26'],
 			'firefox': ['4'],
-			'opera': ['11.64'],
-			'safari': ['5.1']
+			'opera': ['11'],
+			'safari': ['5']
 		}
 	},
 	OSXRun: {
@@ -71,13 +70,13 @@ var platforms = module.exports = {
 		'Windows XP': {
 			'internet explorer': ['6', '7', '8'],
 			'firefox': ['4', '5'],
-			'opera': ['11.64'],
+			'opera': ['11'],
 			'chrome': ['26']
 		},
 		'Windows 7': {
 			'internet explorer': ['9'],
 			'firefox': ['6', '7'],
-			'opera': ['12.12'],
+			'opera': ['12'],
 			'chrome': ['42']
 		},
 		'Windows 8': {
@@ -87,8 +86,8 @@ var platforms = module.exports = {
 		},
 		'Windows 10': {
 			'internet explorer': ['11'],
-			'firefox': ['9', CURRENT_VERSION, BETA_VERSION, DEV_VERSION],
-			'chrome': [CURRENT_VERSION, BETA_VERSION, DEV_VERSION]
+			'firefox': ['9', CURRENT_VERSION, BETA_VERSION],
+			'chrome': [CURRENT_VERSION, BETA_VERSION]
 		}
 	},
 	gauntletRun: {
@@ -132,7 +131,7 @@ var platforms = module.exports = {
 		'Linux': {
 			'chrome': CHROME_VERSIONS,
 			'firefox': FIREFOX_VERSIONS,
-			'opera': ['12.15'],
+			'opera': ['12'],
 			'android': ['4.0','4.1','4.2','4.3','4.4','5.0','5.1']
 		},
 		'Mac 10.9': {
