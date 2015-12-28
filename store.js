@@ -156,10 +156,8 @@
 		})
 		store.clear = withIEStorage(function(storage) {
 			var attributes = storage.XMLDocument.documentElement.attributes
-			storage.load(localStorageName)
-			while (attributes.length) {
+			while (attributes.length)
 				storage.removeAttribute(attributes[0].name)
-			}
 			storage.save(localStorageName)
 		})
 		store.getAll = function(storage) {
