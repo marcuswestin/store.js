@@ -1,3 +1,7 @@
+v1.3.20
++ Fully automated test framework
++ Fix infinite loop in IE
+
 v1.3.19
 + Use umdjs to export store.js (#116, #111, #96, #91, #78, ...)
 + Make compatible with "use strict" mode (#111)

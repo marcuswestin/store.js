@@ -34,9 +34,9 @@ Open pull requests & issues:
 	- [ ] Ask for clarification: Try get/set an already set keys - why?
 	- [ ] Reproduce: Create failing test case
 	- [ ] Fix failing test case
-- [ ] #120: Infinite loop in IE
-	- [ ] Reproduce: Create failing test case
-	- [ ] Fix failing test case
+- [X] #120: Infinite loop in IE
+	- [X] Reproduce: Create failing test case
+	- [X] Fix failing test case
 - [ ] #138: `typeof window` check
 	- [ ] Reproduce: Create failing test case
 	- [ ] Fix failing test case
