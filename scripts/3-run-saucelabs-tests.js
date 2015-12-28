@@ -8,8 +8,6 @@ var password = new Buffer('ZjhjMzUyNjgtNzc2ZC00ZjlkLWEwNWUtN2FkM2Q0ZDgyNzk5', 'b
 
 var allPlatformSets = require('./saucelabs-platformSets')
 
-// listAllSupportedPlatforms()
-
 runPlatformsTest('_'
 	, allPlatformSets.singleBrowserRun
 	// , allPlatformSets.allInternetExplorer
@@ -21,52 +19,66 @@ runPlatformsTest('_'
 	// , allPlatformSets.androidRun
 	// , allPlatformSets.iOSRun
 	// , allPlatformSets.OSXRun
+	// , allPlatformSets.problematic
 )
 
-function listAllSupportedPlatforms() {
+// listAllSupportedPlatforms(function(platforms) { console.log(platforms) })
+
+function listAllSupportedPlatforms(callback) {
 	get('info/platforms/webdriver', function(platformsInfo) {
-		var res = _.map(platformsInfo, function(info) {
+		var platforms = _.map(platformsInfo, function(info) {
 			return [info['os'], info['api_name'], info['short_version']]
 		})
-		console.log(res)
+		callback(filterUniquePlatforms(platforms))
 	})
 }
 
 function getPlatformsArg(platformSets, callback) {
-	var flattened = _.flatten(_.flatten(_.flatten(
-		_.map(platformSets, function(platformSet) {
-			return _.map(platformSet, function(browserSpecs, osName) {
-				return _.map(browserSpecs, function(browserVersions, browserName) {
-					return _.map(browserVersions, function(browserVersion) {
-						return [osName, browserName, browserVersion]
+	listAllSupportedPlatforms(function(supportedPlatforms) {
+		var allSupportedPlatforms = {}
+		_.each(supportedPlatforms, function(platform) {
+			allSupportedPlatforms[getPlatformId(platform)] = true
+		})
+		
+		var platforms = _.flatten(_.flatten(_.flatten(
+			_.map(platformSets, function(platformSet) {
+				return _.map(platformSet, function(browserSpecs, osName) {
+					return _.map(browserSpecs, function(browserVersions, browserName) {
+						return _.map(browserVersions, function(browserVersion) {
+							return [osName, browserName, browserVersion]
+						})
 					})
 				})
 			})
-		})
-	)))
-	get('info/platforms/webdriver', function(platformsInfo) {
-		var allSupportedPlatforms = {}
-		_.each(platformsInfo, function(info) {
-			var platform = [info['os'], info['api_name'], info['short_version']]
-			allSupportedPlatforms[platform.join('-')] = true
-		})
-		var seen = {}
-		var platformsArg = []
-		_.each(flattened, function(platform) {
-			var platformId = platform.join('-')
-				.replace('OS X', 'Mac')
-				.replace('Windows XP', 'Windows 2003')
-				.replace('Windows 7', 'Windows 2008')
-				.replace('Windows 8', 'Windows 2012')
-			if (seen[platformId]) { return }
-			seen[platformId] = true
-			platformsArg.push(platform)
+		)))
+		
+		_.each(platforms, function(platform) {
 			if (!platform[2]) { return } // Don't sanity-check CURRENT_VERSION
+			var platformId = getPlatformId(platform)
 			if (!allSupportedPlatforms[platformId]) {
 				throw new Error('Unsupported platform: '+platform.join(', ')+' ('+platformId+')')
 			}
 		})
-		callback(platformsArg)
+		
+		callback(filterUniquePlatforms(platforms))
+	})
+}
+
+function getPlatformId(platform) {
+	return platform.join('-')
+		.replace('OS X', 'Mac')
+		.replace('Windows XP', 'Windows 2003')
+		.replace('Windows 7', 'Windows 2008')
+		.replace('Windows 8', 'Windows 2012')
+}
+
+function filterUniquePlatforms(platforms) {
+	var seen = {}
+	return _.filter(platforms, function(platform) {
+		var platformId = getPlatformId(platform)
+		if (seen[platformId]) { return false }
+		seen[platformId] = true
+		return true
 	})
 }
 
@@ -74,7 +86,7 @@ function runPlatformsTest(___, platformsSet1, platformSet2, platformSetN) {
 	var platformSets = Array.prototype.slice.call(arguments, 1)
 	getPlatformsArg(platformSets, function(platforms) {
 		var runTestsRes
-		runTests('https://6d5bd3c9.ngrok.io/', platforms, function(res) {
+		runTests('http://6d5bd3c9.ngrok.io/', platforms, function(res) {
 			runTestsRes = res
 			loopCheckStatus()
 		})
@@ -84,29 +96,33 @@ function runPlatformsTest(___, platformsSet1, platformSet2, platformSetN) {
 					console.log("Test suite completed")
 					checkTestResults(res)
 				} else {
-					console.log("NOT DONE", res)
+					_.each(res['js tests'], function(test) {
+						console.log(getTestStatus(test), test.id, test.status, status, test.platform)
+					})
 					console.log("CHECK AGAIN IN 5 SECONDS")
 					setTimeout(loopCheckStatus, 5000)
 				}
 			})
-		}		
+		}
 	})
 }
 
+function getTestStatus(test) {
+	return (!test.result ? 'PENDING' : (test.result.failed ? 'FAILED' : 'PASSED'))
+}
 
 function checkTestResults(res) {
-	var failed = false
+	var failed = 0
 	_.each(res['js tests'], function(test) {
-		if (!test.result || test.result.failed) {
-			console.log("FAILED", test.platform, test.url)
-			failed = true
-		} else {
-			test.result.platform = test.platform
-			test.result.url = test.url			
+		console.log(getTestStatus(test), test.id, test.status, test.platform, test.url, test.result)
+		if (getTestStatus(test) == 'FAILED') {
+			failed += 1
 		}
 	})
-	if (!failed) {
-		console.log("ALL PASSED!")
+	if (failed) {
+		console.log(failed, 'TESTS FAILED!')
+	} else {
+		console.log('ALL TEST PASSED!')
 	}
 }
 

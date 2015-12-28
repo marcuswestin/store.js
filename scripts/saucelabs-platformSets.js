@@ -7,6 +7,10 @@ var FIREFOX_VERSIONS = ['4', '5', '6', '7', CURRENT_VERSION, BETA_VERSION]
 var OPERA_VERSIONS = ['11', '12']
 
 var platforms = module.exports = {
+	problematic: {
+		'Mac 10.10': { 'ipad': ['9.2'] },
+		'Mac 10.11': { 'firefox': [BETA_VERSION] }
+	},
 	singleBrowserRun: {
 		'Linux': {
 			'chrome': [CURRENT_VERSION]
