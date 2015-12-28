@@ -9,7 +9,7 @@ Dev env:
 - [X] scripts/open-live-tests.sh live reload of tests page
 - [ ] scripts/compile-lib.sh compile store.js, store.min.js
 - [X] figure out automatic test strategy.
-- [ ] implement full test suite and runner
+- [X] implement full test suite and runner for desktop and mobile - https://saucelabs.com/beta/archives
 - [ ] enforce js style in compilation/tests
 
 Open pull requests & issues:
@@ -53,7 +53,7 @@ Plugins system:
 - [ ] how are plugins included+loaded?
 - [ ] implement plugin system and a few example plugins
 - [ ] Features to consider
-	- [ ] Stored data structures (e.g #134, #136)
+	- [ ] Stored data structures (e.g #134, #136, #146)
 	- [ ] Encryption (#137)
 	- [ ] Backwards forEach (#144)
 	- [ ] #133: Handle namespace
