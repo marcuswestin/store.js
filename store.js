@@ -25,7 +25,7 @@
 		storage
 
 	store.disabled = false
-	store.version = '1.3.19'
+	store.version = '1.3.20'
 	store.set = function(key, value) {}
 	store.get = function(key, defaultVal) {}
 	store.has = function(key) { return store.get(key) !== undefined }
