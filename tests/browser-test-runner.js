@@ -9,6 +9,9 @@ document.body.innerHTML = [
 				errorOutput = doc.getElementById('errorOutput'),
 				isSecondPass = (doc.location.hash == '#secondPass')
 
+			tests.output = function output(msg) {
+				errorOutput.appendChild(doc.createElement('div')).innerHTML = msg
+			}
 			tests.outputError = function outputError(msg) {
 				var prefix = (isSecondPass ? 'second' : 'first') + ' pass '
 				errorOutput.appendChild(doc.createElement('div')).innerHTML = prefix+msg

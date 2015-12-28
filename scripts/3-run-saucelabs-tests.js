@@ -97,10 +97,12 @@ function runPlatformsTest(___, platformsSet1, platformSet2, platformSetN) {
 function checkTestResults(res) {
 	var failed = false
 	_.each(res['js tests'], function(test) {
-		test.result.platform = test.platform
-		test.result.url = test.url
-		if (test.result.failed) {
+		if (!test.result || test.result.failed) {
 			console.log("FAILED", test.platform, test.url)
+			failed = true
+		} else {
+			test.result.platform = test.platform
+			test.result.url = test.url			
 		}
 	})
 	if (!failed) {

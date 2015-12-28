@@ -5,6 +5,9 @@ var tests = require('./tests')
 tests.outputError = function(msg) {
 	throw new Error(msg)
 }
+tests.output = function(msg) {
+	console.log(msg)
+}
 tests.runFirstPass()
 tests.runSecondPass()
 
