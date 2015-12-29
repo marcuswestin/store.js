@@ -3,17 +3,22 @@ var api = require('./saucelabs-api')
 
 module.exports = {
 	setAuth: api.setAuth,
-	getAllSupportedPlatforms: getAllSupportedPlatforms,
+	listAllSupportedPlatforms: listAllSupportedPlatforms,
 	runTest: runTest,
 	platformSets: require('./saucelabs-platformSets')
 }
 
-function getAllSupportedPlatforms(callback) {
+function listAllSupportedPlatforms(callback) {
 	api.get('info/platforms/webdriver', function(platformsInfo) {
 		var platforms = _.map(platformsInfo, function(info) {
 			return [info['os'], info['api_name'], info['short_version']]
 		})
-		callback(filterUniquePlatforms(platforms))
+		platforms.sort(function(a, b) {
+			a = a.join('-')
+			b = b.join('-')
+			return a < b ? -1 : b < a ? 1 : 0
+		})
+		callback(null, filterUniquePlatforms(platforms))
 	})
 }
 
@@ -67,7 +72,8 @@ function runTest(url, callback, platformSet1, platformSet2, platformSetN) {
 }
 
 function getPlatformsArg(platformSets, callback) {
-	getAllSupportedPlatforms(function(supportedPlatforms) {
+	listAllSupportedPlatforms(function(err, supportedPlatforms) {
+		if (err) { return callback(err) }
 		var allSupportedPlatforms = {}
 		_.each(supportedPlatforms, function(platform) {
 			allSupportedPlatforms[getPlatformId(platform)] = true

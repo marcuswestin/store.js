@@ -26,12 +26,15 @@ nodeTestRunner.run(store, function(err) {
 				// , saucelabs.platformSets.ie6
 				// , saucelabs.platformSets.ie7
 				// , saucelabs.platformSets.ie8
+				// , saucelabs.platformSets.safari
 				// , saucelabs.platformSets.windows7Run
+				// , saucelabs.platformSets.windowsXPRun
 				// , saucelabs.platformSets.majorDesktopRun
 				// , saucelabs.platformSets.androidRun
 				// , saucelabs.platformSets.iOSRun
 				// , saucelabs.platformSets.OSXRun
 				// , saucelabs.platformSets.problematic
+				// , saucelabs.platformSets.gauntletRun
 			)
 			function onDone(err) {
 				if (err) { return error(err) }

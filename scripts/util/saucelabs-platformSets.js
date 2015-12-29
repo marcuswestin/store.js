@@ -10,7 +10,10 @@ var platforms = module.exports = {
 	problematic: {
 		'Mac 10.10': { 'ipad': ['9.2'] },
 		'Mac 10.11': { 'firefox': [BETA_VERSION] },
-		'Windows XP': { 'internet explorer': ['6', '7'] }
+		'Windows XP': {
+			'internet explorer': ['6', '7'],
+			'firefox': ['5']
+		}
 	},
 	singleBrowserRun: {
 		'Linux': {
@@ -33,6 +36,13 @@ var platforms = module.exports = {
 		'Windows 10': {
 			'internet explorer': ['11', CURRENT_VERSION]
 		}
+	},
+	safari: {
+		'Windows 7': { 'safari': ['5'] },
+		'OS X 10.8': { 'safari': ['6'] },
+		'OS X 10.9': { 'safari': ['7'] },
+		'OS X 10.10': { 'safari': ['8'] },
+		'OS X 10.11': { 'safari': ['9'] }
 	},
 	windowsXPRun: {
 		'Windows XP': {
@@ -124,7 +134,7 @@ var platforms = module.exports = {
 			'chrome': CHROME_VERSIONS,
 			'firefox': FIREFOX_VERSIONS,
 			'opera': OPERA_VERSIONS,
-			'safari': ['5.1']
+			'safari': ['5']
 		},
 		'Windows 8': {
 			'internet explorer': ['10']
@@ -134,7 +144,7 @@ var platforms = module.exports = {
 		},
 		'Windows 10': {
 			'internet explorer': ['11'],
-			'ms edge': ['20.10240']
+			'microsoftedge': ['20']
 		},
 		'OS X 10.8': {
 			'safari': ['6'],
@@ -156,9 +166,17 @@ var platforms = module.exports = {
 			'opera': ['12'],
 			'android': ['4.0','4.1','4.2','4.3','4.4','5.0','5.1']
 		},
+		'Mac 10.8': {
+			'ipad': ['5.1','6.0'],
+			'iphone': ['5.1','6.0']
+		},
 		'Mac 10.9': {
-			'ipad': ['9.2','8.4','7.1','6.1','5.1'],
-			'iphone': ['9.2','8.4','7.1','6.1','5.1']
+			'ipad': ['7.0','7.1'],
+			'iphone': ['7.0','7.1'],
+		},
+		'Mac 10.10': {
+			'ipad': ['8.4','9.2'],
+			'iphone': ['8.4','9.2']
 		}
 	}
 }
