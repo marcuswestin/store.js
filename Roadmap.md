@@ -7,7 +7,7 @@ v1.4.x:
 Dev env:
 - [X] browserify, budo, babelify, uglifyify
 - [X] scripts/open-live-tests.sh live reload of tests page
-- [ ] scripts/compile-lib.sh compile store.js, store.min.js
+- [X] scripts/compile-lib.sh compile store.js, store.min.js
 - [X] figure out automatic test strategy.
 - [X] implement full test suite and runner for desktop and mobile - https://saucelabs.com/beta/archives
 - [ ] enforce js style in compilation/tests
