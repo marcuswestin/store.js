@@ -3,24 +3,38 @@
 var fs = require('fs')
 var browserify = require('browserify')
 
-var base = __dirname + '/..'
-var copyright = '/* Copyright (c) 2010-2016 Marcus Westin */'
+module.exports = {
+	run: run
+}
 
-browserify()
-	.add(base+'/store.js')
-	.transform('uglifyify')
-	.bundle(fileWriter('store.min.js'))
-
-browserify()
-	.add(base+'/json.js', { noParse:true })
-	.add(base+'/store.js')
-	.transform('uglifyify')
-	.bundle(fileWriter('store+json2.min.js'))
-
-function fileWriter(filename) {
-	return function(err, buf) {
+if (require.main === module) {
+	console.log('compiling store.min.js & store+json2.min.js')
+	run(function(err){
 		if (err) { throw err }
-		fs.writeFileSync(base+'/'+filename, copyright+'\n'+buf)
-		console.log('compiled', filename)
-	}
+		console.log('done')
+	})
+}
+
+function run(callback) {
+	compileFile('store.min.js', ['store.js'], function(err) {
+		if (err) { return callback(err) }
+		compileFile('store+json2.min.js', ['store.js', 'json.js'], function(err) {
+			if (err) { return callback(err) }
+			callback()
+		})
+	})
+}
+
+function compileFile(filename, files, callback) {
+	var base = __dirname + '/..'
+	var copyright = '/* Copyright (c) 2010-2016 Marcus Westin */'
+	browserify(files)
+		.transform('uglifyify')
+		.bundle(function(err, buf) {
+			if (err) { return callback(err) }
+			fs.writeFile(base+'/'+filename, copyright+'\n'+buf, function(err) {
+				if (err) { return callback(err) }
+				callback()
+			})
+		})
 }

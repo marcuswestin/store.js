@@ -1,5 +1,4 @@
 require('../json')
-var store = require('../store')
 
 var tests = module.exports = {
 	output:null,
@@ -13,15 +12,13 @@ var tests = module.exports = {
 function assert(truthy, msg) {
 	tests.output('assert: '+msg)
 	if (!truthy) {
-		if (store.disabled) {
-			msg += '\n(Note that store.disabled == true)'
-		}
 		tests.outputError('assert failed: ' + msg)
 		tests.failed = true
 	}
 }
 
-function runFirstPass() {
+function runFirstPass(store) {
+	assert(!store.disabled, "store should be enabled")
 	store.clear()
 
 	store.get('unsetValue') // see https://github.com/marcuswestin/store.js/issues/63
@@ -110,7 +107,7 @@ function runFirstPass() {
 	assert(countProperties(all) == 4, 'getAll gets all 4 values')
 }
 
-function runSecondPass() {
+function runSecondPass(store) {
 	assert(store.get('firstPassFoo') == 'bar', "first pass key 'firstPassFoo' not equal to stored value 'bar'")
 
 	var all = store.getAll()

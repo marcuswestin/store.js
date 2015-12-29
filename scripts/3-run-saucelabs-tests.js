@@ -6,7 +6,7 @@ var _ = require('lodash')
 var username = 'storejs'
 var password = new Buffer('ZjhjMzUyNjgtNzc2ZC00ZjlkLWEwNWUtN2FkM2Q0ZDgyNzk5', 'base64').toString('utf8')
 
-var allPlatformSets = require('./saucelabs-platformSets')
+var allPlatformSets = require('./util/saucelabs-platformSets')
 
 runPlatformsTest('_'
 	, allPlatformSets.singleBrowserRun

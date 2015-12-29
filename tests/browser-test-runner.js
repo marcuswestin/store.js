@@ -1,10 +1,15 @@
 var tests = require('./tests')
 
-document.body.innerHTML = [
-	'tests for <a href="http://github.com/marcuswestin/store.js">store.js</a>',
-	'<div id="errorOutput"></div>'].join('\n')
+module.exports = {
+	run: run
+}
 
-		;(function() {
+function run(store) {
+	document.body.innerHTML = [
+		'tests for <a href="http://github.com/marcuswestin/store.js">store.js</a>',
+		'<div id="errorOutput"></div>'].join('\n')
+	
+	// TODO: reindent in single commit
 			var doc = document,
 				errorOutput = doc.getElementById('errorOutput'),
 				isSecondPass = (doc.location.hash == '#secondPass')
@@ -18,8 +23,8 @@ document.body.innerHTML = [
 			}
 
 			try {
-				if (isSecondPass) { tests.runSecondPass() }
-				else { tests.runFirstPass() }
+				if (isSecondPass) { tests.runSecondPass(store) }
+				else { tests.runFirstPass(store) }
 			} catch(e) {
 				tests.assert(false, 'Tests should not throw: "' + JSON.stringify(e) + '"')
 			}
@@ -44,4 +49,4 @@ document.body.innerHTML = [
 					tests:[{ name:'test', result:false, message:'failed', duration:0 }]
 				}
 			}
-		})()
+}

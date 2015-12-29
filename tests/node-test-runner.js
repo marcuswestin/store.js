@@ -1,14 +1,20 @@
-global.localStorage = new require('node-localstorage').LocalStorage('/tmp/store.js-test')
+var LocalStorage = require('node-localstorage').LocalStorage
+global.localStorage = new LocalStorage('/tmp/store.js-test')
 
 var tests = require('./tests')
 
-tests.outputError = function(msg) {
-	throw new Error(msg)
+module.exports = {
+	run: run
 }
-tests.output = function(msg) {
-	console.log(msg)
-}
-tests.runFirstPass()
-tests.runSecondPass()
 
-console.log("All tests passed")
+function run(store, callback) {
+	tests.outputError = function(msg) {
+		callback(err)
+	}
+	tests.output = function(msg) {
+		console.log(msg)
+	}
+	tests.runFirstPass(store)
+	tests.runSecondPass(store)
+	callback()
+}
