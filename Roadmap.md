@@ -10,6 +10,7 @@ Dev env:
 - [X] scripts/compile-lib.sh compile store.js, store.min.js
 - [X] figure out automatic test strategy.
 - [X] implement full test suite and runner for desktop and mobile - https://saucelabs.com/beta/archives
+- [ ] run tests on compiled builds
 - [ ] enforce js style in compilation/tests
 
 Open pull requests & issues:
