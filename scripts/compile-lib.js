@@ -16,23 +16,23 @@ if (require.main === module) {
 }
 
 function run(callback) {
-	compileFile('store.min.js', ['store.js'], function(err) {
+	compileFile('store.js', function(err) {
 		if (err) { return callback(err) }
-		compileFile('store+json2.min.js', ['store.js', 'json.js'], function(err) {
+		compileFile('store+json2.js', function(err) {
 			if (err) { return callback(err) }
 			callback()
 		})
 	})
 }
 
-function compileFile(filename, files, callback) {
+function compileFile(filename, callback) {
 	var base = __dirname + '/..'
 	var copyright = '/* Copyright (c) 2010-2016 Marcus Westin */'
-	browserify(files)
+	browserify([base+'/src/'+filename], { standalone:'store', expose:'store' })
 		.transform('uglifyify')
 		.bundle(function(err, buf) {
 			if (err) { return callback(err) }
-			fs.writeFile(base+'/'+filename, copyright+'\n'+buf, function(err) {
+			fs.writeFile(base+'/'+filename.replace('.js', '.min.js'), copyright+'\n'+buf, function(err) {
 				if (err) { return callback(err) }
 				callback()
 			})

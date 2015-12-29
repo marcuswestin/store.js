@@ -1,7 +1,7 @@
 #!/usr/local/bin/node
 
 var nodeTestRunner = require('../tests/node-test-runner')
-var store = require('../store')
+var store = require('../src/store')
 
 console.log('Run tests')
 nodeTestRunner.run(store, function(err){

@@ -9,7 +9,8 @@ var OPERA_VERSIONS = ['11', '12']
 var platforms = module.exports = {
 	problematic: {
 		'Mac 10.10': { 'ipad': ['9.2'] },
-		'Mac 10.11': { 'firefox': [BETA_VERSION] }
+		'Mac 10.11': { 'firefox': [BETA_VERSION] },
+		'Windows XP': { 'internet explorer': ['6', '7'] }
 	},
 	singleBrowserRun: {
 		'Linux': {

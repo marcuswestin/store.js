@@ -1,5 +1,3 @@
-require('../json')
-
 var tests = module.exports = {
 	output:null,
 	outputError:null,

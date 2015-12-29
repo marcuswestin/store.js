@@ -1,26 +1,21 @@
-#!/usr/bin/env node
-
 var request = require('request')
 var _ = require('lodash')
 
-var username = 'storejs'
-var password = new Buffer('ZjhjMzUyNjgtNzc2ZC00ZjlkLWEwNWUtN2FkM2Q0ZDgyNzk5', 'base64').toString('utf8')
+module.exports = {
+	setAuth: setAuth,
+	platformSets: require('./saucelabs-platformSets'),
+	runTest: runTest
+}
 
-var allPlatformSets = require('./util/saucelabs-platformSets')
+var auth = {
+	user: null,
+	password: null
+}
 
-runPlatformsTest('_'
-	, allPlatformSets.singleBrowserRun
-	// , allPlatformSets.allInternetExplorer
-	// , allPlatformSets.ie6
-	// , allPlatformSets.ie7
-	// , allPlatformSets.ie8
-	// , allPlatformSets.windows7Run
-	// , allPlatformSets.majorDesktopRun
-	// , allPlatformSets.androidRun
-	// , allPlatformSets.iOSRun
-	// , allPlatformSets.OSXRun
-	// , allPlatformSets.problematic
-)
+function setAuth(saucelabsUsername, saucelabsToken) {
+	auth.user = saucelabsUsername
+	auth.password = saucelabsToken
+}
 
 // listAllSupportedPlatforms(function(platforms) { console.log(platforms) })
 
@@ -82,11 +77,11 @@ function filterUniquePlatforms(platforms) {
 	})
 }
 
-function runPlatformsTest(___, platformsSet1, platformSet2, platformSetN) {
-	var platformSets = Array.prototype.slice.call(arguments, 1)
+function runTest(url, callback, platformSet1, platformSet2, platformSetN) {
+	var platformSets = Array.prototype.slice.call(arguments, 2)
 	getPlatformsArg(platformSets, function(platforms) {
 		var runTestsRes
-		runTests('http://6d5bd3c9.ngrok.io/', platforms, function(res) {
+		runTests(url, platforms, function(res) {
 			runTestsRes = res
 			loopCheckStatus()
 		})
@@ -94,10 +89,11 @@ function runPlatformsTest(___, platformsSet1, platformSet2, platformSetN) {
 			getTestsStatus(runTestsRes, function(res) {
 				if (res.completed) {
 					console.log("Test suite completed")
-					checkTestResults(res)
+					var err = checkTestResults(res)
+					callback(err)
 				} else {
 					_.each(res['js tests'], function(test) {
-						console.log(getTestStatus(test), test.id, test.status, status, test.platform)
+						console.log(getTestStatus(test), test.id, test.status, test.platform)
 					})
 					console.log("CHECK AGAIN IN 5 SECONDS")
 					setTimeout(loopCheckStatus, 5000)
@@ -107,20 +103,31 @@ function runPlatformsTest(___, platformsSet1, platformSet2, platformSetN) {
 	})
 }
 
+var PENDING = 'PENDING'
+var FAILED  = 'FAILED '
+var PASSED  = 'PASSED '
 function getTestStatus(test) {
-	return (!test.result ? 'PENDING' : (test.result.failed ? 'FAILED' : 'PASSED'))
+	if (test.status == 'test error') {
+		return FAILED
+	} else if (test.result) {
+		return (test.result.failed ? FAILED : PASSED)
+	} else {
+		return PENDING
+	}
 }
 
 function checkTestResults(res) {
 	var failed = 0
 	_.each(res['js tests'], function(test) {
-		console.log(getTestStatus(test), test.id, test.status, test.platform, test.url, test.result)
-		if (getTestStatus(test) == 'FAILED') {
+		console.log(getTestStatus(test), test.id, test.status, test.platform, test.url)
+		if (getTestStatus(test) == FAILED) {
 			failed += 1
+			console.log('Result:', test.result)
 		}
 	})
 	if (failed) {
 		console.log(failed, 'TESTS FAILED!')
+		return new Error(failed+' tests failed')
 	} else {
 		console.log('ALL TEST PASSED!')
 	}
@@ -139,7 +146,7 @@ function runTests(url, platforms, callback) {
 function get(path, callback) {
 	var params = {
 		url: 'https://saucelabs.com/rest/v1/'+path,
-		auth: { user:username, password:password }
+		auth: auth
 	}
 	// console.log("REQ", params)
 	request.get(params, function(err, res, body) {
@@ -158,8 +165,8 @@ function get(path, callback) {
 
 function post(path, data, callback) {
 	var params = {
-		url: 'https://saucelabs.com/rest/v1/'+username+'/'+path,
-		auth: { user:username, password:password },
+		url: 'https://saucelabs.com/rest/v1/'+auth.user+'/'+path,
+		auth: { user:auth.user, password:auth.password },
 		json: data
 	}
 	// console.log("REQ", params)
