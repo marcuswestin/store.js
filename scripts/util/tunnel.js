@@ -21,7 +21,7 @@ function startTunnel(port, callback) {
 	var authtoken = new Buffer('NTJuelB1dUpVSDNycDNjZ3pldHVEXzVnWlNObkpuMlFaR013WjZ0eUZUQw==', 'base64').toString('utf8')
 	ngrok.connect({ addr:port, name:'storejs-test', authtoken:authtoken }, function(err, url) {
 		if (err) { return error(err) }
-		// url = url.replace('https:', 'http:')
+		url = url.replace('https:', 'http:')
 		callback(null, url)
 	})
 }
