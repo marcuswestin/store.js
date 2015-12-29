@@ -1,26 +1,15 @@
-var request = require('request')
 var _ = require('lodash')
+var api = require('./saucelabs-api')
 
 module.exports = {
-	setAuth: setAuth,
-	platformSets: require('./saucelabs-platformSets'),
-	runTest: runTest
+	setAuth: api.setAuth,
+	getAllSupportedPlatforms: getAllSupportedPlatforms,
+	runTest: runTest,
+	platformSets: require('./saucelabs-platformSets')
 }
 
-var auth = {
-	user: null,
-	password: null
-}
-
-function setAuth(saucelabsUsername, saucelabsToken) {
-	auth.user = saucelabsUsername
-	auth.password = saucelabsToken
-}
-
-// listAllSupportedPlatforms(function(platforms) { console.log(platforms) })
-
-function listAllSupportedPlatforms(callback) {
-	get('info/platforms/webdriver', function(platformsInfo) {
+function getAllSupportedPlatforms(callback) {
+	api.get('info/platforms/webdriver', function(platformsInfo) {
 		var platforms = _.map(platformsInfo, function(info) {
 			return [info['os'], info['api_name'], info['short_version']]
 		})
@@ -28,35 +17,9 @@ function listAllSupportedPlatforms(callback) {
 	})
 }
 
-function getPlatformsArg(platformSets, callback) {
-	listAllSupportedPlatforms(function(supportedPlatforms) {
-		var allSupportedPlatforms = {}
-		_.each(supportedPlatforms, function(platform) {
-			allSupportedPlatforms[getPlatformId(platform)] = true
-		})
-		
-		var platforms = _.flatten(_.flatten(_.flatten(
-			_.map(platformSets, function(platformSet) {
-				return _.map(platformSet, function(browserSpecs, osName) {
-					return _.map(browserSpecs, function(browserVersions, browserName) {
-						return _.map(browserVersions, function(browserVersion) {
-							return [osName, browserName, browserVersion]
-						})
-					})
-				})
-			})
-		)))
-		
-		_.each(platforms, function(platform) {
-			if (!platform[2]) { return } // Don't sanity-check CURRENT_VERSION
-			var platformId = getPlatformId(platform)
-			if (!allSupportedPlatforms[platformId]) {
-				throw new Error('Unsupported platform: '+platform.join(', ')+' ('+platformId+')')
-			}
-		})
-		
-		callback(filterUniquePlatforms(platforms))
-	})
+function runTests(url, platforms, callback) {
+	var params = { url:url, platforms:platforms, framework:'custom', recordVideo:false, recordScreenshots:false, recordLogs:false }
+	api.post('js-tests', params, callback)
 }
 
 function getPlatformId(platform) {
@@ -103,6 +66,43 @@ function runTest(url, callback, platformSet1, platformSet2, platformSetN) {
 	})
 }
 
+function getPlatformsArg(platformSets, callback) {
+	getAllSupportedPlatforms(function(supportedPlatforms) {
+		var allSupportedPlatforms = {}
+		_.each(supportedPlatforms, function(platform) {
+			allSupportedPlatforms[getPlatformId(platform)] = true
+		})
+		
+		var platforms = _.flatten(_.flatten(_.flatten(
+			_.map(platformSets, function(platformSet) {
+				return _.map(platformSet, function(browserSpecs, osName) {
+					return _.map(browserSpecs, function(browserVersions, browserName) {
+						return _.map(browserVersions, function(browserVersion) {
+							return [osName, browserName, browserVersion]
+						})
+					})
+				})
+			})
+		)))
+		
+		_.each(platforms, function(platform) {
+			if (!platform[2]) { return } // Don't sanity-check CURRENT_VERSION
+			var platformId = getPlatformId(platform)
+			if (!allSupportedPlatforms[platformId]) {
+				throw new Error('Unsupported platform: '+platform.join(', ')+' ('+platformId+')')
+			}
+		})
+		
+		callback(filterUniquePlatforms(platforms))
+	})
+}
+
+function getTestsStatus(runTestsRes, callback) {
+	api.post('js-tests/status', { 'js tests':runTestsRes['js tests'] }, function(res) {
+		callback(res)
+	})
+}
+
 var PENDING = 'PENDING'
 var FAILED  = 'FAILED '
 var PASSED  = 'PASSED '
@@ -132,54 +132,3 @@ function checkTestResults(res) {
 		console.log('ALL TEST PASSED!')
 	}
 }
-
-function getTestsStatus(runTestsRes, callback) {
-	post('js-tests/status', { 'js tests':runTestsRes['js tests'] }, function(res) {
-		callback(res)
-	})
-}
-
-function runTests(url, platforms, callback) {
-	post('js-tests', { url:url, platforms:platforms, framework:'custom', recordVideo:false, recordScreenshots:false, recordLogs:false }, callback)
-}
-
-function get(path, callback) {
-	var params = {
-		url: 'https://saucelabs.com/rest/v1/'+path,
-		auth: auth
-	}
-	// console.log("REQ", params)
-	request.get(params, function(err, res, body) {
-		if (err) {
-			throw err
-		}
-		if (res.statusCode != 200) {
-			console.log(params)
-			throw new Error('Non-200 status code: '+body)
-		}
-		// console.log("RES", params.url, body)
-		callback(JSON.parse(body))
-	})
-}
-
-
-function post(path, data, callback) {
-	var params = {
-		url: 'https://saucelabs.com/rest/v1/'+auth.user+'/'+path,
-		auth: { user:auth.user, password:auth.password },
-		json: data
-	}
-	// console.log("REQ", params)
-	request.post(params, function(err, res, body) {
-		if (err) {
-			throw err
-		}
-		if (res.statusCode != 200) {
-			throw new Error('Non-200 status code: '+body)
-		}
-		// console.log("RES", params.url, body)
-		callback(body)
-	})
-}
-
-// https://wiki.saucelabs.com/display/DOCS/JavaScript+Unit+Testing+Methods#JavaScriptUnitTestingMethods-StartJSUnitTests
