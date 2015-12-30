@@ -55,15 +55,25 @@ function runTest(url, callback, platformSet1, platformSet2, platformSetN) {
 		})
 		function loopCheckStatus() {
 			getTestsStatus(runTestsRes, function(res) {
-				if (res.completed) {
+				var pending = []
+				var passed = []
+				var failed = []
+				_.each(res['js tests'], function(test) {
+					var status = getTestStatus(test)
+					if (status == PENDING) { pending.push(test) }
+					else if (status == PASSED) { passed.push(test) }
+					else if (status == FAILED) { failed.push(test) }
+					else { throw new Error('Bad status') }
+				})
+				_.each(_.flatten([passed, pending, failed]), function(test) {
+					console.log(getTestStatus(test), test.id, test.status, test.platform)
+				})
+				if (pending.length == 0) {
 					console.log("Test suite completed")
 					var err = checkTestResults(res)
 					callback(err)
 				} else {
-					_.each(res['js tests'], function(test) {
-						console.log(getTestStatus(test), test.id, test.status, test.platform)
-					})
-					console.log("CHECK AGAIN IN 5 SECONDS")
+					console.log("Check again in 5 seconds")
 					setTimeout(loopCheckStatus, 5000)
 				}
 			})
