@@ -45,6 +45,17 @@ Installation
 Just grab [store.min.js] or [store+json2.min.js] and include them with a script tag.
 
 
+With npm & ES6
+--------------
+usage with ES6 and module bundler(`Webpack`/`Browserify`).
+
+run `npm install --save https://github.com/marcuswestin/store.js.git`, and then import store.js in js file.
+```javascript
+import Store from 'store/store.min.js'
+console.log(Store) // a store object with version
+```
+
+
 `store.enabled` flag
 --------------------
 If your product depends on store.js, you must check the `store.enabled` flag first:
