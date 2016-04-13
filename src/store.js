@@ -25,7 +25,7 @@ module.exports = (function() {
 			defaultVal = {}
 		}
 		var val = store.get(key, defaultVal)
-		store.set(key, transactionFn(val))
+		store.set(key, transactionFn(val) || val)
 	}
 	store.getAll = function() {
 		var ret = {}
