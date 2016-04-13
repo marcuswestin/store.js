@@ -19,6 +19,11 @@ store.clear()
 // Store an object literal - store.js uses JSON.stringify under the hood
 store.set('user', { name: 'marcus', likes: 'javascript' })
 
+// Update existing value
+store.transact('users', function(value) {
+	value.dislikes = 'java';
+})
+
 // Get the stored object - store.js uses JSON.parse under the hood
 var user = store.get('user')
 alert(user.name + ' likes ' + user.likes)
