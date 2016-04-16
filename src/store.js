@@ -13,6 +13,14 @@ module.exports = (function() {
 	store.version = '1.3.20'
 	store.set = function(key, value) {}
 	store.get = function(key, defaultVal) {}
+	store.unshift = function(key, value) {
+    var newArr = [value].concat(store.get(key) || []);
+    store.set(key, newArr);
+	}
+	store.push = function(key, value) {
+    var newArr = (store.get(key) || []).concat[value];
+    store.set(key, newArr);
+	}
 	store.has = function(key) { return store.get(key) !== undefined }
 	store.remove = function(key) {}
 	store.clear = function() {}
