@@ -64,6 +64,9 @@ module.exports = (function() {
 			var val = store.deserialize(storage.getItem(key))
 			return (val === undefined ? defaultVal : val)
 		}
+		store.has = function(key) {
+			return Object.prototype.hasOwnProperty.call(storage, key);
+		}
 		store.remove = function(key) { storage.removeItem(key) }
 		store.clear = function() { storage.clear() }
 		store.forEach = function(callback) {
