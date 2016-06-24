@@ -13,24 +13,30 @@ function run(store) {
 			var doc = document,
 				errorOutput = doc.getElementById('errorOutput'),
 				isSecondPass = (doc.location.hash == '#secondPass')
+				isSyncPass = (doc.location.hash == '#syncPass')
 
 			tests.output = function output(msg) {
 				errorOutput.appendChild(doc.createElement('div')).innerHTML = msg
 			}
 			tests.outputError = function outputError(msg) {
 				var prefix = (isSecondPass ? 'second' : 'first') + ' pass '
+					prefix = isSyncPass ? 'sync pass ' : prefix 
 				errorOutput.appendChild(doc.createElement('div')).innerHTML = prefix+msg
 			}
 
 			try {
-				if (isSecondPass) { tests.runSecondPass(store) }
+				if  ( isSyncPass ) { tests.runSyncPass(store) }
+				else if (isSecondPass) { tests.runSecondPass(store) }
 				else { tests.runFirstPass(store) }
 			} catch(e) {
 				tests.assert(false, 'Tests should not throw: "' + JSON.stringify(e) + '"')
 			}
 
 			if (!tests.failed) {
-				if (!isSecondPass) {
+				if ( !isSyncPass) {
+					doc.location.hash = '#syncPass'
+					doc.location.reload()
+				} else if ( !isSecondPass ) {
 					doc.location.hash = '#secondPass'
 					doc.location.reload()
 				} else {

@@ -8,12 +8,13 @@ module.exports = {
 }
 
 function run(store, callback) {
-	tests.outputError = function(msg) {
+	tests.outputError = function(msg, err) {
 		callback(err)
 	}
 	tests.output = function(msg) {
 		console.log(msg)
 	}
+	
 	tests.runFirstPass(store)
 	tests.runSecondPass(store)
 	callback()

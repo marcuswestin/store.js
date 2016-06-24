@@ -4,6 +4,7 @@ var tests = module.exports = {
 	assert:assert,
 	runFirstPass:runFirstPass,
 	runSecondPass:runSecondPass,
+	runSyncPass:runSyncPass,
 	failed:false
 }
 
@@ -118,6 +119,31 @@ function runSecondPass(store) {
 	var all = store.getAll()
 	assert(countProperties(all) == 0, "getAll returns 0 properties after store.clear() has been called")
 }
+
+function runSyncPass( store ) {
+	store.clear();
+	store.set('syncPassFoo', 'bar');
+	store.set('syncPassObj', { woot: true });
+
+	var all = store.getAll();
+	store.push('/api', function( status, data, xhr ){
+		// console.log( 'push', status, data );
+		assert( status == 'success', "store.push success");
+		assert( data.syncPassFoo == 'bar', "server recived data.syncPassFoo ");
+		assert( data.syncPassObj.woot == true, "server recived data.syncPassObj.woot ");
+
+		store.pull('/pull.json', function( status, data, xhr  ){
+			var all = store.getAll()
+			// console.log( 'pull', status, data , all);
+			assert( data['namespace'] == 'testNS', "namespace should be testNS");
+			assert( status == 'success', "store.pull success");
+			assert(all.syncPassFoo == 'barRemote', "getAll still gets syncPassFoo on after pull pass");
+			store.clear();
+		}, 'testNS');
+
+	}, 'testNS');
+}
+
 
 function countProperties(obj) {
 	var count = 0
