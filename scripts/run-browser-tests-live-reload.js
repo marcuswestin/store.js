@@ -31,12 +31,12 @@ budo([__dirname+'/../tests/browser-test-runner-live.js'], {
 			        var data = [];
 			        if ( typeof post['json'] == 'string') {
 			        	try{
-			        		data = JSON.parse(post['json']);
+			        		data = JSON.parse(decodeURIComponent(post['json']));
 			        	} catch(e){}
 			        }
 
 			        if ( typeof post['namespace'] == 'string') {
-			        	data['_namespace'] = post['namespace'];
+			        	data['_namespace'] = decodeURIComponent(post['namespace']);
 			        }
 
 			        res.statusCode = 200
@@ -47,7 +47,7 @@ budo([__dirname+'/../tests/browser-test-runner-live.js'], {
 	    } else if (url.parse(req.url).pathname === '/pull.json') {
 	    	var data = null;
 	    	var query = qs.parse(url.parse(req.url).query);
-	    	var name = query['namespace'] || 'pull.json';
+	    	var name = decodeURIComponent(query['namespace']) || 'pull.json';
 	    	try {
 	    		data = require('../tests/' + name );
 	    	}catch(e){}

@@ -73,7 +73,7 @@ module.exports = (function() {
 	    // GET 参数
 	    var queryArray = [], queryString = '';
 	    for( var key in query ){
-	    	queryArray.push(key + '=' + query[key].toString() );
+	    	queryArray.push(key + '=' + encodeURIComponent(query[key].toString()) );
 	    }
 	    queryString = queryArray.join('&');
 
@@ -88,13 +88,18 @@ module.exports = (function() {
 	    for(var name in data){
 	        var value = data[name].toString();
 	        // name = encodeURIComponent(name.replace('%20','+'));
-	        // value = encodeURIComponent(value.replace('%20','+'));
-	        pairs.push(name+'='+value);
+	        /// value = encodeURIComponent(value.replace('%20','+'));
+	        pairs.push(name+'='+encodeURIComponent(value));
 	    }
 	    dataString = pairs.join('&');
 
-	    // console.log( method, url, queryString, data );
+	    
 	    xhr.open(method, url, true);
+	    if ( method == "POST" ) {
+			// xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded' );
+		}
+
 	    xhr.send(dataString);
 	}
 
