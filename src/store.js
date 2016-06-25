@@ -130,6 +130,7 @@ module.exports = (function() {
 		})
 		return ret
 	}
+
 	store.forEach = function() {}
 	store.serialize = function(value) {
 		return JSON.stringify(value)
@@ -150,7 +151,13 @@ module.exports = (function() {
 	 */
 	store.push = function ( api, done, namespace ) {
 		namespace = namespace || '';
-		var data = store.getAll();
+		var data = {}
+		store.forEach(function(nskey, val) {
+			if ( nskey.indexOf(namespace) == 0 ) {
+				var key = nskey.replace(namespace, '');
+				data[key] = val;
+			}
+		});
 		var json_text = JSON.stringify(data);
 		try {
 			request('POST', api, {}, { json:json_text, namespace:namespace }, done );
@@ -174,10 +181,11 @@ module.exports = (function() {
 			} else if ( status === 'success' ) {
 				var errors = [];
 				for( var key in data ) {
+					var nskey = namespace + key;
 					try {
-						store.set(key, data[key]); 
+						store.set(nskey, data[key]); 
 					} catch(e){
-						errors.push({key:key, val:data[key]});
+						errors.push({nskey:nskey, key:key, val:data[key]});
 					}
 				}
 
