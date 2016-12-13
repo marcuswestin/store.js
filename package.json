@@ -25,7 +25,6 @@
     "uglifyify": "^3.0.1"
   },
   "engines": {
-    "browser": "*",
     "node": "*"
   },
   "directories": {
