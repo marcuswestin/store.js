@@ -1,0 +1,7 @@
+{
+	"syncPassFoo":"barRemote",
+	"namespace":"testNS",
+	"syncPassObj":{
+		"woot":false
+	}
+}

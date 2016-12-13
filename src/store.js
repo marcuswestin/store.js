@@ -8,6 +8,101 @@ module.exports = (function() {
 		localStorageName = 'localStorage',
 		scriptTag = 'script',
 		storage
+		
+
+	// Ajax Request
+	function request( method, url, query, data, done ) {
+
+		query = query || {};
+		method = method || 'POST';
+
+		var requestApi = [
+	        function() { return new XMLHttpRequest(); },
+	        function() { return new ActiveXObject("Msxml2.XMLHTTP"); },
+	        function() { return new ActiveXObject("Microsoft.XMLHTTP"); }
+	    ],  xhr = false;
+
+	    for( var i=0; i<3; i++ ) {
+	    	try { requestApi[i](); } catch( e ){ continue; }
+	    	xhr = requestApi[i]();
+	    }
+
+	    if ( xhr === false ) { 
+	    	done('error', {
+	    		code:500, 
+	    		message:"can't create ajax object", 
+	    		extra: {
+	    			url:url, 
+	    			query:query, 
+	    			data:data, 
+	    			done:done
+	    		}
+	    	}, null );
+	    	return;
+	    }
+
+	    xhr.onreadystatechange = function() {
+	    	if (xhr.readyState !== 4) return;
+	    	if ( xhr.status === 200 ) {
+		    	try {
+		    		var data = JSON.parse( xhr.responseText );
+		    	} catch( e ){
+		    		done('error', { 
+		    			code:500, 
+		    			message:"can\'t parse data", 
+		    			extra: { 
+		    				url:url, 
+		    				query:query, 
+		    				data:data, 
+		    				done:done, 
+		    				resp:xhr.responseText
+		    			}
+		    		}, xhr);
+		    		return;
+		    	}
+
+		    	if ( typeof data.code != 'undefined' && data.code != 0 ) {
+		    		var message = data.message || 'Systemerror';
+		    		done('error', data, xhr);
+		    		return;
+		    	}
+		    	done('success', data, xhr);
+		    }
+	    }
+
+	    // GET 参数
+	    var queryArray = [], queryString = '';
+	    for( var key in query ){
+	    	queryArray.push(key + '=' + encodeURIComponent(query[key].toString()) );
+	    }
+	    queryString = queryArray.join('&');
+
+	    if ( url.indexOf('?') != -1) {
+	    	url = url + '&' + queryString;
+	    } else {
+	    	url = url + '?' + queryString;
+	    }
+
+	    // POST 参数
+	    var pairs = [], dataString=null;
+	    for(var name in data){
+	        var value = data[name].toString();
+	        // name = encodeURIComponent(name.replace('%20','+'));
+	        /// value = encodeURIComponent(value.replace('%20','+'));
+	        pairs.push(name+'='+encodeURIComponent(value));
+	    }
+	    dataString = pairs.join('&');
+
+	    
+	    xhr.open(method, url, true);
+	    if ( method == "POST" ) {
+			// xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded' );
+		}
+
+	    xhr.send(dataString);
+	}
+
 
 	store.disabled = false
 	store.version = '1.3.20'
@@ -34,6 +129,7 @@ module.exports = (function() {
 		})
 		return ret
 	}
+
 	store.forEach = function() {}
 	store.serialize = function(value) {
 		return JSON.stringify(value)
@@ -43,6 +139,70 @@ module.exports = (function() {
 		try { return JSON.parse(value) }
 		catch(e) { return value || undefined }
 	}
+
+	
+	/**
+	 * Push local data to remote server
+	 * @param  string   api  remote server url
+	 * @param  function done push complete callback function
+	 * @param  string  namespace the namespace 
+	 * @return null
+	 */
+	store.push = function ( api, done, namespace ) {
+		namespace = namespace || '';
+		var data = {}
+		store.forEach(function(nskey, val) {
+			if ( nskey.indexOf(namespace) == 0 ) {
+				var key = nskey.replace(namespace, '');
+				data[key] = val;
+			}
+		});
+		var json_text = JSON.stringify(data);
+		try {
+			request('POST', api, {}, { json:json_text, namespace:namespace }, done );
+		} catch(e){ console.log('Request Error', api, data,  done) ;}
+	}
+
+
+	/**
+	 * Pull data from remote server
+	 * @param  string   api  remote server url
+	 * @param  function done push complete callback function
+	 * @param  string  namespace the namespace 
+	 * @return null 
+	 */
+	store.pull = function( api, done, namespace) {
+		namespace = namespace || '';
+		var pullData = function( status, data, xhr ) {
+			if ( status === 'error' ) {
+				done(status, data, xhr );
+				return;
+			} else if ( status === 'success' ) {
+				var errors = [];
+				for( var key in data ) {
+					var nskey = namespace + key;
+					try {
+						store.set(nskey, data[key]); 
+					} catch(e){
+						errors.push({nskey:nskey, key:key, val:data[key]});
+					}
+				}
+
+				if ( errors.length > 0 ) {
+
+					data['extra'] = data['extra'] || {}
+					data['extra']['fields'] = errors;
+					done('error', data, xhr );
+					return;
+				}
+
+				done( status, data, xhr );
+			}
+		}
+
+		request('GET', api, {namespace:namespace}, {}, pullData );
+	}
+
 
 	// Functions to encapsulate questionable FireFox 3.6.13 behavior
 	// when about.config::dom.storage.enabled === false

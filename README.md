@@ -35,6 +35,40 @@ store.getAll().user.name == 'marcus'
 store.forEach(function(key, val) {
 	console.log(key, '==', val)
 })
+
+// Push data to Server (not support nodejs)
+// Push local data to remote server
+// @param  string   api  remote server url
+// @param  function done push complete callback function
+// @param  string  namespace the namespace 
+// @return null
+// Post Params 
+//    namepace 
+//    json  JSON String of store data
+//
+// Server Success Return: JSON String  {code:0, message:"your success message"}
+// Server Failure Return: JSON String  {code:500, message:"why failure", extra:{"your":"data"...} }
+//    
+store.push('/api', function( status, data, xhr ){
+	console.log( status, data);
+}, 'ns1' );
+
+
+// Pull data from remote server (not support nodejs)
+// @param  string   api  remote server url
+// @param  function done push complete callback function
+// @param  string  namespace the namespace 
+// @return null 
+// 
+// Server  Success Return: JSON String  {"key1":"value1","key2":"value2"...}  
+// Server Failure Return: JSON String  {code:500, message:"why failure", extra:{"your":"data"...} }
+//
+// Get Params : namepace 
+store.pull('/pull.json', function( status, data, xhr  ){
+	console.log( status, data);
+},'ns1');
+
+
 ```
 
 

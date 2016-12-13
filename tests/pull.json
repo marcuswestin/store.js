@@ -1,0 +1,6 @@
+{
+	"syncPassFoo":"barRemote",
+	"syncPassObj":{
+		"woot":false
+	}
+}
