@@ -5,11 +5,11 @@ var username = 'storejs'
 var password = new Buffer('ZjhjMzUyNjgtNzc2ZC00ZjlkLWEwNWUtN2FkM2Q0ZDgyNzk5', 'base64').toString('utf8')
 
 // TODO: Contribute to npm-saucelabs? Create new module?
-var saucelabs = require('./util/saucelabs')
-var compiler = require('./compile-lib')
-var tunnel = require('./util/tunnel')
-var nodeTestRunner = require('../tests/node-test-runner')
-var store = require('../store.min')
+var saucelabs = require('./saucelabs')
+var compiler = require('../compile-lib')
+var tunnel = require('./tunnel')
+var nodeTestRunner = require('../../tests/node-test-runner')
+var store = require('../../store.min')
 
 log('Run node tests')
 nodeTestRunner.run(store, function(err) {
