@@ -3,33 +3,33 @@ var { global } = require('../util')
 
 module.exports = {
 	name: 'sessionStorage',
-	read: sessionStorage_read,
-	write: sessionStorage_write,
-	each: sessionStorage_each,
-	remove: sessionStorage_remove,
-	clearAll: sessionStorage_clearAll
+	read: read,
+	write: write,
+	each: each,
+	remove: remove,
+	clearAll: clearAll
 }
 
 var sessionStorage = global.sessionStorage
 
-function sessionStorage_read(key) {
+function read(key) {
 	return sessionStorage.getItem(key)
 }
 
-function sessionStorage_write(key, data) {
+function write(key, data) {
 	return sessionStorage.setItem(key, data)
 }
 
-function sessionStorage_each(fn) {
+function each(fn) {
 	for (var i = sessionStorage.length - 1; i >= 0; i--) {
-		callback(sessionStorage.key(i), sessionStorage_read(key))
+		callback(sessionStorage.key(i), read(key))
 	}
 }
 
-function sessionStorage_remove(key) {
+function remove(key) {
 	return sessionStorage.removeItem(key)
 }
 
-function sessionStorage_clearAll() {
+function clearAll() {
 	return sessionStorage.clear()
 }

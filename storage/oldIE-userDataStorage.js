@@ -4,25 +4,25 @@ var { global } = require('../util')
 module.exports = {
 	name: 'userDataStorage-oldIE',
 	fixKey: _makeIEKeyFixFn(),
-	write: oldIE_write,
-	read: oldIE_read,
-	each: oldIE_each,
-	remove: oldIE_remove,
-	clearAll: oldIE_clearAll
+	write: write,
+	read: read,
+	each: each,
+	remove: remove,
+	clearAll: clearAll
 }
 
 var storageName = 'oldIE'
 var doc = global.document
 var _withStorageEl = _makeIEStorageElFunction()
 
-function oldIE_write(key, data) {
+function write(key, data) {
 	_withStorageEl(function(storageEl) {
 		storageEl.setAttribute(key, data)
 		storageEl.save(storageName)
 	})
 }
 
-function oldIE_read(key) {
+function read(key) {
 	var res = null
 	_withStorageEl(function(storageEl) {
 		res = storageEl.getAttribute(key)
@@ -30,7 +30,7 @@ function oldIE_read(key) {
 	return res
 }
 
-function oldIE_each(callback) {
+function each(callback) {
 	_withStorageEl(function(storageEl) {
 		var attributes = storageEl.XMLDocument.documentElement.attributes
 		for (var i=attributes.length-1; i>=0; i--) {
@@ -39,14 +39,14 @@ function oldIE_each(callback) {
 	})
 }
 
-function oldIE_remove(key) {
+function remove(key) {
 	_withStorageEl(function(storageEl) {
 		storageEl.removeAttribute(key)
 		storageEl.save(storageName)		
 	})
 }
 
-function oldIE_clearAll() {
+function clearAll() {
 	_withStorageEl(function(storageEl) {
 		var attributes = storageEl.XMLDocument.documentElement.attributes
 		storageEl.load(storageName)
@@ -65,7 +65,7 @@ function _makeIEKeyFixFn() {
 	// See https://github.com/marcuswestin/store.js/issues/40
 	// See https://github.com/marcuswestin/store.js/issues/83
 	var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g")
-	return function oldIE_fixKey(key) {
+	return function fixKey(key) {
 		return key.replace(/^d/, '___$&').replace(forbiddenCharsRegex, '___')
 	}
 }

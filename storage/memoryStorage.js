@@ -2,31 +2,31 @@ var { global, each } = require('../util')
 
 module.exports = {
 	name: 'memoryStorage',
-	read: memoryStorage_read,
-	write: memoryStorage_write,
-	each: memoryStorage_each,
-	remove: memoryStorage_remove,
-	clearAll: memoryStorage_clearAll
+	read: read,
+	write: write,
+	each: each,
+	remove: remove,
+	clearAll: clearAll
 }
 
 var memoryStorage = {}
 
-function memoryStorage_read(key) {
+function read(key) {
 	return memoryStorage[key]
 }
 
-function memoryStorage_write(key, data) {
+function write(key, data) {
 	memoryStorage[key] = data
 }
 
-function memoryStorage_each(callback) {
+function each(callback) {
 	each(memoryStorage, callback)
 }
 
-function memoryStorage_remove(key) {
+function remove(key) {
 	delete memoryStorage[key]
 }
 
-function memoryStorage_clearAll(key) {
+function clearAll(key) {
 	memoryStorage = {}
 }
