@@ -1,4 +1,4 @@
-var { trim, warn, bind, assign, each, create, slice } = require('./util')
+var { trim, warn, bind, assign, each, create } = require('./util')
 
 var global = function(){ return this }()
 
@@ -56,7 +56,15 @@ function _testStorage(storage) {
 }
 
 function _applyMixins(mixins, store) {
-	each(mixins, function(mixinModule) {
+	var seenMixins = {}
+	each(mixins, _addMixin)
+	
+	function _addMixin(mixinModule) {
+		if (seenMixins[mixinModule.name]) {
+			return
+		}
+		seenMixins[mixinModule.name] = true
+		
 		var newProps = mixinModule.mixin(store)
 		each(newProps, function(mixinFn, propName) {
 			if (typeof mixinFn != 'function') {
@@ -64,19 +72,24 @@ function _applyMixins(mixins, store) {
 			}
 			_assignMixinFn(store, propName, mixinFn)
 		})
-	})
+		
+		each(mixinModule.dependencies, function(dependencyMixin) {
+			_addMixin(dependencyMixin)
+		})
+	}
 }
 
 function _assignMixinFn(store, propName, mixinFn) {
 	var oldFn = store[propName]
 	store[propName] = function mixedin() {
-		var args = slice(arguments, 0)
+		var args = Array.prototype.slice.call(arguments, 0)
+		var self = this
 		
 		// super_fn calls the old function which was overwritten by
 		// this mixin.
 		function super_fn() {
 			if (!oldFn) { return }
-			var result = oldFn.apply(store, super_fn.args)
+			var result = oldFn.apply(self, super_fn.args)
 			delete super_fn.args
 			return result
 		}
@@ -88,7 +101,7 @@ function _assignMixinFn(store, propName, mixinFn) {
 		// can modify them if needed.
 		super_fn.args = args
 		
-		return mixinFn.apply(store, newFnArgs)
+		return mixinFn.apply(self, newFnArgs)
 	}
 }
 
@@ -113,8 +126,8 @@ var storeAPI = {
 	// interract directly with the storage.
 	////////////////////////////////////////
 	get: function(key, optDefaultVal) {
-		key = this._fixKey(key)
-		return serializer.deserialize(this._storage.read(key), optDefaultVal)
+		var data = this._storage.read(this._fixKey(key))
+		return serializer.deserialize(data, optDefaultVal)
 	},
 	set: function(key, val) {
 		if (val === undefined) {
@@ -157,6 +170,9 @@ var storeAPI = {
 	},
 	has: function(key) {
 		return this.get(key) !== undefined
+	},
+	hasNamespace: function(namespace) {
+		return (this._namespacePrefix == '__storejs_'+namespace+'_')
 	},
 	dump: function() {
 		var res = {}

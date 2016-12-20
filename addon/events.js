@@ -1,5 +1,5 @@
-var { bind } = require('../util')
-var pubsub = require('../src/pubsub').newPubSub()
+var { bind, each } = require('../util')
+var { newPubSub } = require('../src/pubsub')
 
 module.exports = {
 	name: 'events',
@@ -7,6 +7,8 @@ module.exports = {
 }
 
 function events_mixin() {
+	var pubsub = newPubSub()
+	
 	return {
 		watch: watch,
 		unwatch: unwatch,
@@ -45,8 +47,8 @@ function events_mixin() {
 			oldVals[key] = val
 		})
 		super_fn()
-		this.each(function(val, key) {
-			pubsub.fire(key, undefined, oldVal[key])
+		each(oldVals, function(oldVal, key) {
+			pubsub.fire(key, undefined, oldVal)
 		})
 	}
 }

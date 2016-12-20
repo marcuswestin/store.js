@@ -56,14 +56,15 @@ function setup(store) {
 	})
 
 	function _testArrayOp(fnName, arr, argLists) {
+		store.remove('foo')
 		var arrFn = arr[fnName]
 		var storeFn = store[fnName]
 		each(argLists, function(args) {
 			var expectedFnResult = arrFn.apply(arr, args)
-			args.unshift('foo')
-			var actualFnResult = storeFn.apply(store, args)
+			var actualFnResult = storeFn.apply(store, ['foo'].concat(args))
 			assert(expectedFnResult === actualFnResult)
-			assert(deepEqual(arr, store.get('foo')))
+			var actual = store.get('foo')
+			assert(deepEqual(arr, actual))
 		})
 	}
 

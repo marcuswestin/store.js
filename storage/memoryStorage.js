@@ -1,5 +1,3 @@
-var { global, each } = require('../util')
-
 module.exports = {
 	name: 'memoryStorage',
 	read: read,
@@ -20,7 +18,11 @@ function write(key, data) {
 }
 
 function each(callback) {
-	each(memoryStorage, callback)
+	for (var key in memoryStorage) {
+		if (memoryStorage.hasOwnProperty(key)) {
+			callback(memoryStorage[key], key)
+		}
+	}
 }
 
 function remove(key) {

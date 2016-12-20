@@ -9,18 +9,12 @@ function setup(store) {
 	test('events', function() {
 		store.set('foo', 'bar')
 		
-		var expectationNone = _createExpectation('expectNone')
-		var expectation1 = _createExpectation('foo')
+		var expectationNone = _createExpectation('expectNone', undefined)
+		store.watch('foo', function(){})
+		var expectation1 = _createExpectation('foo', 'bar')
+		store.watch('foo', function(){})
 		var expect = []
 		var count = 0
-		
-		store.watch('foo', function(){})
-		var watchId = store.watch('foo', function(val, oldVal) {
-			count += 1
-			assert(val == expect[count])
-			assert(oldVal, expect[count - 1])
-		})
-		store.watch('foo', function(){})
 		
 		expectation1.add('bar2')
 		store.set('foo', 'bar2')
@@ -31,29 +25,31 @@ function setup(store) {
 		expectation1.add('bar3')
 		store.set('foo', 'bar3')
 		
-		var expectation2 = _createExpectation('foo')
+		var expectation2 = _createExpectation('foo', 'bar3')
 		expectation1.add(undefined)
 		expectation2.add(undefined)
-		store.clearAll()
+		store.clearAll() // Should fire for foo
+		store.clearAll() // Should not fire anything
 		
-		expectation1.unwatch(watchId)
+		expectation1.unwatch()
 		expectation2.add('bar4')
-		store.set('foo', 'bar4')
+		store.set('foo', 'bar4') // Should only fire for expectation2
 		
 		expectation1.check()
 		expectation2.check()
 		expectationNone.check()
+		expectation2.unwatch()
 	})
-
-	function _createExpectation(key) {
+	
+	function _createExpectation(key, firstOldVal) {
 		var expectation = {
-			values: [],
+			values: [firstOldVal],
 			count: 0,
 			add: function(value) {
 				this.values.push(value)
 			},
 			check: function() {
-				assert(expectation.count == expectation.values.length)
+				assert(expectation.count + 1 == expectation.values.length)
 			},
 			unwatch: function() {
 				store.unwatch(watchId)

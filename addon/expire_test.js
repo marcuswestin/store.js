@@ -7,16 +7,21 @@ module.exports = {
 function setup(store) {
 
 	test('expire', function(done) {
-		var duration = 50
+		var duration = 30
 		store.set('foo', 'bar', new Date().getTime() + duration)
 		assert(store.get('foo') == 'bar')
 		setTimeout(function() {
 			assert(store.get('foo') == 'bar')
-		}, 1)
+		}, duration/2)
 		setTimeout(function() {
 			assert(store.get('foo') == undefined)
-			done()
+			store.set('foo', 'bar')
+			setTimeout(function() {
+				assert(store.get('foo') == 'bar')
+				done()
+			}, 5)
 		}, duration)
+		
 	})
 
 }

@@ -120,16 +120,17 @@ function runStorageTests(store) {
 	}
 
 	store.clearAll()
-	store.set('firstPassFoo', 'bar')
-	store.set('firstPassObj', { woot: true })
+	store.set('foo', 'bar')
+	store.set('cat', { mat: true })
+	store.set('hat', 'bat')
 	var all = store.dump()
-	assert(all.firstPassFoo == 'bar', 'dump gets firstPassFoo')
-	assert(countProperties(all) == 2, 'dump gets all 4 values')
+	assert(all.foo == 'bar', 'dump gets foo')
+	assert(countProperties(all) == 3, 'dump gets all 4 values')
 	
-	assert(store.get('firstPassFoo') == 'bar', "first pass key 'firstPassFoo' not equal to stored value 'bar'")
+	assert(store.get('foo') == 'bar', "first pass key 'firstPassFoo' not equal to stored value 'bar'")
 
 	store.clearAll()
-	assert(store.get('firstPassFoo') === undefined, "first pass key 'firstPassFoo' not undefined after store cleared")
+	assert(store.get('foo') === undefined, "first pass key 'firstPassFoo' not undefined after store cleared")
 	assert(countProperties(store.dump()) == 0, "dump returns 0 properties after store.clear() has been called")
 }
 

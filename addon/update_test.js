@@ -16,6 +16,7 @@ function setup(store) {
 	})
 
 	test('update return value', function() {
+		store.clearAll()
 		store.update('foo', function(foo) {
 			assert(foo == undefined)
 			return { cat:'mat4' }
@@ -24,6 +25,7 @@ function setup(store) {
 	})
 
 	test('update default value', function() {
+		store.clearAll()
 		store.update('foo2', {}, function(foo2) {
 			foo2.bar = 'cat'
 		})
@@ -31,6 +33,7 @@ function setup(store) {
 	})
 
 	test('update default value + return', function() {
+		store.clearAll()
 		store.update('foo2', [], function(foor2) {
 			return { bar2:'cat2' }
 		})

@@ -27,7 +27,7 @@ var pubSubBase = {
 	},
 	off: function(subId) {
 		var signal = this._subSignals[subId]
-		delete this._subs[signal][subId]
+		delete this._subCallbacks[signal][subId]
 		delete this._subSignals[subId]
 	},
 	once: function(signal, callback) {

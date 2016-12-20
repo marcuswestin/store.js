@@ -37,7 +37,7 @@ function operations_mixin(store) {
 	
 	// obj
 	function operations_assign(_, key, props1, props2, props3, etc) {
-		var varArgs = slice(arguments, 0)
+		var varArgs = slice(arguments, 1)
 		return this.update(key, {}, function(val) {
 			varArgs[0] = val
 			return assign.apply(Object, varArgs)
@@ -46,12 +46,12 @@ function operations_mixin(store) {
 	
 	// internal
 	///////////	
-	function _arrayOp(arrayFn, varArgs) {
-		var res = null
-		var key = varArgs[0]
-		var rest = slice(varArgs, 1)
+	function _arrayOp(arrayFn, opArgs) {
+		var res
+		var key = opArgs[1]
+		var rest = slice(opArgs, 2)
 		store.update(key, [], function(arrVal) {
-			res = Array.prototype[arrayFn].apply(arrVal, varArgs)
+			res = Array.prototype[arrayFn].apply(arrVal, rest)
 		})
 		return res
 	}
