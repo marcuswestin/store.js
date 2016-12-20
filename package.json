@@ -22,6 +22,7 @@
     "ngrok": "^0.2.2",
     "node-localstorage": "^0.6.0",
     "request": "^2.67.0",
+    "tinytest": "^1.0.1",
     "uglifyify": "^3.0.1"
   },
   "engines": {

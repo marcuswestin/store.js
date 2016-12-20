@@ -1,23 +1,57 @@
+var tinytest = require('tinytest')
+var { createStore } = require('../store-engine')
+var { each } = require('../util')
+var storages = require('../storage/all')
+var allAddons = require('../addon/all')
+var allAddonTests = require('../addon/all_tests')
+
 var tests = module.exports = {
 	output:null,
 	outputError:null,
-	assert:assert,
-	runFirstPass:runFirstPass,
-	runSecondPass:runSecondPass,
+	runTests: runTests,
 	failed:false
 }
 
-function assert(truthy, msg) {
-	tests.output('assert: '+msg)
-	if (!truthy) {
-		tests.outputError('assert failed: ' + msg)
-		tests.failed = true
-	}
+function runTests() {
+	each(storages, function(storage) {
+		if (!_checkEnabled(storage)) {
+			return
+		}
+
+		test.group(storage.name, function() {
+			test('Storage tests', function() {
+				var store = createStore([storage], [])
+				runStorageTests(store)
+			})
+			each(allAddonTests, function(addonTest, addonName) {
+				var addon = allAddons[addonName]
+				test.group('addon: '+addonName, function() {
+					var store = createStore([storage], [addon])
+					addonTest.setup(store)
+				})
+			})
+		})
+	})
+	tinytest.runTests()
 }
 
-function runFirstPass(store) {
-	assert(!store.disabled, "store should be enabled")
-	store.clear()
+function _checkEnabled(storage) {
+	if (!storage) {
+		print('Skip unsupported storage:', storage.name)
+		return false
+	}
+	var store = createStore([storage], [])
+	if (store.disabled) {
+		assert(!store.enabled)
+		print('Skip disabled storage:', storage.name)
+		return false
+	}
+	return true
+}
+
+function runStorageTests(store) {
+	assert(store.enabled && !store.disabled, "store should be enabled")
+	store.clearAll()
 
 	store.get('unsetValue') // see https://github.com/marcuswestin/store.js/issues/63
 
@@ -26,6 +60,7 @@ function runFirstPass(store) {
 
 	store.remove('foo')
 	assert(store.get('foo') == null, "removed key 'foo' not null")
+	assert(store.get('foo') === undefined, "removed key 'foo' not undefined")
 
 	assert(store.has('foo') == false, "key 'foo' exists when it shouldn't")
 	assert(store.set('foo','value') == 'value', "store#set returns the stored value")
@@ -43,20 +78,10 @@ function runFirstPass(store) {
 
 	store.set('foo', 'bar')
 	store.set('bar', 'foo')
-	store.clear()
+	store.clearAll()
 	assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
 
 	assert(store.get('defaultVal', 123) == 123, "store.get should return default value")
-
-	store.transact('foosact', function(val) {
-		assert(typeof val == 'object', "new key is not an object at beginning of transaction")
-		val.foo = 'foo'
-	})
-	store.transact('foosact', function(val) {
-		assert(val.foo == 'foo', "first transaction did not register")
-		val.bar = 'bar'
-	})
-	assert(store.get('foosact').bar == 'bar', "second transaction did not register")
 
 	store.set('foo', { name: 'marcus', arr: [1,2,3] })
 	assert(typeof store.get('foo') == 'object', "type of stored object 'foo' is not 'object'")
@@ -79,44 +104,33 @@ function runFirstPass(store) {
 
 	// If plain local storage was used before store.js, we should attempt to JSON.parse them into javascript values.
 	// Store values using vanilla localStorage, then read them out using store.js
-	if (typeof localStorage != 'undefined') {
-		var promoteValues = {
-			'int'         : 42,
-			'bool'        : true,
-			'float'       : 3.141592653,
-			'string'      : "Don't Panic",
-			'odd_string'  : "{ZYX'} abc:;::)))"
-		}
-		for (var key in promoteValues) {
-			localStorage.setItem(key, promoteValues[key])
-		}
-		for (var key in promoteValues) {
-			assert(store.get(key) == promoteValues[key], key+" was not correctly promoted to valid JSON")
-			store.remove(key)
-		}
+	var promoteValues = {
+		'int'         : 42,
+		'bool'        : true,
+		'float'       : 3.141592653,
+		'string'      : "Don't Panic",
+		'odd_string'  : "{ZYX'} abc:;::)))"
+	}
+	for (var key in promoteValues) {
+		store._storage.write(key, promoteValues[key])
+	}
+	for (var key in promoteValues) {
+		assert(store.get(key) == promoteValues[key], key+" was not correctly promoted to valid JSON")
+		store.remove(key)
 	}
 
-	// The following stored values get tested in doSecondPass after a page reload
+	store.clearAll()
 	store.set('firstPassFoo', 'bar')
 	store.set('firstPassObj', { woot: true })
-
-	var all = store.getAll()
-	assert(all.firstPassFoo == 'bar', 'getAll gets firstPassFoo')
-	assert(countProperties(all) == 4, 'getAll gets all 4 values')
-}
-
-function runSecondPass(store) {
+	var all = store.dump()
+	assert(all.firstPassFoo == 'bar', 'dump gets firstPassFoo')
+	assert(countProperties(all) == 2, 'dump gets all 4 values')
+	
 	assert(store.get('firstPassFoo') == 'bar', "first pass key 'firstPassFoo' not equal to stored value 'bar'")
 
-	var all = store.getAll()
-	assert(all.firstPassFoo == 'bar', "getAll still gets firstPassFoo on second pass")
-	assert(countProperties(all) == 4, "getAll gets all 4 values")
-
-	store.clear()
-	assert(store.get('firstPassFoo') == null, "first pass key 'firstPassFoo' not null after store cleared")
-
-	var all = store.getAll()
-	assert(countProperties(all) == 0, "getAll returns 0 properties after store.clear() has been called")
+	store.clearAll()
+	assert(store.get('firstPassFoo') === undefined, "first pass key 'firstPassFoo' not undefined after store cleared")
+	assert(countProperties(store.dump()) == 0, "dump returns 0 properties after store.clear() has been called")
 }
 
 function countProperties(obj) {

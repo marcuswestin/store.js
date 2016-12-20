@@ -28,7 +28,7 @@ function startTunnel(port, callback) {
 
 function startServer(port, compiled, callback) {
 	var budo = require('budo')
-	budo(__dirname+'/../../tests/browser-test-runner-'+(compiled ? 'compiled' : 'live')+'.js', {
+	budo(__dirname+'/../../tests/browser-test-runner.js', {
 		stream: process.stdout,
 		port: port,
 		title: 'store.js browser tests',
