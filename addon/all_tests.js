@@ -1,5 +1,6 @@
 module.exports = {
 	'defaults': require('./defaults_test'),
+	'dump': require('./dump_test'),
 	'events': require('./events_test'),
 	'expire': require('./expire_test'),
 	'update': require('./update_test'),
