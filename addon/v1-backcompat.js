@@ -14,17 +14,26 @@ function backcompat_mixin() {
 	}
 }
 
-function backcompat_transact(_) {
-	return update.apply(this, arguments)
+function backcompat_transact(_, key, defaultVal, transactionFn) {
+	if (transactionFn == null) {
+		transactionFn = defaultVal
+		defaultVal = null
+	}
+	if (defaultVal == null) {
+		defaultVal = {}
+	}
+	var val = this.get(key, defaultVal)
+	var ret = transactionFn(val)
+	this.set(key, ret === undefined ? val : ret)
 }
 function backcompat_clear(_) {
-	return clearAll.apply(this, arguments)
+	return this.clearAll.apply(this, arguments)
 }
 function backcompat_forEach(_) {
-	return each.apply(this, arguments)
+	return this.each.apply(this, arguments)
 }
 function backcompat_getAll(_) {
-	return dump.apply(this, arguments)
+	return this.dump.apply(this, arguments)
 }
 function backcompat_serialize(_, value) {
 	return JSON.stringify(value)

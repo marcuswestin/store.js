@@ -32,7 +32,9 @@ function runTests() {
 			})
 		})
 	})
-	tinytest.runTests()
+	tinytest.runTests({
+		failFast: true
+	})
 }
 
 function _checkEnabled(storage) {

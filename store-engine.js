@@ -1,4 +1,4 @@
-var { trim, warn, bind, assign, each, create } = require('./util')
+var { trim, warn, bind, assign, each, create, isList } = require('./util')
 
 var global = function(){ return this }()
 
@@ -27,6 +27,7 @@ function createStore(storages, mixins) {
 		_namespaceRegexp: null
 	}
 	var store = create(privateProps, storeAPI, {
+		version: '2.0.0-rc1',
 		enabled: !!storage,
 		disabled: !storage
 	})
@@ -73,6 +74,9 @@ function _applyMixins(mixins, store) {
 			_assignMixinFn(store, propName, mixinFn)
 		})
 		
+		if (mixinModule.dependencies && !isList(mixinModule.dependencies)) {
+			throw new Error('mixin "'+mixinModule.name+'" dependencies should either be an array or undefined')
+		}
 		each(mixinModule.dependencies, function(dependencyMixin) {
 			_addMixin(dependencyMixin)
 		})

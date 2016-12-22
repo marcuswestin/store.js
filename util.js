@@ -12,6 +12,7 @@ module.exports = {
 	trim: trim,
 	warn: warn,
 	each: each,
+	map: map,
 	isList: isList,
 	global: global
 }
@@ -89,6 +90,14 @@ function each(val, fn) {
 			}
 		}
 	}
+}
+
+function map(val, fn) {
+	var res = (isList(val) ? [] : {})
+	each(val, function(v, k) {
+		res[k] = fn(v, k)
+	})
+	return res
 }
 
 function isList(val) {

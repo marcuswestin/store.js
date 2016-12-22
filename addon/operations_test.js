@@ -1,4 +1,4 @@
-var { each } = require('../util')
+var { each, slice, map } = require('../util')
 var { allStorages, deepEqual } = require('../tests/util')
 
 require('./operations')
@@ -12,7 +12,7 @@ function setup(store) {
 	test('push', function() {
 		_testArrayOp('push', [], [
 			[],
-			['a']
+			['a'],
 			['b','c'],
 			[undefined],
 			[null],
@@ -21,9 +21,9 @@ function setup(store) {
 	})
 
 	test('unshift', function() {
-		_testArrayOp('unshift', [], [
+		_testArrayOp('unshift', undefined, [
 			[],
-			['a']
+			['a'],
 			['b','c'],
 			[undefined],
 			[null],
@@ -33,14 +33,16 @@ function setup(store) {
 
 	test('pop', function() {
 		var arr = ['a', 'b', 'c', undefined, null, [[], {}]]
-		var reverse = slice(arr, 0).reverse()
-		_testArrayOp('pop', arr, reverse)
+		// Call pop arr.length + 1 times. No args each time
+		var argsList = map(arr, function() { return [] }).concat([])
+		_testArrayOp('pop', arr, argsList)
 	})
 
 	test('shift', function() {
 		var arr = ['a', 'b', 'c', undefined, null, [[], {}]]
-		var copy = slice(arr, 0)
-		_testArrayOp('pop', arr, copy)
+		// Call shift arr.length + 1 times. No args each time
+		var argsList = map(arr, function() { return [] }).concat([])
+		_testArrayOp('shift', arr, argsList)
 	})
 
 	test('assign', function() {
@@ -56,14 +58,16 @@ function setup(store) {
 	})
 
 	function _testArrayOp(fnName, arr, argLists) {
-		store.remove('foo')
+		var key = 'test-'+fnName
+		store.set(key, arr)
+		arr = (arr || [])
 		var arrFn = arr[fnName]
 		var storeFn = store[fnName]
 		each(argLists, function(args) {
 			var expectedFnResult = arrFn.apply(arr, args)
-			var actualFnResult = storeFn.apply(store, ['foo'].concat(args))
-			assert(expectedFnResult === actualFnResult)
-			var actual = store.get('foo')
+			var actualFnResult = storeFn.apply(store, [key].concat(args))
+			assert(deepEqual(expectedFnResult, actualFnResult))
+			var actual = store.get(key)
 			assert(deepEqual(arr, actual))
 		})
 	}
