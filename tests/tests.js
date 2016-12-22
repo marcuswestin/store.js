@@ -64,9 +64,9 @@ function runStorageTests(store) {
 	assert(store.get('foo') == null, "removed key 'foo' not null")
 	assert(store.get('foo') === undefined, "removed key 'foo' not undefined")
 
-	assert(store.has('foo') == false, "key 'foo' exists when it shouldn't")
+	assert(store.get('foo') === undefined, "key 'foo' exists when it shouldn't")
 	assert(store.set('foo','value') == 'value', "store#set returns the stored value")
-	assert(store.has('foo') == true, "key 'foo' doesn't exist when it should")
+	assert(store.get('foo') !== undefined, "key 'foo' doesn't exist when it should")
 
 	store.set('foo', 'bar1')
 	store.set('foo', 'bar2')
@@ -75,7 +75,7 @@ function runStorageTests(store) {
 	store.set('foo', 'bar')
 	store.set('bar', 'foo')
 	store.remove('foo')
-	assert(store.has('foo') == false, "key 'foo' exists when it shouldn't")
+	assert(store.get('foo') === undefined, "key 'foo' exists when it shouldn't")
 	assert(store.get('bar') == 'foo', "removing key 'foo' also removed key 'bar'")
 
 	store.set('foo', 'bar')

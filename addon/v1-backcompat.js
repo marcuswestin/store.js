@@ -5,6 +5,7 @@ module.exports = {
 
 function backcompat_mixin() {
 	return {
+		has: backcompat_has,
 		transact: backcompat_transact,
 		clear: backcompat_clear,
 		forEach: backcompat_forEach,
@@ -14,6 +15,9 @@ function backcompat_mixin() {
 	}
 }
 
+function backcompat_has(_, key) {
+	return this.get(key) !== undefined
+}
 function backcompat_transact(_, key, defaultVal, transactionFn) {
 	if (transactionFn == null) {
 		transactionFn = defaultVal
