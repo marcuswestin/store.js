@@ -18,7 +18,7 @@ function setup(store) {
 	test('defaults + namespace', function() {
 		store.defaults({ foo: 'bar' })
 		var store2 = store.namespace('store2')
-		var store3 = store.namespace('store3')
+		var _ = store.namespace('store3')
 		assert(store2.get('foo') == 'bar')
 		store2.defaults({ foo: 'bar2' })
 		assert(store2.get('foo') == 'bar2')

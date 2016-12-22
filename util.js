@@ -9,8 +9,6 @@ module.exports = {
 	trim: trim,
 	bind: bind,
 	slice: slice,
-	trim: trim,
-	warn: warn,
 	each: each,
 	map: map,
 	isList: isList,
@@ -18,7 +16,7 @@ module.exports = {
 }
 
 function make_assign() {
-	if (false && Object.assign) {
+	if (Object.assign) {
 		return Object.assign
 	} else {
 		return function shimAssign(obj, props1, props2, etc) {
@@ -39,7 +37,7 @@ function make_create() {
 			return assign.apply(this, [Object.create(obj)].concat(assignArgsList))
 		}
 	} else {
-		function F() {}
+		function F() {} // eslint-disable-line no-inner-declarations
 		return function create(obj, assignProps1, assignProps2, etc) {
 			var assignArgsList = slice(arguments, 1)
 			F.prototype = obj
@@ -70,19 +68,11 @@ function slice(arr, index) {
 	return Array.prototype.slice.call(arr, index || 0)
 }
 
-function warn() {
-	if (console.warn) {
-		console.warn.apply(console, arguments)
-	} else {
-		console.log(slice(arguments, 0).join(' '))
-	}
-}
-
 function each(val, fn) {
 	if (isList(val)) {
 		for (var i=0; i<val.length; i++) {
 			fn(val[i], i)
-		}		
+		}
 	} else {
 		for (var key in val) {
 			if (val.hasOwnProperty(key)) {

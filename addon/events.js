@@ -1,5 +1,4 @@
-var { bind, each } = require('../util')
-var { newPubSub } = require('../src/pubsub')
+var { bind, each, create, slice } = require('../util')
 
 module.exports = {
 	name: 'events',
@@ -7,7 +6,7 @@ module.exports = {
 }
 
 function events_mixin() {
-	var pubsub = newPubSub()
+	var pubsub = _newPubSub()
 	
 	return {
 		watch: watch,
@@ -49,6 +48,47 @@ function events_mixin() {
 		super_fn()
 		each(oldVals, function(oldVal, key) {
 			pubsub.fire(key, undefined, oldVal)
+		})
+	}
+}
+
+
+function _newPubSub() {
+	return create(_pubSubBase, {
+		_id: 0,
+		_subSignals: {},
+		_subCallbacks: {}
+	})
+}
+
+var _pubSubBase = {
+	_id: null,
+	_subCallbacks: null,
+	_subSignals: null,
+	on: function(signal, callback) {
+		if (!this._subCallbacks[signal]) {
+			this._subCallbacks[signal] = {}
+		}
+		this._id += 1
+		this._subCallbacks[signal][this._id] = callback
+		this._subSignals[this._id] = signal
+		return this._id
+	},
+	off: function(subId) {
+		var signal = this._subSignals[subId]
+		delete this._subCallbacks[signal][subId]
+		delete this._subSignals[subId]
+	},
+	once: function(signal, callback) {
+		var subId = this.on(signal, bind(this, function() {
+			callback.apply(this, arguments)
+			this.off(subId)
+		}))
+	},
+	fire: function(signal) {
+		var args = slice(arguments, 1)
+		each(this._subCallbacks[signal], function(callback) {
+			callback.apply(this, args)
 		})
 	}
 }

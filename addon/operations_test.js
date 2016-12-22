@@ -1,5 +1,5 @@
-var { each, slice, map } = require('../util')
-var { allStorages, deepEqual } = require('../tests/util')
+var { each, map } = require('../util')
+var { deepEqual } = require('../tests/util')
 
 require('./operations')
 

@@ -5,7 +5,7 @@ var storages = require('../storage/all')
 var allAddons = require('../addon/all')
 var allAddonTests = require('../addon/all_tests')
 
-var tests = module.exports = {
+module.exports = {
 	output:null,
 	outputError:null,
 	runTests: runTests,
@@ -61,7 +61,6 @@ function runStorageTests(store) {
 	assert(store.get('foo') == 'bar', "stored key 'foo' not equal to stored value 'bar'")
 
 	store.remove('foo')
-	assert(store.get('foo') == null, "removed key 'foo' not null")
 	assert(store.get('foo') === undefined, "removed key 'foo' not undefined")
 
 	assert(store.get('foo') === undefined, "key 'foo' exists when it shouldn't")
@@ -81,7 +80,7 @@ function runStorageTests(store) {
 	store.set('foo', 'bar')
 	store.set('bar', 'foo')
 	store.clearAll()
-	assert(store.get('foo') == null && store.get('bar') == null, "keys foo and bar not cleared after store cleared")
+	assert(store.get('foo') === undefined && store.get('bar') === undefined, "keys foo and bar not cleared after store cleared")
 
 	assert(store.get('defaultVal', 123) == 123, "store.get should return default value")
 
@@ -92,7 +91,7 @@ function runStorageTests(store) {
 	assert(store.get('foo').arr instanceof Array, "Array property 'arr' of stored object 'foo' is not an instance of Array")
 	assert(store.get('foo').arr.length == 3, "The length of Array property 'arr' stored on object 'foo' is not 3")
 
-	assert(store.enabled = !store.disabled, "Store.enabled is not the reverse of .disabled");
+	assert(store.enabled = !store.disabled, "Store.enabled is not the reverse of .disabled")
 
 	store.remove('circularReference')
 	var circularOne = {}
@@ -115,16 +114,13 @@ function runStorageTests(store) {
 	}
 	for (var key in promoteValues) {
 		store._storage.write(key, promoteValues[key])
-	}
-	for (var key in promoteValues) {
 		assert(store.get(key) == promoteValues[key], key+" was not correctly promoted to valid JSON")
 		store.remove(key)
 	}
-
 	store.clearAll()
 	var count = 0
 	store.each(function() {
 		count += 1
 	})
-	assert(count == 0)
+	assert(count === 0)
 }

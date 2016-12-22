@@ -8,8 +8,6 @@ module.exports = {
 }
 
 function operations_mixin(store) {
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	
 	return {
 		// array
 		push: operations_push,

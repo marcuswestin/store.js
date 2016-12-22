@@ -12,11 +12,11 @@ function setup(store) {
 		var expectationNone = _createExpectation('expectNone', undefined)
 		store.watch('foo', function(){})
 		var expectation1 = _createExpectation('foo', 'bar')
+		var expectationOnce = _createExpectation('foo', 'bar', true)
 		store.watch('foo', function(){})
-		var expect = []
-		var count = 0
 		
 		expectation1.add('bar2')
+		expectationOnce.add('bar2')
 		store.set('foo', 'bar2')
 		
 		expectation1.add(undefined)
@@ -36,12 +36,13 @@ function setup(store) {
 		store.set('foo', 'bar4') // Should only fire for expectation2
 		
 		expectation1.check()
+		expectationOnce.check()
 		expectation2.check()
 		expectationNone.check()
 		expectation2.unwatch()
 	})
 	
-	function _createExpectation(key, firstOldVal) {
+	function _createExpectation(key, firstOldVal, useOnce) {
 		var expectation = {
 			values: [firstOldVal],
 			count: 0,
@@ -56,11 +57,15 @@ function setup(store) {
 			}
 		}
 		
-		var watchId = store.watch(key, function(val, oldVal) {
+		var watchId = (useOnce
+			? store.once(key, callback)
+			: store.watch(key, callback)
+		)
+		function callback(val, oldVal) {
 			expectation.count += 1
 			assert(expectation.values[expectation.count] == val)
 			assert(expectation.values[expectation.count - 1] == oldVal)
-		})
+		}
 		
 		return expectation
 	}

@@ -34,6 +34,7 @@ function each(callback) {
 	_withStorageEl(function(storageEl) {
 		var attributes = storageEl.XMLDocument.documentElement.attributes
 		for (var i=attributes.length-1; i>=0; i--) {
+			var attr = attributes[i]
 			callback(attr.name, storageEl.getAttribute(attr.name))
 		}		
 	})
@@ -74,7 +75,8 @@ function _makeIEStorageElFunction() {
 	if (!doc || !doc.documentElement || !doc.documentElement.addBehavior) {
 		return null
 	}
-	var storageOwner,
+	var scriptTag = 'script',
+		storageOwner,
 		storageContainer,
 		storageEl
 	
@@ -89,6 +91,7 @@ function _makeIEStorageElFunction() {
 	// document can be used instead of the current document (which would
 	// have been limited to the current path) to perform #userData storage.
 	try {
+		/* global ActiveXObject */
 		storageContainer = new ActiveXObject('htmlfile')
 		storageContainer.open()
 		storageContainer.write('<'+scriptTag+'>document.w=window</'+scriptTag+'><iframe src="/favicon.ico"></iframe>')
@@ -110,7 +113,7 @@ function _makeIEStorageElFunction() {
 		storageOwner.appendChild(storageEl)
 		storageEl.addBehavior('#default#userData')
 		storageEl.load(storageName)
-		storeFunction.apply(store, args)
+		storeFunction.apply(this, args)
 		storageOwner.removeChild(storageEl)
 		return
 	}

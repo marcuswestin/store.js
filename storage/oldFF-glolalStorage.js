@@ -23,7 +23,7 @@ function write(key, data) {
 function each(fn) {
 	for (var i = globalStorage.length - 1; i >= 0; i--) {
 		var key = globalStorage.key(i)
-		callback(key, globalStorage[key])
+		fn(key, globalStorage[key])
 	}
 }
 

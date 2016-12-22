@@ -19,7 +19,7 @@ function setup(store) {
 
 		expect.push('bar')
 		store.set('foo', 'bar')
-		var obsId = store.observe('foo', function(val, oldVal) {
+		store.observe('foo', function(val, oldVal) {
 			count += 1
 			assert(expect[count] == val)
 			assert(expect[count - 1] == oldVal)

@@ -1,4 +1,4 @@
-var { trim, warn, bind, assign, each, create, isList } = require('./util')
+var { each, create, isList } = require('./util')
 
 module.exports = {
 	createStore: createStore
@@ -91,7 +91,6 @@ function createStore(storages, mixins) {
 // Internal
 ///////////
 
-var _matchNothingRegexp = /$.^/ // matches nothing ever
 var _legalNamespace = /^[a-zA-Z0-9_\-]+$/ // alpha-numeric + underscore and dash
 var _global = function(){ return this }()
 var _ident = function(val) { return val }

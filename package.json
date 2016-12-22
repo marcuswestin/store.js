@@ -18,12 +18,29 @@
   "homepage": "https://github.com/marcuswestin/store.js#readme",
   "devDependencies": {
     "budo": "^7.1.0",
+    "eslint": "^3.12.2",
     "lodash": "^3.10.1",
     "ngrok": "^0.2.2",
     "node-localstorage": "^0.6.0",
     "request": "^2.67.0",
     "tinytest": "^1.1.0",
     "uglifyify": "^3.0.1"
+  },
+  "eslintConfig": {
+    "env": {
+        "browser": true, "commonjs": true, "es6": true, "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "globals": { "test": false, "assert": false, "print": false },
+    "rules": {
+        "no-unused-vars": ["error", { "vars": "all", "args": "none", "varsIgnorePattern":"^_$" }],
+        "indent": ["error", "tab"],
+        "linebreak-style": ["error", "unix"],
+        "semi": ["error", "never"]
+    }
   },
   "engines": {
     "node": "*"

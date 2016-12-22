@@ -1,5 +1,3 @@
-var { each } = require('../util')
-
 module.exports = {
 	setup: setup
 }
