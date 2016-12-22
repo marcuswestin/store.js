@@ -1,5 +1,3 @@
-var updateMixin = require('./update')
-
 module.exports = {
 	setup: setup
 }

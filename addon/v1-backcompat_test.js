@@ -1,7 +1,5 @@
 var { each } = require('../util')
 
-var backcompatMixin = require('./v1-backcompat')
-
 module.exports = {
 	setup: setup
 }
