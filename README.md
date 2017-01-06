@@ -20,7 +20,7 @@ store.clear()
 store.set('user', { name: 'marcus', likes: 'javascript' })
 
 // Update existing value
-store.transact('users', function(value) {
+store.transact('user', function(value) {
 	value.dislikes = 'java';
 })
 
