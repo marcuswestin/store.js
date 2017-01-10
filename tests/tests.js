@@ -65,7 +65,7 @@ function runFirstPass(store) {
 	assert(store.get('foo').arr instanceof Array, "Array property 'arr' of stored object 'foo' is not an instance of Array")
 	assert(store.get('foo').arr.length == 3, "The length of Array property 'arr' stored on object 'foo' is not 3")
 
-	assert(store.enabled = !store.disabled, "Store.enabled is not the reverse of .disabled");
+	assert(store.enabled == !store.disabled, "Store.enabled is not the reverse of .disabled");
 
 	store.remove('circularReference')
 	var circularOne = {}
