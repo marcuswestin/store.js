@@ -87,7 +87,6 @@ function createStore(storages, mixins) {
 	return store
 }
 
-
 // Internal
 ///////////
 

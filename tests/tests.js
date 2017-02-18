@@ -1,9 +1,9 @@
 var tinytest = require('tinytest')
-var { createStore } = require('../store-engine')
-var { each } = require('../util')
-var storages = require('../storage/all')
-var allAddons = require('../addon/all')
-var allAddonTests = require('../addon/all_tests')
+var { createStore } = require('../src/engine')
+var { each } = require('../src/util')
+var storages = require('../src/storage/all')
+var allAddons = require('../src/addon/all')
+var allAddonTests = require('../src/addon/all_tests')
 
 module.exports = {
 	output:null,
