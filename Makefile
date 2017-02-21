@@ -8,3 +8,4 @@ test-browser:
 lint:
 	./node_modules/.bin/eslint tests/* src/*      \
 		--ignore-pattern tests/util/deepEqual.js  \
+		--ignore-pattern src/addon/lib/json2.js   \
