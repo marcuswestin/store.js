@@ -23,13 +23,15 @@ function read(key) {
 }	
 
 function each(callback) {
-	var cookies = doc.cookie.split(';')
+	var cookies = doc.cookie.split(/; ?/g)
 	for (var i = cookies.length - 1; i >= 0; i--) {
 		if (!trim(cookies[i])) {
 			continue
 		}
 		var kvp = cookies[i].split('=')
-		callback(trim(kvp[1]), trim([kvp[0]]))
+		var key = unescape(kvp[0])
+		var val = unescape(kvp[1])
+		callback(val, key)
 	}
 }
 

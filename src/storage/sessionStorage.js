@@ -23,7 +23,7 @@ function write(key, data) {
 function each(fn) {
 	for (var i = sessionStorage.length - 1; i >= 0; i--) {
 		var key = sessionStorage.key(i)
-		fn(key, read(key))
+		fn(read(key), key)
 	}
 }
 

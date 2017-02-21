@@ -7,7 +7,7 @@ module.exports = {
 function setup(store) {
 
 	test('expire', function(done) {
-		var duration = 200
+		var duration = 20
 		var expiration = new Date().getTime() + duration
 		store.set('foo', 'bar', expiration)			
 		assert(store.get('foo') == 'bar')
@@ -23,6 +23,6 @@ function setup(store) {
 					done()
 				}, 5)
 			}, duration)
-		}, duration/10)
+		}, duration/2)
 	})
 }
