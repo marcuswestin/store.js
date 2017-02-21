@@ -1,7 +1,7 @@
 var assign = make_assign()
 var create = make_create()
 var trim = make_trim()
-var global = function() { return this }()
+var _global = (typeof window !== 'undefined' ? window : global)
 
 module.exports = {
 	assign: assign,
@@ -12,7 +12,7 @@ module.exports = {
 	each: each,
 	map: map,
 	isList: isList,
-	global: global
+	global: _global
 }
 
 function make_assign() {

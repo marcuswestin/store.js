@@ -1,1 +1,1 @@
-module.exports = require('./src/engine')
+module.exports = require('./builds/v1-backcompat')

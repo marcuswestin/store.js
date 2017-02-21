@@ -2,7 +2,7 @@
 var { global } = require('../util')
 
 module.exports = {
-	name: 'userDataStorage-oldIE',
+	name: 'oldIE-userDataStorage',
 	fixKey: _makeIEKeyFixFn(),
 	write: write,
 	read: read,

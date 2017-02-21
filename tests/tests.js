@@ -12,13 +12,12 @@ module.exports = {
 	failed:false
 }
 
-function runTests() {
+function runTests(useSource) {
 	each(storages, function(storage) {
-		if (!_checkEnabled(storage)) {
-			return
-		}
-
 		test.group(storage.name, function() {
+			if (!_checkEnabled(storage)) {
+				test.skip('disabled')
+			}
 			test('Storage tests', function() {
 				var store = createStore([storage], [])
 				runStorageTests(store)

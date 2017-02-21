@@ -1,7 +1,8 @@
-var { each, create, isList } = require('./util')
+var { global, each, create, isList } = require('./util')
 
 module.exports = {
-	createStore: createStore
+	createStore: createStore,
+	global: global
 }
 
 // API: these are the core Store.js  functions, and the
@@ -48,7 +49,7 @@ var storeAPI = {
 	// additional functionality that can't live in addons
 	// --------------------------------------------------
 	noConflict: function() {
-		_global.store = _noConflictStoreVal
+		global.store = _noConflictStoreVal
 	},
 	hasNamespace: function(namespace) {
 		return (this._namespacePrefix == '__storejs_'+namespace+'_')
@@ -91,9 +92,8 @@ function createStore(storages, mixins) {
 ///////////
 
 var _legalNamespace = /^[a-zA-Z0-9_\-]+$/ // alpha-numeric + underscore and dash
-var _global = function(){ return this }()
 var _ident = function(val) { return val }
-var _noConflictStoreVal = _global.store
+var _noConflictStoreVal = global.store
 
 // Picking a functioning storage out of the list of candidates
 // -----------------------------------------------------------
