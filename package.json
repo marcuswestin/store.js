@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/marcuswestin/store.js#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.22.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
     "budo": "^7.1.0",
     "eslint": "^3.12.2",
     "lodash": "^3.10.1",

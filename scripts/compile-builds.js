@@ -1,0 +1,68 @@
+#!/usr/local/bin/node
+
+var fs = require('fs')
+var path = require('path')
+var browserify = require('browserify')
+var uglifyJS = require('uglify-js')
+var base = __dirname + '/..'
+
+module.exports = {
+	run: run
+}
+
+if (require.main === module) {
+	main()
+}
+
+function main() {
+	run(function(err) {
+		if (err) { throw err }
+	})
+}
+
+function run(callback) {
+	var dir = base+'/src/builds'
+	fs.readdir(dir, function(err, items) {
+		next()
+		function next() {
+			var item = items.shift()
+			if (!item) {
+				return callback()
+			}
+			if (item[0] == '.') {
+				return next()
+			}
+			if (item.match(/\.min\.js$/)) {
+				return next()
+			}
+			var input = path.resolve(dir+'/'+item)
+			var output = input.replace('src/builds', 'build').replace(/\.js$/, '.min.js')
+			console.log('compile', input, '->', output)
+			compileFile(input, output, function(err) {
+				if (err) { return callback(err) }
+				next()
+			})
+		}
+	})
+}
+
+function compileFile(input, output, callback) {
+	var copyright = '/* Copyright (c) 2010-2017 Marcus Westin */'
+	                                                             // TODO: sourcemaps - depends on https://github.com/mishoo/UglifyJS2/issues/520
+	browserify([input], { standalone:'store', expose:'store' })  // TODO: sourcemaps - use `debug:true`
+		.transform('babelify', { presets:['es2015'] })           // TODO: sourcemaps - use `sourceMaps:true`
+		.bundle(processResult)
+	
+	function processResult(err, buf) {
+		if (err) { return callback(err) }
+		var result = uglifyJS.minify(buf.toString(), { fromString:true })
+		var code = copyright+'\n'+result.code                    // TODO: sourcemaps - use `result.map`.
+		fs.writeFile(output, code, function(err) {
+			if (err) { return callback(err) }
+			var b = Buffer.byteLength(code, 'utf8')
+			var k = Math.round(b/1000)
+			console.log(k+'k \t('+b+')')
+			callback()
+		})
+	}
+}
