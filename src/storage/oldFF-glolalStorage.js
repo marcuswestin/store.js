@@ -1,5 +1,5 @@
 
-var { global } = require('../util')
+var { Global } = require('../util')
 
 module.exports = {
 	name: 'globalStorage-oldFF',
@@ -10,7 +10,7 @@ module.exports = {
 	clearAll: clearAll
 }
 
-var globalStorage = global.globalStorage
+var globalStorage = Global.globalStorage
 
 function read(key) {
 	return globalStorage[key]

@@ -1,5 +1,5 @@
 
-var { global } = require('../util')
+var { Global } = require('../util')
 
 module.exports = {
 	name: 'sessionStorage',
@@ -10,7 +10,7 @@ module.exports = {
 	clearAll: clearAll
 }
 
-var sessionStorage = global.sessionStorage
+var sessionStorage = Global.sessionStorage
 
 function read(key) {
 	return sessionStorage.getItem(key)

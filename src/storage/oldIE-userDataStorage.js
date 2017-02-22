@@ -1,5 +1,5 @@
 
-var { global } = require('../util')
+var { Global } = require('../util')
 
 module.exports = {
 	name: 'oldIE-userDataStorage',
@@ -12,7 +12,7 @@ module.exports = {
 }
 
 var storageName = 'oldIE'
-var doc = global.document
+var doc = Global.document
 var _withStorageEl = _makeIEStorageElFunction()
 
 function write(key, data) {

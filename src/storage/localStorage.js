@@ -1,4 +1,4 @@
-var { global } = require('../util')
+var { Global } = require('../util')
 
 module.exports = {
 	name: 'localStorage',
@@ -9,7 +9,7 @@ module.exports = {
 	clearAll: clearAll
 }
 
-var localStorage = global.localStorage
+var localStorage = Global.localStorage
 
 function read(key) {
 	return localStorage.getItem(key)
