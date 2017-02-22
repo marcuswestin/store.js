@@ -26,7 +26,7 @@
     "ngrok": "^0.2.2",
     "node-localstorage": "^0.6.0",
     "request": "^2.67.0",
-    "tinytest": "^1.1.0",
+    "tinytest": "^1.1.2",
     "uglify-js": "^2.7.5"
   },
   "eslintConfig": {

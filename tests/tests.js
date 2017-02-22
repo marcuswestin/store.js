@@ -1,4 +1,7 @@
 var tinytest = require('tinytest')
+
+tinytest.hijackConsoleLog()
+
 var { createStore } = require('../src/engine')
 var { each } = require('../src/util')
 var storages = require('../src/storage/all')
