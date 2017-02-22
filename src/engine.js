@@ -1,4 +1,4 @@
-var { Global, each, create, isList } = require('./util')
+var { Global, each, pluck, create, isList } = require('./util')
 
 module.exports = {
 	createStore: createStore
@@ -96,27 +96,20 @@ var _noConflictStoreVal = Global.store
 
 // Picking a functioning storage out of the list of candidates
 // -----------------------------------------------------------
-
 function _pickStorage(storages) {
-	for (var i=0; i<storages.length; i++) {
-		if (_testStorage(storages[i])) {
-			return storages[i]
+	return pluck(storages, function testStorage(storage) {
+		try {
+			var testStr = '__storejs__test__'
+			storage.write(testStr, testStr)
+			var ok = (storage.read(testStr) == testStr)
+			storage.remove(testStr)
+			return ok
+		} catch(e) {
+			return false
 		}
-	}
-	return null
+	})
 }
 
-function _testStorage(storage) {
-	try {
-		var testStr = '__storejs__test__'
-		storage.write(testStr, testStr)
-		var ok = (storage.read(testStr) == testStr)
-		storage.remove(testStr)
-		return ok
-	} catch(e) {
-		return false
-	}
-}
 
 // Functions to apply mixins to a store instance
 // ---------------------------------------------

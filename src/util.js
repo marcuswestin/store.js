@@ -11,6 +11,7 @@ module.exports = {
 	slice: slice,
 	each: each,
 	map: map,
+	pluck: pluck,
 	isList: isList,
 	Global: Global
 }
@@ -68,27 +69,38 @@ function slice(arr, index) {
 	return Array.prototype.slice.call(arr, index || 0)
 }
 
-function each(val, fn) {
-	if (isList(val)) {
-		for (var i=0; i<val.length; i++) {
-			fn(val[i], i)
+function each(obj, fn) {
+	pluck(obj, function(key, val) {
+		fn(key, val)
+	})
+}
+
+function map(obj, fn) {
+	var res = (isList(obj) ? [] : {})
+	pluck(obj, function(v, k) {
+		res[k] = fn(v, k)
+	})
+	return res
+}
+
+function pluck(obj, fn) {
+	if (isList(obj)) {
+		for (var i=0; i<obj.length; i++) {
+			if (fn(obj[i], i) == true) {
+				return obj[i]
+			}
 		}
 	} else {
-		for (var key in val) {
-			if (val.hasOwnProperty(key)) {
-				fn(val[key], key)
+		for (var key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				if (fn(obj[key], key) == true) {
+					return obj[key]
+				}
 			}
 		}
 	}
 }
 
-function map(val, fn) {
-	var res = (isList(val) ? [] : {})
-	each(val, function(v, k) {
-		res[k] = fn(v, k)
-	})
-	return res
-}
 
 function isList(val) {
 	return (val != null && typeof val != 'function' && typeof val.length == 'number')
