@@ -14,20 +14,22 @@ function setup(store) {
 		// Instead, we allow multiple attempts with increasing durations.
 		attempt(5, 10)
 		
-		runTests(duration, function check(ok) {
-			if (ok) {
-				return true
-			}
-			
-			if (remaining > 0) {
-				setTimeout(function() {
-					attempt(remaining - 1, duration * 2)
-				}, 0)
-				return false
-			}
-			
-			return assert(false)
-		})
+		function attempt(remaining, duration) {
+			runTests(duration, function check(ok) {
+				if (ok) {
+					return true
+				}
+				
+				if (remaining > 0) {
+					setTimeout(function() {
+						attempt(remaining - 1, duration * 2)
+					}, 0)
+					return false
+				}
+				
+				return assert(false)
+			})			
+		}
 
 		function runTests(duration, check) {
 			var expiration = new Date().getTime() + duration
