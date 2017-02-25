@@ -2,7 +2,7 @@
 
 var budo = require('budo')
 
-budo(__dirname+'/../tests/browser-test-runner.js', {
+budo(__dirname+'/../src/builds/test-runner.js', {
 	live: true,
 	stream: process.stdout,
 	port: 9966,

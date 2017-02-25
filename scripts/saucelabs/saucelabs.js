@@ -23,7 +23,7 @@ function listAllSupportedPlatforms(callback) {
 }
 
 function runTests(url, platforms, callback) {
-	var params = { url:url, platforms:platforms, framework:'custom', recordVideo:false, recordScreenshots:false, recordLogs:false }
+	var params = { maxDuration:1800, url:url, platforms:platforms, framework:'custom', recordVideo:false, recordScreenshots:false, recordLogs:true }
 	api.post('js-tests', params, callback)
 }
 
@@ -45,8 +45,7 @@ function filterUniquePlatforms(platforms) {
 	})
 }
 
-function runTest(url, callback, platformSet1, platformSet2, platformSetN) {
-	var platformSets = Array.prototype.slice.call(arguments, 2)
+function runTest(url, platformSets, callback) {
 	getPlatformsArg(platformSets, function(platforms) {
 		var runTestsRes
 		runTests(url, platforms, function(res) {
@@ -70,11 +69,13 @@ function runTest(url, callback, platformSet1, platformSet2, platformSetN) {
 				})
 				if (pending.length == 0) {
 					console.log("Test suite completed")
-					var err = checkTestResults(res)
-					callback(err)
+					callback(checkTestResults(res))
+				} else if (res.completed) {
+					throw new Error('No pending tests, but res.completed == true')
 				} else {
-					console.log("Check again in 5 seconds")
-					setTimeout(loopCheckStatus, 5000)
+					var delay = 5
+					console.log("Check again in", delay, "seconds")
+					setTimeout(loopCheckStatus, delay * 1000)
 				}
 			})
 		}
@@ -141,10 +142,5 @@ function checkTestResults(res) {
 			console.log('Result:', test.result)
 		}
 	})
-	if (failed) {
-		console.log(failed, 'TESTS FAILED!')
-		return new Error(failed+' tests failed')
-	} else {
-		console.log('ALL TEST PASSED!')
-	}
+	return (failed ? failed+' tests failed' : null)
 }

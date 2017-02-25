@@ -15,7 +15,7 @@ module.exports = {
 	failed:false
 }
 
-function runTests(useSource) {
+function runTests() {
 	each(storages, function(storage) {
 		test.group(storage.name, function() {
 			if (!_checkEnabled(storage)) {
@@ -34,8 +34,9 @@ function runTests(useSource) {
 			})
 		})
 	})
+	
 	tinytest.runTests({
-		failFast: true
+		failFast: false
 	})
 }
 

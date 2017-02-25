@@ -36,10 +36,12 @@ function run(callback) {
 				return next()
 			}
 			var input = path.resolve(dir+'/'+item)
-			var output = input.replace('src/builds', 'build').replace(/\.js$/, '.min.js')
+			var output = input.replace('src/builds/', 'builds/').replace(/\.js$/, '.min.js')
 			console.log('compile', input, '->', output)
 			compileFile(input, output, function(err) {
-				if (err) { return callback(err) }
+				if (err) {
+					return callback(err)
+				}
 				next()
 			})
 		}
@@ -47,7 +49,7 @@ function run(callback) {
 }
 
 function compileFile(input, output, callback) {
-	var copyright = '/* Copyright (c) 2010-2017 Marcus Westin */'
+	var copyright = '/* store.js - Copyright (c) 2010-2017 Marcus Westin */'
 	                                                             // TODO: sourcemaps - depends on https://github.com/mishoo/UglifyJS2/issues/520
 	browserify([input], { standalone:'store', expose:'store' })  // TODO: sourcemaps - use `debug:true`
 		.transform('babelify', { presets:['es2015'] })           // TODO: sourcemaps - use `sourceMaps:true`
@@ -55,14 +57,25 @@ function compileFile(input, output, callback) {
 	
 	function processResult(err, buf) {
 		if (err) { return callback(err) }
-		var result = uglifyJS.minify(buf.toString(), { fromString:true })
-		var code = copyright+'\n'+result.code                    // TODO: sourcemaps - use `result.map`.
-		fs.writeFile(output, code, function(err) {
+		var code = buf.toString()
+		code = minify(code)
+		var result = copyright+'\n'+code
+		fs.writeFile(output, result, function(err) {
 			if (err) { return callback(err) }
-			var b = Buffer.byteLength(code, 'utf8')
+			var b = Buffer.byteLength(result, 'utf8')
 			var k = Math.round(b/1000)
 			console.log(k+'k \t('+b+')')
 			callback()
 		})
 	}
+}
+
+function minify(code) {
+	var minified = uglifyJS.minify(code, {
+		fromString: true,
+		compress: { screw_ie8:false },
+		mangle: { screw_ie8:false },
+		output: { screw_ie8:false }
+	})
+	return minified.code // TODO: sourcemaps - use `result.map`.
 }
