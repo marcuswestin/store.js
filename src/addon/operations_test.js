@@ -14,7 +14,6 @@ function setup(store) {
 			[],
 			['a'],
 			['b','c'],
-			[undefined],
 			[null],
 			[[], {}]
 		])
@@ -25,27 +24,27 @@ function setup(store) {
 			[],
 			['a'],
 			['b','c'],
-			[undefined],
 			[null],
 			[[], {}]
 		])
 	})
 
 	test('pop', function() {
-		var arr = ['a', 'b', 'c', undefined, null, [[], {}]]
+		var arr = ['a', 'b', 'c', null, [[], {}]]
 		// Call pop arr.length + 1 times. No args each time
 		var argsList = map(arr, function() { return [] }).concat([])
 		_testArrayOp('pop', arr, argsList)
 	})
 
 	test('shift', function() {
-		var arr = ['a', 'b', 'c', undefined, null, [[], {}]]
+		var arr = ['a', 'b', 'c', null, [[], {}]]
 		// Call shift arr.length + 1 times. No args each time
 		var argsList = map(arr, function() { return [] }).concat([])
 		_testArrayOp('shift', arr, argsList)
 	})
 
 	test('assign', function() {
+		store.clearAll()
 		var expect = { bar:'cat', mat:{ hat:'bat', arr:[1,2,3] }}
 		store.assign('foo', expect)
 		assert(deepEqual(store.get('foo'), expect))
