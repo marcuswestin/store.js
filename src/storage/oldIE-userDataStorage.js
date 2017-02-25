@@ -38,7 +38,7 @@ function each(callback) {
 		var attributes = storageEl.XMLDocument.documentElement.attributes
 		for (var i=attributes.length-1; i>=0; i--) {
 			var attr = attributes[i]
-			callback(attr.name, storageEl.getAttribute(attr.name))
+			callback(storageEl.getAttribute(attr.name), attr.name)
 		}		
 	})
 }
