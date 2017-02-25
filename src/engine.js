@@ -101,7 +101,7 @@ function _pickStorage(storages) {
 		try {
 			var testStr = '__storejs__test__'
 			storage.write(testStr, testStr)
-			var ok = (storage.read(testStr) == testStr)
+			var ok = (storage.read(testStr) === testStr)
 			storage.remove(testStr)
 			return ok
 		} catch(e) {
