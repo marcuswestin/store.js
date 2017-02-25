@@ -24,7 +24,7 @@ function expire_mixin(store) {
 	function expire_get(super_fn, key) {
 		if (!this.hasNamespace(namespace)) {
 			var expiration = expirations.get(key, Number.MAX_VALUE)
-			if (expiration <= new Date()) {
+			if (expiration <= new Date().getTime()) {
 				this.remove(key)
 			}
 		}

@@ -7,22 +7,44 @@ module.exports = {
 function setup(store) {
 
 	test('expire', function(done) {
-		var duration = 20
-		var expiration = new Date().getTime() + duration
-		store.set('foo', 'bar', expiration)			
-		assert(store.get('foo') == 'bar')
-		setTimeout(function() {
-			assert(new Date().getTime() < expiration)
-			assert(store.get('foo') == 'bar')
+		// Ive observed multiple times when legacy browsers in various
+		// environments (saucelabs, VMs, etc) have executed a scheduled
+		// timeout function too soon. The solution is to run a longer,
+		// timeout, but this substantially slows down the test suite.
+		// Instead, we allow multiple attempts with increasing durations.
+		attempt(5, 10)
+		
+		runTests(duration, function check(ok) {
+			if (ok) {
+				return true
+			}
+			
+			if (remaining > 0) {
+				setTimeout(function() {
+					attempt(remaining - 1, duration * 2)
+				}, 0)
+				return false
+			}
+			
+			return assert(false)
+		})
+
+		function runTests(duration, check) {
+			var expiration = new Date().getTime() + duration
+			store.set('foo', 'bar', expiration)			
+			if (!check(store.get('foo') == 'bar')) { return }
+			
 			setTimeout(function() {
-				assert(new Date().getTime() > expiration)
-				assert(store.get('foo') == undefined)
+				if (!check(new Date().getTime() > expiration)) { return }
+				if (!check(store.get('foo') == undefined)) { return }
+				
 				store.set('foo', 'bar')
 				setTimeout(function() {
-					assert(store.get('foo') == 'bar')
+					if (!check(store.get('foo') == 'bar')) { return }
+					
 					done()
 				}, 5)
 			}, duration)
-		}, duration/2)
+		}
 	})
 }
