@@ -14,8 +14,10 @@ module.exports = {
 var storageName = 'oldIE'
 var doc = Global.document
 var _withStorageEl = _makeIEStorageElFunction()
+var disable = (Global.navigator ? Global.navigator.userAgent : '').match(/ (MSIE 8|MSIE 9|MSIE 10)\./) // MSIE 9.x, MSIE 10.x
 
 function write(key, data) {
+	if (disable) { return }
 	_withStorageEl(function(storageEl) {
 		storageEl.setAttribute(key, data)
 		storageEl.save(storageName)
@@ -23,6 +25,7 @@ function write(key, data) {
 }
 
 function read(key) {
+	if (disable) { return }
 	var res = null
 	_withStorageEl(function(storageEl) {
 		res = storageEl.getAttribute(key)
