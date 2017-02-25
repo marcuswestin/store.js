@@ -23,7 +23,7 @@
     "budo": "^7.1.0",
     "eslint": "^3.12.2",
     "lodash": "^3.10.1",
-    "ngrok": "^0.2.2",
+    "ngrok": "^2.2.6",
     "node-localstorage": "^0.6.0",
     "request": "^2.67.0",
     "tinytest": "^1.1.2",
