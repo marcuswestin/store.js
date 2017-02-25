@@ -35,9 +35,12 @@ function operations_mixin(store) {
 	
 	// obj
 	function operations_assign(_, key, props1, props2, props3, etc) {
-		var varArgs = slice(arguments, 1)
-		return this.update(key, {}, function(val) {
-			varArgs[0] = val
+		var varArgs = slice(arguments, 2)
+		return store.update(key, {}, function(val) {
+			if (typeof val != 'object') {
+				throw new Error('store.assign called for non-object value with key "'+key+'"')
+			}
+			varArgs.unshift(val)
 			return assign.apply(Object, varArgs)
 		})
 	}
