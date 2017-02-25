@@ -41,7 +41,7 @@ function main() {
 				console.log('Error', err)
 				process.exit(1)
 			} else {
-				log('Done!')
+				log('All tests passed!')
 				process.exit(0)				
 			}
 		}			
