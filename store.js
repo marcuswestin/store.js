@@ -1,1 +1,1 @@
-module.exports = require('./builds/v1-backcompat')
+module.exports = require('./src/builds/cross-browser')
