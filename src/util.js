@@ -13,7 +13,7 @@ module.exports = {
 	map: map,
 	pluck: pluck,
 	isList: isList,
-	Global: Global
+	Global: Global,
 }
 
 function make_assign() {

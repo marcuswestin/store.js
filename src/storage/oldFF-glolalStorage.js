@@ -1,13 +1,12 @@
-
 var { Global } = require('../util')
 
 module.exports = {
-	name: 'globalStorage-oldFF',
+	name: 'oldFF-globalStorage',
 	read: read,
 	write: write,
 	each: each,
 	remove: remove,
-	clearAll: clearAll
+	clearAll: clearAll,
 }
 
 var globalStorage = Global.globalStorage

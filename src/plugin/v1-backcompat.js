@@ -7,6 +7,7 @@ module.exports = {
 }
 
 function backcompat_mixin() {
+	this.disabled = !this.enabled
 	return {
 		has: backcompat_has,
 		transact: backcompat_transact,
@@ -14,7 +15,7 @@ function backcompat_mixin() {
 		forEach: backcompat_forEach,
 		getAll: backcompat_getAll,
 		serialize: backcompat_serialize,
-		deserialize: backcompat_deserialize
+		deserialize: backcompat_deserialize,
 	}
 }
 

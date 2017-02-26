@@ -7,7 +7,7 @@ module.exports = {
 	mixin: operations_mixin
 }
 
-function operations_mixin(store) {
+function operations_mixin() {
 	return {
 		// array
 		push: operations_push,
@@ -21,22 +21,22 @@ function operations_mixin(store) {
 	
 	// array
 	function operations_push(_, key, val1, val2, val3, etc) {
-		return _arrayOp('push', arguments)
+		return _arrayOp.call(this, 'push', arguments)
 	}
 	function operations_pop(_, key) {
-		return _arrayOp('pop', arguments)
+		return _arrayOp.call(this, 'pop', arguments)
 	}
 	function operations_shift(_, key) {
-		return _arrayOp('shift', arguments)
+		return _arrayOp.call(this, 'shift', arguments)
 	}
 	function operations_unshift(_, key, val1, val2, val3, etc) {
-		return _arrayOp('unshift', arguments)
+		return _arrayOp.call(this, 'unshift', arguments)
 	}
 	
 	// obj
 	function operations_assign(_, key, props1, props2, props3, etc) {
 		var varArgs = slice(arguments, 2)
-		return store.update(key, {}, function(val) {
+		return this.update(key, {}, function(val) {
 			if (typeof val != 'object') {
 				throw new Error('store.assign called for non-object value with key "'+key+'"')
 			}
@@ -51,7 +51,7 @@ function operations_mixin(store) {
 		var res
 		var key = opArgs[1]
 		var rest = slice(opArgs, 2)
-		store.update(key, [], function(arrVal) {
+		this.update(key, [], function(arrVal) {
 			res = Array.prototype[arrayFn].apply(arrVal, rest)
 		})
 		return res

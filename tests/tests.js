@@ -5,8 +5,8 @@ tinytest.hijackConsoleLog()
 var { createStore } = require('../src/engine')
 var { each } = require('../src/util')
 var storages = require('../src/storage/all')
-var allAddons = require('../src/addon/all')
-var allAddonTests = require('../src/addon/all_tests')
+var allPlugins = require('../src/plugin/all')
+var allPluginTests = require('../src/plugin/all_tests')
 
 module.exports = {
 	output:null,
@@ -22,14 +22,17 @@ function runTests() {
 				test.skip('disabled')
 			}
 			test('Storage tests', function() {
-				var store = createStore([storage], [])
+				var store = createStore()
+				store.addStorage(storage)
 				runStorageTests(store)
 			})
-			each(allAddonTests, function(addonTest, addonName) {
-				var addon = allAddons[addonName]
-				test.group('addon: '+addonName, function() {
-					var store = createStore([storage], [addon])
-					addonTest.setup(store)
+			each(allPluginTests, function(pluginTest, pluginName) {
+				var plugin = allPlugins[pluginName]
+				test.group('plugin: '+pluginName, function() {
+					var store = createStore()
+					store.addStorage(storage)
+					store.addPlugin(plugin)
+					pluginTest.setup(store)
 				})
 			})
 		})
@@ -46,8 +49,7 @@ function _checkEnabled(storage) {
 		return false
 	}
 	var store = createStore([storage], [])
-	if (store.disabled) {
-		assert(!store.enabled)
+	if (!store.enabled) {
 		print('Skip disabled storage:', storage.name)
 		return false
 	}
@@ -55,7 +57,7 @@ function _checkEnabled(storage) {
 }
 
 function runStorageTests(store) {
-	assert(store.enabled && !store.disabled, "store should be enabled")
+	assert(store.enabled && store.enabled, "store should be enabled")
 	store.clearAll()
 
 	store.get('unsetValue') // see https://github.com/marcuswestin/store.js/issues/63
@@ -94,8 +96,6 @@ function runStorageTests(store) {
 	assert(store.get('foo').arr instanceof Array, "Array property 'arr' of stored object 'foo' is not an instance of Array")
 	assert(store.get('foo').arr.length == 3, "The length of Array property 'arr' stored on object 'foo' is not 3")
 
-	assert(store.enabled = !store.disabled, "Store.enabled is not the reverse of .disabled")
-
 	store.remove('circularReference')
 	var circularOne = {}
 	var circularTwo = { one:circularOne }
@@ -116,7 +116,7 @@ function runStorageTests(store) {
 		'odd_string'  : "{ZYX'} abc:;::)))"
 	}
 	for (var key in promoteValues) {
-		store._storage.write(key, promoteValues[key])
+		store._storage.resolved.write(key, promoteValues[key])
 		assert(store.get(key) == promoteValues[key], key+" was not correctly promoted to valid JSON")
 		store.remove(key)
 	}

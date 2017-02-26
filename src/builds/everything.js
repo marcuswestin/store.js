@@ -1,6 +1,6 @@
 var engine = require('../engine')
 
 var allStorages = require('../storage/all')
-var allAddons = require('../addon/all')
+var allPlugins = require('../plugin/all')
 
-module.exports = engine.createStore(allStorages, allAddons)
+module.exports = engine.createStore(allStorages, allPlugins)

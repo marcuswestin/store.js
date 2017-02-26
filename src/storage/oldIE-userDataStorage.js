@@ -1,34 +1,34 @@
-
 var { Global } = require('../util')
 
 module.exports = {
 	name: 'oldIE-userDataStorage',
-	fixKey: _makeIEKeyFixFn(),
 	write: write,
 	read: read,
 	each: each,
 	remove: remove,
-	clearAll: clearAll
+	clearAll: clearAll,
 }
 
-var storageName = 'oldIE'
+var storageName = 'storejs'
 var doc = Global.document
 var _withStorageEl = _makeIEStorageElFunction()
 var disable = (Global.navigator ? Global.navigator.userAgent : '').match(/ (MSIE 8|MSIE 9|MSIE 10)\./) // MSIE 9.x, MSIE 10.x
 
-function write(key, data) {
+function write(unfixedKey, data) {
 	if (disable) { return }
+	var fixedKey = fixKey(unfixedKey)
 	_withStorageEl(function(storageEl) {
-		storageEl.setAttribute(key, data)
+		storageEl.setAttribute(fixedKey, data)
 		storageEl.save(storageName)
 	})
 }
 
-function read(key) {
+function read(unfixedKey) {
 	if (disable) { return }
+	var fixedKey = fixKey(unfixedKey)
 	var res = null
 	_withStorageEl(function(storageEl) {
-		res = storageEl.getAttribute(key)
+		res = storageEl.getAttribute(fixedKey)
 	})
 	return res
 }
@@ -43,9 +43,10 @@ function each(callback) {
 	})
 }
 
-function remove(key) {
+function remove(unfixedKey) {
+	var fixedKey = fixKey(unfixedKey)
 	_withStorageEl(function(storageEl) {
-		storageEl.removeAttribute(key)
+		storageEl.removeAttribute(fixedKey)
 		storageEl.save(storageName)		
 	})
 }
@@ -64,14 +65,12 @@ function clearAll() {
 // Helpers
 //////////
 
-function _makeIEKeyFixFn() {
-	// In IE7, keys cannot start with a digit or contain certain chars.
-	// See https://github.com/marcuswestin/store.js/issues/40
-	// See https://github.com/marcuswestin/store.js/issues/83
-	var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g")
-	return function fixKey(key) {
-		return key.replace(/^d/, '___$&').replace(forbiddenCharsRegex, '___')
-	}
+// In IE7, keys cannot start with a digit or contain certain chars.
+// See https://github.com/marcuswestin/store.js/issues/40
+// See https://github.com/marcuswestin/store.js/issues/83
+var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g")
+return function fixKey(key) {
+	return key.replace(/^d/, '___$&').replace(forbiddenCharsRegex, '___')
 }
 
 function _makeIEStorageElFunction() {

@@ -5,4 +5,5 @@ module.exports = {
 
 function json2_mixin() {
 	require('./lib/json2')
+	return {}
 }

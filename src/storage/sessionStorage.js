@@ -1,4 +1,3 @@
-
 var { Global } = require('../util')
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
 	write: write,
 	each: each,
 	remove: remove,
-	clearAll: clearAll
+	clearAll: clearAll,
 }
 
 var sessionStorage = Global.sessionStorage

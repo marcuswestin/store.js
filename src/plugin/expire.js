@@ -5,8 +5,8 @@ module.exports = {
 
 var namespace = 'expire_mixin'
 
-function expire_mixin(store) {
-	var expirations = store.namespace(namespace)
+function expire_mixin() {
+	var expirations = this.namespace(namespace)
 	
 	return {
 		set: expire_set,

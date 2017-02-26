@@ -4,58 +4,93 @@ module.exports = {
 	createStore: createStore
 }
 
-// API: these are the core Store.js  functions, and the
-// only ones that interract with the underlying storage.
-////////////////////////////////////////////////////////
-
 var storeAPI = {
+	version: '2.0.0-rc1',
+	enabled: false,
+	storage: null,
+
+	// addStorage adds another storage to this store. The store
+	// will use the first storage it receives that is enabled, so
+	// call addStorage in the order of preferred storage.
+	addStorage: function(storage) {
+		if (this.enabled) { return }
+		if (this._testStorage(storage)) {
+			this._storage.resolved = storage
+			this.enabled = true
+			this.storage = storage.name
+		}
+	},
+
+	// addPlugin will add a plugin to this store.
+	addPlugin: function(plugin) {
+		if (this._seenPlugins[plugin.name]) {
+			return
+		}
+		this._seenPlugins[plugin.name] = true
+		
+		var self = this
+		var newProps = plugin.mixin.call(this)
+		each(newProps, function(mixinFn, propName) {
+			if (typeof mixinFn != 'function') {
+				throw new Error('Bad plugin value: '+propName+' from plugin '+plugin.name+'. Plugins should only return functions.')
+			}
+			self._assignPluginProp(propName, mixinFn)
+		})
+		if (plugin.dependencies && !isList(plugin.dependencies)) {
+			throw new Error('mixin "'+plugin.name+'" dependencies should either be an array or undefined')
+		}
+		each(plugin.dependencies, function(dependencyPlugin) {
+			self.addPlugin(dependencyPlugin)
+		})
+	},
+
 	// get returns the value of the given key. If that value
 	// is undefined, it returns optionalDefaultValue instead.
 	get: function(key, optionalDefaultValue) {
-		var fixedKey = _fixKey(this, key)
-		var data = this._storage.read(fixedKey)
-		return _deserialize(data, optionalDefaultValue)
+		var data = this._storage().read(this._namespacePrefix + key)
+		return this._deserialize(data, optionalDefaultValue)
 	},
+
 	// set will store the given value at key and returns value.
 	// Calling set with value === undefined is equivalent to calling remove.
 	set: function(key, value) {
 		if (value === undefined) {
 			return this.remove(key)
 		}
-		var fixedKey = _fixKey(this, key)
-		this._storage.write(fixedKey, _serialize(value))
+		this._storage().write(this._namespacePrefix + key, this._serialize(value))
 		return value
 	},
+
 	// remove deletes the key and value stored at the given key.
 	remove: function(key) {
-		var fixedKey = _fixKey(this, key)
-		this._storage.remove(fixedKey)
+		this._storage().remove(this._namespacePrefix + key)
 	},
+
 	// each will call the given callback once for each key-value pair
 	// in this store.
 	each: function(callback) {
 		var self = this
-		this._storage.each(function(val, fixedKey) {
-			var key = _unfixKey(self, fixedKey)
-			callback(_deserialize(val), key)
+		this._storage().each(function(val, namespacedKey) {
+			callback(self._deserialize(val), namespacedKey.replace(self._namespaceRegexp, ''))
 		})
 	},
+
 	// clearAll will remove all the stored key-value pairs in this store.
 	clearAll: function() {
-		this._storage.clearAll()
+		this._storage().clearAll()
 	},
 
-	// additional functionality that can't live in addons
-	// --------------------------------------------------
-	noConflict: function() {
-		Global.store = _noConflictStoreVal
-	},
+	// additional functionality that can't live in plugins
+	// ---------------------------------------------------
+
+	// hasNamespace returns true if this store instance has the given namespace.
 	hasNamespace: function(namespace) {
 		return (this._namespacePrefix == '__storejs_'+namespace+'_')
 	},
+
 	// namespace clones the current store and assigns it the given namespace
 	namespace: function(namespace) {
-		if (!_legalNamespace.test(namespace)) {
+		if (!this._legalNamespace.test(namespace)) {
 			throw new Error('store.js namespaces can only have alhpanumerics + underscores and dashes')
 		}
 		// create a prefix that is very unlikely to collide with un-namespaced keys
@@ -64,145 +99,96 @@ var storeAPI = {
 			_namespacePrefix: namespacePrefix,
 			_namespaceRegexp: namespacePrefix ? new RegExp('^'+namespacePrefix) : null
 		})
-	}
+	},
+
+	// createStore creates a store.js instance with the first
+	// functioning storage in the list of storage candidates,
+	// and applies the the given mixins to the instance.
+	createStore: function(storages, plugins) {
+		return createStore(storages, plugins)
+	},
 }
 
-// createStore creates a store.js instance with the first
-// functioning storage in the list of storage candidates,
-// and applies the the given mixins to the instance.
-function createStore(storages, mixins) {
-	var storage = _pickStorage(storages)
-	var privateProps = {
-		_storage: storage,
-		_mixins: mixins,
+function createStore(storages, plugins) {
+	var _privateStoreProps = {
+		_seenPlugins: {},
 		_namespacePrefix: '',
-		_namespaceRegexp: null
+		_namespaceRegexp: null,
+		_legalNamespace: /^[a-zA-Z0-9_\-]+$/, // alpha-numeric + underscore and dash
+
+		_storage: function() {
+			if (!this.enabled) {
+				throw new Error("store.js: No supported storage has been added! "+
+					"Add one (e.g store.addStorage(require('store/storages/cookieStorage')) "+
+					"or use a build with more built-in storages (e.g "+
+					"https://github.com/marcuswestin/store.js/tree/master/builds/cross-browser)")
+			}
+			return this._storage.resolved
+		},
+		
+		_testStorage: function(storage) {
+			try {
+				var testStr = '__storejs__test__'
+				storage.write(testStr, testStr)
+				var ok = (storage.read(testStr) === testStr)
+				storage.remove(testStr)
+				return ok
+			} catch(e) {
+				return false
+			}
+		},
+		
+		_assignPluginProp: function(propName, mixinFn) {
+			var oldFn = this[propName]
+			this[propName] = function mixedin() {
+				var args = Array.prototype.slice.call(arguments, 0)
+				var self = this
+				
+				// super_fn calls the old function which was overwritten by
+				// this mixin.
+				function super_fn() {
+					if (!oldFn) { return }
+					var result = oldFn.apply(self, super_fn.args)
+					delete super_fn.args
+					return result
+				}
+
+				// Give mixing function access to super_fn by prefixing all mixin function
+				// arguments with super_fn.
+				var newFnArgs = [super_fn].concat(args)
+				// Allow the mixin function to access the super_fn arguments, so that it
+				// can modify them if needed.
+				super_fn.args = args
+				
+				return mixinFn.apply(self, newFnArgs)
+			}
+		},
+		
+		_serialize: function(obj) {
+			return JSON.stringify(obj)
+		},
+
+		_deserialize: function(strVal, defaultVal) {
+			if (!strVal) { return defaultVal }
+			// It is possible that a raw string value has been previously stored
+			// in a storage without using store.js, meaning it will be a raw
+			// string value instead of a JSON serialized string. By defaulting
+			// to the raw string value in case of a JSON parse error, we allow
+			// for past stored values to be forwards-compatible with store.js
+			var val = ''
+			try { val = JSON.parse(strVal) }
+			catch(e) { val = strVal }
+			
+			return (val !== undefined ? val : defaultVal)
+		},
 	}
-	var store = create(privateProps, storeAPI, {
-		version: '2.0.0-rc1',
-		enabled: !!storage,
-		disabled: !storage
+
+	var store = create(_privateStoreProps, storeAPI)
+	each(storages, function(storage) {
+		store.addStorage(storage)
 	})
-	_applyMixins(mixins, store)
+	each(plugins, function(plugin) {
+		store.addPlugin(plugin)
+	})
 	return store
 }
-
-// Internal
-///////////
-
-var _legalNamespace = /^[a-zA-Z0-9_\-]+$/ // alpha-numeric + underscore and dash
-var _ident = function(val) { return val }
-var _noConflictStoreVal = Global.store
-
-// Picking a functioning storage out of the list of candidates
-// -----------------------------------------------------------
-function _pickStorage(storages) {
-	return pluck(storages, function testStorage(storage) {
-		try {
-			var testStr = '__storejs__test__'
-			storage.write(testStr, testStr)
-			var ok = (storage.read(testStr) === testStr)
-			storage.remove(testStr)
-			return ok
-		} catch(e) {
-			return false
-		}
-	})
-}
-
-
-// Functions to apply mixins to a store instance
-// ---------------------------------------------
-
-function _applyMixins(mixins, store) {
-	var seenMixins = {}
-	each(mixins, _addMixin)
-	
-	function _addMixin(mixinModule) {
-		if (seenMixins[mixinModule.name]) {
-			return
-		}
-		seenMixins[mixinModule.name] = true
-		
-		var newProps = mixinModule.mixin(store)
-		each(newProps, function(mixinFn, propName) {
-			if (typeof mixinFn != 'function') {
-				throw new Error('Bad mixin value: '+propName+'. Mixins should only return functions.')
-			}
-			_assignMixinFn(store, propName, mixinFn)
-		})
-		
-		if (mixinModule.dependencies && !isList(mixinModule.dependencies)) {
-			throw new Error('mixin "'+mixinModule.name+'" dependencies should either be an array or undefined')
-		}
-		each(mixinModule.dependencies, function(dependencyMixin) {
-			_addMixin(dependencyMixin)
-		})
-	}
-}
-
-function _assignMixinFn(store, propName, mixinFn) {
-	var oldFn = store[propName]
-	store[propName] = function mixedin() {
-		var args = Array.prototype.slice.call(arguments, 0)
-		var self = this
-		
-		// super_fn calls the old function which was overwritten by
-		// this mixin.
-		function super_fn() {
-			if (!oldFn) { return }
-			var result = oldFn.apply(self, super_fn.args)
-			delete super_fn.args
-			return result
-		}
-
-		// Give mixing function access to super_fn by prefixing all mixin function
-		// arguments with super_fn.
-		var newFnArgs = [super_fn].concat(args)
-		// Allow the mixin function to access the super_fn arguments, so that it
-		// can modify them if needed.
-		super_fn.args = args
-		
-		return mixinFn.apply(self, newFnArgs)
-	}
-}
-
-// Functions to fix and funfix keys. This is used by e.g 
-// --------------------------------
-
-function _fixKey(store, key) {
-	var storageFixKeyFn = (store._storage.fixKey || _ident)
-	return store._namespacePrefix + storageFixKeyFn(key)
-}
-
-function _unfixKey(store, key) {
-	if (store._namespaceRegexp) {
-		key = key.replace(store._namespaceRegexp, '')
-	}
-	var storageUnfixKeyFn = (store._storage.unfixKey || _ident)
-	return storageUnfixKeyFn(key)
-}
-
-// Functions to serialize and deserialize stored values to and from strings
-// ------------------------------------------------------------------------
-
-function _serialize(obj) {
-	return JSON.stringify(obj)
-}
-
-function _deserialize(strVal, defaultVal) {
-	if (!strVal) { return defaultVal }
-	var val = _safeDeserialize(strVal)
-	return (val !== undefined ? val : defaultVal)
-}
-
-// It is possible that a raw string value has been previously stored
-// givenin a storage without using store.js, meaning it will be a raw
-// string value instead of a JSON serialized string. By defaulting
-// to the raw string value in case of a JSON parse error, we allow
-// for past stored values to be forwards-compatible with store.js
-function _safeDeserialize(strVal) {
-	try { return JSON.parse(strVal) }
-	catch(e) { return strVal }
-}
-
