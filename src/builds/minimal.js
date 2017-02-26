@@ -1,4 +1,4 @@
-var engine = require('../engine')
+var engine = require('../store-engine')
 
 var storages = [
 	require('../../storages/localStorage'),

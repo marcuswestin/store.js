@@ -2,7 +2,7 @@ var tinytest = require('tinytest')
 
 tinytest.hijackConsoleLog()
 
-var { createStore } = require('../src/engine')
+var { createStore } = require('../src/store-engine')
 var { each } = require('../src/util')
 var storages = require('../storages/all')
 var allPlugins = require('../plugins/all')

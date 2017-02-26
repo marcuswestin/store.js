@@ -1,4 +1,4 @@
-var engine = require('../engine')
+var engine = require('../store-engine')
 
 var allStorages = require('../../storages/all')
 var plugins = [
