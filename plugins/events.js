@@ -2,7 +2,7 @@ var { bind, each, create, slice } = require('../src/util')
 
 module.exports = {
 	name: 'events',
-	mixin: events_mixin
+	mixin: events_mixin,
 }
 
 function events_mixin() {

@@ -4,7 +4,7 @@ var update_mixin = require('./update')
 module.exports = {
 	name: 'operations',
 	dependencies: [update_mixin],
-	mixin: operations_mixin
+	mixin: operations_mixin,
 }
 
 function operations_mixin() {

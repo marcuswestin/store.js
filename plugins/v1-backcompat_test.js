@@ -1,5 +1,5 @@
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
@@ -29,5 +29,4 @@ function setup(store) {
 		})
 		assert(store.get('foosact').bar == 'bar', "second transaction did not register")
 	})
-
 }

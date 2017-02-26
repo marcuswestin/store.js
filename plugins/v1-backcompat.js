@@ -3,7 +3,7 @@ var dump = require('./dump')
 module.exports = {
 	name: 'v1-backcompat',
 	dependencies: [dump],
-	mixin: backcompat_mixin
+	mixin: backcompat_mixin,
 }
 
 function backcompat_mixin() {

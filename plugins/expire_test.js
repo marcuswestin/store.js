@@ -1,7 +1,7 @@
 require('./expire')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {

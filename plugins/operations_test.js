@@ -4,7 +4,7 @@ var { deepEqual } = require('../tests/util')
 require('./operations')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
@@ -70,5 +70,4 @@ function setup(store) {
 			assert(deepEqual(arr, actual))
 		})
 	}
-
 }

@@ -1,7 +1,7 @@
 require('./observe')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
@@ -29,5 +29,4 @@ function setup(store) {
 		store.set('foo', 'bar2') // count == 3
 		assert(count + 1 == expect.length)
 	})
-
 }

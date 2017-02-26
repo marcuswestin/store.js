@@ -3,7 +3,7 @@ var events_mixin = require('./events')
 module.exports = {
 	name: 'observe',
 	dependencies: [events_mixin],
-	mixin: observe_mixin
+	mixin: observe_mixin,
 }
 
 function observe_mixin() {

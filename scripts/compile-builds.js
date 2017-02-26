@@ -7,7 +7,7 @@ var uglifyJS = require('uglify-js')
 var base = __dirname + '/..'
 
 module.exports = {
-	run: run
+	run: run,
 }
 
 if (require.main === module) {

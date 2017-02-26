@@ -8,5 +8,5 @@ budo(__dirname+'/../src/builds/test-runner.js', {
 	port: 9966,
 	debug: true,
 	open: true,
-	title: 'store.js browser tests'
+	title: 'store.js browser tests',
 })

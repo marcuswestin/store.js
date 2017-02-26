@@ -1,7 +1,7 @@
 require('./json2')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
@@ -10,5 +10,4 @@ function setup(store) {
 		store.set('foo', { bar:'cat' })
 		assert(store.get('foo').bar === 'cat')
 	})
-
 }

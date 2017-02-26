@@ -1,11 +1,11 @@
 require('./defaults')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
-
+	
 	test('defaults', function() {
 		store.defaults({ foo: 'bar' })
 		assert(store.get('foo') == 'bar')
@@ -23,5 +23,4 @@ function setup(store) {
 		store2.defaults({ foo: 'bar2' })
 		assert(store2.get('foo') == 'bar2')
 	})
-
 }

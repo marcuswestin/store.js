@@ -1,7 +1,7 @@
 var { each, create, isList } = require('./util')
 
 module.exports = {
-	createStore: createStore
+	createStore: createStore,
 }
 
 var storeAPI = {

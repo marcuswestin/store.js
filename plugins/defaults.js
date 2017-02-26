@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'defaults',
-	mixin: defaults_mixin
+	mixin: defaults_mixin,
 }
 
 function defaults_mixin() {

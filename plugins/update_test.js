@@ -1,5 +1,5 @@
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
@@ -39,5 +39,4 @@ function setup(store) {
 		assert(store.get('foo2').bar == undefined)
 		assert(store.get('foo2').bar2 == 'cat2')	
 	})
-
 }

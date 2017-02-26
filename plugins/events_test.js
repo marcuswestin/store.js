@@ -1,7 +1,7 @@
 require('./events')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
@@ -68,6 +68,5 @@ function setup(store) {
 		}
 		
 		return expectation
-	}
-	
+	}	
 }

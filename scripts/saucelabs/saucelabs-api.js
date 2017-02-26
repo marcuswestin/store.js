@@ -8,7 +8,7 @@ module.exports = {
 
 var auth = {
 	user: null,
-	password: null
+	password: null,
 }
 
 function setAuth(saucelabsUsername, saucelabsToken) {

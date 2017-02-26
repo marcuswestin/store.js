@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'update',
-	mixin: update_mixin
+	mixin: update_mixin,
 }
 
 function update_mixin() {

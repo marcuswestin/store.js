@@ -7,5 +7,5 @@ module.exports = {
 	'json2':         require('./json2_test'),
 	'operations':    require('./operations_test'),
 	'update':        require('./update_test'),
-	'v1-backcompat': require('./v1-backcompat_test')
+	'v1-backcompat': require('./v1-backcompat_test'),
 }

@@ -2,7 +2,7 @@ var { each } = require('../src/util')
 var { deepEqual } = require('../tests/util')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(store) {
@@ -21,5 +21,4 @@ function setup(store) {
 		store.clearAll()
 		assert(deepEqual(store.dump(), {}))		
 	})
-
 }

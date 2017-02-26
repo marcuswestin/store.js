@@ -186,5 +186,5 @@ var platforms = module.exports = {
 			'ipad': ['8.4','9.2'],
 			'iphone': ['8.4','9.2']
 		}
-	}
+	},
 }

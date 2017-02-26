@@ -3,7 +3,7 @@ var fs = require('fs')
 var ngrok = require('ngrok')
 
 module.exports = {
-	setup: setup
+	setup: setup,
 }
 
 function setup(port, callback) {

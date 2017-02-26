@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'expire',
-	mixin: expire_mixin
+	mixin: expire_mixin,
 }
 
 var namespace = 'expire_mixin'

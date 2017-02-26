@@ -5,7 +5,7 @@ module.exports = {
 	setAuth: api.setAuth,
 	listAllSupportedPlatforms: listAllSupportedPlatforms,
 	runTest: runTest,
-	platformSets: require('./saucelabs-platformSets')
+	platformSets: require('./saucelabs-platformSets'),
 }
 
 function listAllSupportedPlatforms(callback) {
