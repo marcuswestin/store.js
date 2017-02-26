@@ -1,4 +1,4 @@
-var { Global } = require('../util')
+var { Global } = require('../src/util')
 
 module.exports = {
 	name: 'oldFF-globalStorage',

@@ -1,4 +1,4 @@
-var { bind, each, create, slice } = require('../util')
+var { bind, each, create, slice } = require('../src/util')
 
 module.exports = {
 	name: 'events',

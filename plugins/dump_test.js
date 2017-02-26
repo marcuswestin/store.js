@@ -1,5 +1,5 @@
-var { each } = require('../util')
-var { deepEqual } = require('../../tests/util')
+var { each } = require('../src/util')
+var { deepEqual } = require('../tests/util')
 
 module.exports = {
 	setup: setup

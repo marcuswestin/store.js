@@ -1,7 +1,7 @@
 // Useful for e.g safari private browser mode, where localStorage doesn't work but cookies do.
 // Implementation adopted from https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage
 
-var { Global, trim } = require('../util')
+var { Global, trim } = require('../src/util')
 
 module.exports = {
 	name: 'cookieStorage',

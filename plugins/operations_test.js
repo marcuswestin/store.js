@@ -1,5 +1,5 @@
-var { each, map } = require('../util')
-var { deepEqual } = require('../../tests/util')
+var { each, map } = require('../src/util')
+var { deepEqual } = require('../tests/util')
 
 require('./operations')
 

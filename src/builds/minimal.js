@@ -1,8 +1,8 @@
 var engine = require('../engine')
 
 var storages = [
-	require('../storage/localStorage'),
-	require('../storage/cookieStorage'), // for Safari private mode
+	require('../../storages/localStorage'),
+	require('../../storages/cookieStorage'), // for Safari private mode
 ]
 var noAddons = null
 

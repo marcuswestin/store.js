@@ -1,4 +1,4 @@
-var { Global } = require('../util')
+var { Global } = require('../src/util')
 
 module.exports = {
 	name: 'oldIE-userDataStorage',
@@ -69,7 +69,7 @@ function clearAll() {
 // See https://github.com/marcuswestin/store.js/issues/40
 // See https://github.com/marcuswestin/store.js/issues/83
 var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g")
-return function fixKey(key) {
+function fixKey(key) {
 	return key.replace(/^d/, '___$&').replace(forbiddenCharsRegex, '___')
 }
 

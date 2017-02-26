@@ -1,4 +1,4 @@
-var { Global, each, pluck, create, isList } = require('./util')
+var { each, create, isList } = require('./util')
 
 module.exports = {
 	createStore: createStore
@@ -121,7 +121,7 @@ function createStore(storages, plugins) {
 				throw new Error("store.js: No supported storage has been added! "+
 					"Add one (e.g store.addStorage(require('store/storages/cookieStorage')) "+
 					"or use a build with more built-in storages (e.g "+
-					"https://github.com/marcuswestin/store.js/tree/master/builds/cross-browser)")
+					"https://github.com/marcuswestin/store.js/tree/master/dist/cross-browser.min.js)")
 			}
 			return this._storage.resolved
 		},

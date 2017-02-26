@@ -4,9 +4,9 @@ tinytest.hijackConsoleLog()
 
 var { createStore } = require('../src/engine')
 var { each } = require('../src/util')
-var storages = require('../src/storage/all')
-var allPlugins = require('../src/plugin/all')
-var allPluginTests = require('../src/plugin/all_tests')
+var storages = require('../storages/all')
+var allPlugins = require('../plugins/all')
+var allPluginTests = require('../plugins/all_tests')
 
 module.exports = {
 	output:null,

@@ -1,12 +1,12 @@
 var engine = require('../engine')
 
 var storages = [
-	require('../storage/localStorage'),
-	require('../storage/oldIE-userDataStorage'),
+	require('../../storages/localStorage'),
+	require('../../storages/oldIE-userDataStorage'),
 ]
 var plugins = [
-	require('../plugin/v1-backcompat'),
-	require('../plugin/json2'),
+	require('../../plugins/v1-backcompat'),
+	require('../../plugins/json2'),
 ]
 
 module.exports = engine.createStore(storages, plugins)

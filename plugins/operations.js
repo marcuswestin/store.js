@@ -1,4 +1,4 @@
-var { slice, assign } = require('../util')
+var { slice, assign } = require('../src/util')
 var update_mixin = require('./update')
 
 module.exports = {
