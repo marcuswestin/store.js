@@ -195,10 +195,10 @@ If you're using npm you can create your own build:
 
 ```js
 // Example custom build usage:
-var engine = require('../store-engine')
+var engine = require('store/src/store-engine')
 var storages = [
 	require('store/storages/localStorage'),
-	require('../../storages/cookieStorage')
+	require('store/storages/cookieStorage')
 ]
 var plugins = [
 	require('store/plugins/defaults'),
