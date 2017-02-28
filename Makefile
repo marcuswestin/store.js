@@ -12,7 +12,7 @@ test-saucelabs: build
 tunnel:
 	node scripts/create-tunnel.js
 
-build: test lint store.min.js
+build: test lint
 	node scripts/compile-builds.js
 
 lint:
