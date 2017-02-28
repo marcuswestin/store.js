@@ -94,6 +94,9 @@ function getPlatformsArg(platformSets, callback) {
 			_.map(platformSets, function(platformSet) {
 				return _.map(platformSet, function(browserSpecs, osName) {
 					return _.map(browserSpecs, function(browserVersions, browserName) {
+						if (typeof browserVersions == 'string') {
+							browserVersions = [browserVersions]
+						}
 						return _.map(browserVersions, function(browserVersion) {
 							return [osName, browserName, browserVersion]
 						})
