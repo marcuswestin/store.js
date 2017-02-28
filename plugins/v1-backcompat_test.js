@@ -5,6 +5,8 @@ module.exports = {
 function setup(store) {
 
 	test('backwards compatability with v1', function() {
+		store.clear()
+		
 		assert(typeof store.disabled    == 'boolean')
 		assert(typeof store.enabled     == 'boolean')
 		assert(typeof store.version     == 'string')
@@ -27,6 +29,15 @@ function setup(store) {
 			assert(val.foo == 'foo', "first transaction did not register")
 			val.bar = 'bar'
 		})
+		assert(store.getAll().foosact.foo == 'foo')
+		var wasCalled = false
+		store.forEach(function(key, val) {
+			wasCalled = true
+			assert(key == 'foosact')
+			assert(val.foo == 'foo')
+		})
+		assert(wasCalled)
+		assert(store.serialize({}) == '{}')
 		assert(store.get('foosact').bar == 'bar', "second transaction did not register")
 	})
 }

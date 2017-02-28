@@ -32,13 +32,15 @@ function backcompat_transact(_, key, defaultVal, transactionFn) {
 	this.set(key, ret === undefined ? val : ret)
 }
 function backcompat_clear(_) {
-	return this.clearAll.apply(this, arguments)
+	return this.clearAll.call(this)
 }
-function backcompat_forEach(_) {
-	return this.each.apply(this, arguments)
+function backcompat_forEach(_, fn) {
+	return this.each.call(this, function(val, key) {
+		fn(key, val)
+	})
 }
 function backcompat_getAll(_) {
-	return this.dump.apply(this, arguments)
+	return this.dump.call(this)
 }
 function backcompat_serialize(_, value) {
 	return JSON.stringify(value)
