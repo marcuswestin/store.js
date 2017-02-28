@@ -1,3 +1,9 @@
+v2.0.0
++ New pluggable architecture!
++ New storages: localStorage, cookieStorage, memoryStorage, sessionStorage, oldFF-globalStorage, oldIE-userDataStorage.
++ New plugins: defaults, dump, events, expire, json2, observe, operations, update, v1-backcompat.
++ New builds: everything, legacy, modern, v1-backcompat, minimal (17k, 13k, 12k, 6k respectively)
+
 v1.3.20
 + Fully automated test framework
 + Fix infinite loop in IE

@@ -1,6 +1,0 @@
-{
-  "name" : "store",
-  "version" : "1.3.20",
-  "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
-  "main" : "src/store.js"
-}
