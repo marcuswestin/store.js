@@ -2,24 +2,24 @@ Store.js
 ========
 
 1. [Basic Usage](#basic-usage)
-	- All you need to get started:
+	- All you need to get started
 	- [API](#api)
 	- [Using npm](#using-npm)
 	- [Using a script tag](#using-a-script-tag)
 2. [Supported Browsers](#supported-browsers)
-	- All of them, pretty much:
+	- All of them, pretty much
 	- [List of supported browsers](#list-of-supported-browsers)
 3. [Builds](#builds)
-	- Choose which build is right for you:
+	- Choose which build is right for you
 	- [List of default Builds](#list-of-default-builds)
 	- [Make your own Build](#make-your-own-build)
 4. [Plugins](#plugins)
-	- Additional common functionality:
+	- Additional common functionality
 	- [List of all Plugins](#list-of-all-plugins)
 	- [Using Plugins](#using-plugins)
 	- [Write your own Plugin](#write-your-own-plugin)
 5. [Storages](#storages)
-	- Storages provide underlying persistance:
+	- Storages provide underlying persistance
 	- [List of all Storages](#list-of-all-storages)
 	- [Write your own Storage](#write-your-own-storage)
 
@@ -28,9 +28,9 @@ Store.js
 Basic Usage
 -----------
 
-All you need to know to get started.
+All you need to know to get started:
 
-#### API
+### API
 
 store.js exposes a simple API for cross browser local storage:
 
@@ -53,7 +53,7 @@ store.each(function(value, key) {
 })
 ```
 
-#### Using npm
+### Using npm
 
 ```js
 var store = require('store')
@@ -61,7 +61,7 @@ store.set('user', { name:'Marcus' })
 store.get('user').name == 'Marcus'
 ```
 
-#### Using a script tag
+### Using a script tag
 
 First, download one of the #builds (e.g https://raw.githubusercontent.com/marcuswestin/store.js/master/dist/store.legacy.min.js). Then:
 
@@ -85,7 +85,7 @@ To support all browsers (including IE6, IE7, Firefox 4, etc), use `require('stor
 
 To save some KBs but still support all modern browsers, use `require('store/dist/modern')` or [store.modern.min.js](dist/store.modern.min.js) instead.
 
-#### List of supported browsers
+### List of supported browsers
 
 - Tested on IE6+
 - Tested on iOS 8+
@@ -100,16 +100,17 @@ To save some KBs but still support all modern browsers, use `require('store/dist
 
 Builds
 ------
+
 Choose which build is right for you!
 
-#### List of default builds
+### List of default builds
 
 - [store.everything.min.js](dist/store.everything.min.js): All the plugins, all the storages. [Source](dist/store.everything.js)
 - [store.legacy.min.js](dist/store.legacy.min.js): Full support for all tested browsers. Add plugins separately. [Source](dist/store.legacy.js)
 - [store.modern.min.js](dist/store.modern.min.js): Full support for all modern browsers. Add plugins separately. [Source](dist/store.modern.js)
 - [store.v1-backcompat.min.js](dist/store.dist/v1-backcompat.min.js): Full backwards compatability with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
 
-#### Make your own Build
+### Make your own Build
 
 If you're using NPM you can create your own build:
 
@@ -126,9 +127,9 @@ store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to e
 Plugins
 -------
 
-Plugins provide additional common functionality that some people need, but not everyone.
+Plugins provide additional common functionality that some people need, but not everyone:
 
-#### List of all Plugins
+### List of all Plugins
 
 - [all.js](plugins/all.js):                      All the plugins in one handy place.
 - [defaults.js](plugins/defaults.js):            Declare default values. [Example usage](plugins/defaults_test.js)
@@ -140,7 +141,7 @@ Plugins provide additional common functionality that some people need, but not e
 - [update.js](plugins/update.js):                Update a stored object, or create it if null. [Example usage](plugins/update_test.js)
 - [v1-backcompat.js](plugins/v1-backcompat.js):  Full backwards compatability with store.js v1. [Example usage](plugins/v1-backcompat_test.js)
 
-#### Using Plugins
+### Using Plugins
 
 With npm:
 
@@ -152,7 +153,7 @@ store.addPlugin(expirePlugin)
 If you're using script tags, you can either use [store.everything.min.js](dist/store.everything.min.js) (which
 has all plugins built-in), or clone this repo to add or modify a build and run `make build`.
 
-#### Write your own plugin
+### Write your own plugin
 
 A store.js plugin is a function that returns an object that gets added on to the store.
 If any of the plugin functions overrides existing functions, the plugin function can still call
@@ -166,9 +167,9 @@ plugins are [plugins/defaults](plugins/defaults), [plugins/expire](plugins/expir
 
 Storages
 --------
-Store.js will pick the best available storage, and automatically falls back to the first added storage that works.
+Store.js will pick the best available storage, and automatically falls back to the first added storage that works:
 
-#### List of all Storages
+### List of all Storages
 
 - [all.js](storages/all.js)                                     All the storages in one handy place.
 - [cookieStorage.js](storages/cookieStorage.js)                 Store values in cookies. Useful for Safari Private mode.
@@ -179,7 +180,7 @@ Store.js will pick the best available storage, and automatically falls back to t
 - [oldIE-userDataStorage.js](storages/oldIE-userDataStorage.js) Store values in userData. Only useful for legacy IE 6+.
 
 
-#### Write your own Storage
+### Write your own Storage
 
 Chances are you won't ever need another storage. But if you do...
 
