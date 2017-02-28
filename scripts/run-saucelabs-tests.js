@@ -26,6 +26,7 @@ function main() {
 			s.chrome,
 			s.android,
 			s.ios,
+			s.opera,
 
 			// Specific test targets for development:
 			/////////////////////////////////////////

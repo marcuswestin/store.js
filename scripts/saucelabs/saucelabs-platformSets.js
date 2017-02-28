@@ -52,6 +52,10 @@ var platforms = module.exports = {
 		'Mac 10.12': { 'chrome':['27', CURRENT_VERSION] },
 		'Windows 10': { 'chrome':['26', CURRENT_VERSION] },
 	},
+	opera: {
+		'Windows XP': { 'opera':'11' },
+		'Linux': { 'opera':'12' },
+	}
 
 	// Individual browser versions
 	//////////////////////////////
