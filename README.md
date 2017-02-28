@@ -4,19 +4,25 @@ Store.js
 Table of Contents
 -----------------
 
-1. [Basic Usage](#basic-usage): All you need to know to get started.
+1. [Basic Usage](#basic-usage)
+	- All you need to get started:
 	- [API](#api)
 	- [Using npm](#using-npm)
 	- [Using a script tag](#using-a-script-tag)
-2. [Supported Browsers](#supported-browsers): All of them, pretty much :)
-3. [Builds](#builds): Choose which build is right for you.
+2. [Supported Browsers](#supported-browsers)
+	- All of them, pretty much:
+	- [List of supported browsers](#list-of-supported-browsers)
+3. [Builds](#builds)
+	- Choose which build is right for you:
 	- [List of default Builds](#list-of-default-builds)
 	- [Make your own Build](#make-your-own-build)
-4. [Plugins](#plugins): For additional common functionality.
+4. [Plugins](#plugins)
+	- Additional common functionality:
 	- [List of all Plugins](#list-of-all-plugins)
 	- [Using Plugins](#using-plugins)
-	- [Write your own Plugin][#write-your-own-plugin]
-5. [Storages](#storages): A list of all Storages.
+	- [Write your own Plugin](#write-your-own-plugin)
+5. [Storages](#storages)
+	- Storages provide underlying persistance:
 	- [List of all Storages](#list-of-all-storages)
 	- [Write your own Storage](#write-your-own-storage)
 
@@ -81,6 +87,8 @@ All of them, pretty much :)
 To support all browsers (including IE6, IE7, Firefox 4, etc), use `require('store/dist/legacy')` or [store.legacy.min.js](dist/store.legacy.min.js).
 
 To save some KBs but still support all modern browsers, use `require('store/dist/modern')` or [store.modern.min.js](dist/store.modern.min.js) instead.
+
+#### List of supported browsers
 
 - Tested on IE6+
 - Tested on iOS 8+
