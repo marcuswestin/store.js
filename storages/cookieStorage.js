@@ -1,5 +1,6 @@
-// Useful for e.g safari private browser mode, where localStorage doesn't work but cookies do.
-// Implementation adopted from https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage
+// cookieStorage is useful Safari private browser mode, where localStorage
+// doesn't work but cookies do. This implementation is adopted from
+// https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage
 
 var { Global, trim } = require('../src/util')
 

@@ -1,3 +1,8 @@
+// memoryStorage is a useful last fallback to ensure that the store
+// is functions (meaning store.get(), store.set(), etc will all function).
+// However, stored values will not persist when the browser navigates to
+// a new page or reloads the current page.
+
 module.exports = {
 	name: 'memoryStorage',
 	read: read,

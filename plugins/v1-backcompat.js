@@ -1,8 +1,9 @@
 var dump = require('./dump')
+var json2 = require('./json2')
 
 module.exports = {
 	name: 'v1-backcompat',
-	dependencies: [dump],
+	dependencies: [dump, json2],
 	mixin: backcompat_mixin,
 }
 

@@ -1,3 +1,7 @@
+// oldIE-userDataStorage provides storage for Internet Explorer
+// versions 6 and 7, where no localStorage, sessionStorage, etc
+// is available.
+
 var { Global } = require('../src/util')
 
 module.exports = {

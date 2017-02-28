@@ -1,3 +1,7 @@
+// oldFF-globalStorage provides storage for Firefox
+// versions 6 and 7, where no localStorage, etc
+// is available.
+
 var { Global } = require('../src/util')
 
 module.exports = {
