@@ -5,9 +5,9 @@ Table of Contents
 -----------------
 
 1. [Basic Usage](#basic-usage): All you need to know to get started.
-	- [Using a script tag](#using-a-script-tag)
-	- [Using npm](#using-npm)
 	- [API](#api)
+	- [Using npm](#using-npm)
+	- [Using a script tag](#using-a-script-tag)
 2. [Supported Browsers](#supported-browsers): All of them, pretty much :)
 3. [Builds](#builds): Choose which build is right for you.
 	- [List of default Builds](#list-of-default-builds)
@@ -24,7 +24,39 @@ Table of Contents
 
 Basic Usage
 -----------
+
 All you need to know to get started.
+
+#### API
+
+store.js exposes a simple API for cross browser local storage:
+
+```js
+// Store current user
+store.set('user', { name:'Marcus' })
+
+// Get current user
+store.get('user')
+
+// Remove current user
+store.remove('user')
+
+// Clear all keys
+store.clearAll()
+
+// Loop over all stored values
+store.each(function(value, key) {
+	console.log(key, '==', value)
+})
+```
+
+#### Using npm
+
+```js
+var store = require('store')
+store.set('user', { name:'Marcus' })
+store.get('user').name == 'Marcus'
+```
 
 #### Using a script tag
 
@@ -39,48 +71,11 @@ store.get('user').name == 'Marcus'
 </script>
 ```
 
-#### Using npm
-
-```js
-var store = require('store')
-store.set('user', { name:'Marcus' })
-store.get('user').name == 'Marcus'
-```
-
-
-#### API
-
-store.js exposes a simple API for cross browser local storage:
-
-```js
-// Store 'marcus' at 'username'
-store.set('username', 'marcus')
-
-// Get 'username'
-store.get('username')
-
-// Remove 'username'
-store.remove('username')
-
-// Clear all keys
-store.clear()
-
-// Store an object literal - store.js uses JSON.stringify under the hood
-store.set('user', { name: 'marcus', likes: 'javascript' })
-
-// Get the stored object - store.js uses JSON.parse under the hood
-var user = store.get('user')
-alert(user.name + ' likes ' + user.likes)
-
-// Loop over all stored values
-store.each(function(value, key) {
-	console.log(key, '==', value)
-})
-```
 
 
 Supported Browsers
 ------------------
+
 All of them, pretty much :)
 
 To support all browsers (including IE6, IE7, Firefox 4, etc), use `require('store/dist/legacy')` or [store.legacy.min.js](dist/store.legacy.min.js).
@@ -125,6 +120,7 @@ store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to e
 
 Plugins
 -------
+
 Plugins provide additional common functionality that some people need, but not everyone.
 
 #### List of all Plugins
@@ -151,11 +147,21 @@ store.addPlugin(expirePlugin)
 If you're using script tags, you can either use [store.everything.min.js](dist/store.everything.min.js) (which
 has all plugins built-in), or clone this repo to add or modify a build and run `make build`.
 
+#### Write your own plugin
+
+A store.js plugin is a function that returns an object that gets added on to the store.
+If any of the plugin functions overrides existing functions, the plugin function can still call
+the original function using the first argument (super_fn).
+
+I'll elaborate on this shortly (let me know if you need more info sooner rather than later!),
+but for the moment I recommend you take a look at the [current plugins](plugins/). Good example
+plugins are [plugins/defaults](plugins/defaults), [plugins/expire](plugins/expire) and
+[plugins/events](plugins/events).
 
 
 Storages
 --------
-
+Store.js will pick the best available storage, and automatically falls back to the first added storage that works.
 
 #### List of all Storages
 
