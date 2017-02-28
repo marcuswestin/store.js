@@ -1,4 +1,10 @@
-var { pluck, each, create, isList, isObject, isFunction } = require('./util')
+var util = require('./util')
+var pluck = util.pluck
+var each = util.each
+var create = util.create
+var isList = util.isList
+var isFunction = util.isFunction
+var isObject = util.isObject
 
 module.exports = {
 	createStore: createStore,
@@ -24,7 +30,7 @@ var storeAPI = {
 	// addPlugin will add a plugin to this store.
 	addPlugin: function(plugin) {
 		var self = this
-		
+
 		// If the plugin is an array, then add all plugins in the array.
 		// This allows for a plugin to depend on other plugins.
 		if (isList(plugin)) {
@@ -46,12 +52,12 @@ var storeAPI = {
 		if (!isFunction(plugin)) {
 			throw new Error('Plugins must be function values that return objects')
 		}
-		
+
 		var pluginProperties = plugin.call(this)
 		if (!isObject(pluginProperties)) {
 			throw new Error('Plugins must return an object of function properties')
 		}
-		
+
 		// Add the plugin function properties to this store instance.
 		each(pluginProperties, function(pluginFnProp, propName) {
 			if (!isFunction(pluginFnProp)) {
@@ -142,7 +148,7 @@ function createStore(storages, plugins) {
 			}
 			return this._storage.resolved
 		},
-		
+
 		_testStorage: function(storage) {
 			try {
 				var testStr = '__storejs__test__'
@@ -154,13 +160,13 @@ function createStore(storages, plugins) {
 				return false
 			}
 		},
-		
+
 		_assignPluginFnProp: function(pluginFnProp, propName) {
 			var oldFn = this[propName]
 			this[propName] = function pluginFn() {
 				var args = Array.prototype.slice.call(arguments, 0)
 				var self = this
-				
+
 				// super_fn calls the old function which was overwritten by
 				// this mixin.
 				function super_fn() {
@@ -176,11 +182,11 @@ function createStore(storages, plugins) {
 				// Allow the mixin function to access the super_fn arguments, so that it
 				// can modify them if needed.
 				super_fn.args = args
-				
+
 				return pluginFnProp.apply(self, newFnArgs)
 			}
 		},
-		
+
 		_serialize: function(obj) {
 			return JSON.stringify(obj)
 		},
@@ -195,7 +201,7 @@ function createStore(storages, plugins) {
 			var val = ''
 			try { val = JSON.parse(strVal) }
 			catch(e) { val = strVal }
-			
+
 			return (val !== undefined ? val : defaultVal)
 		},
 	}

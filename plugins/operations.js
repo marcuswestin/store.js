@@ -1,4 +1,7 @@
-var { slice, assign } = require('../src/util')
+var util = require('../src/util')
+var slice = util.slice
+var assign = util.assign
+
 var updatePlugin = require('./update')
 
 module.exports = [updatePlugin, operationsPlugin]
@@ -10,11 +13,11 @@ function operationsPlugin() {
 		pop: pop,
 		shift: shift,
 		unshift: unshift,
-		
+
 		// obj
 		assign: assign_,
 	}
-	
+
 	// array
 	function push(_, key, val1, val2, val3, etc) {
 		return _arrayOp.call(this, 'push', arguments)
@@ -28,7 +31,7 @@ function operationsPlugin() {
 	function unshift(_, key, val1, val2, val3, etc) {
 		return _arrayOp.call(this, 'unshift', arguments)
 	}
-	
+
 	// obj
 	function assign_(_, key, props1, props2, props3, etc) {
 		var varArgs = slice(arguments, 2)
@@ -40,9 +43,9 @@ function operationsPlugin() {
 			return assign.apply(Object, varArgs)
 		})
 	}
-	
+
 	// internal
-	///////////	
+	///////////
 	function _arrayOp(arrayFn, opArgs) {
 		var res
 		var key = opArgs[1]

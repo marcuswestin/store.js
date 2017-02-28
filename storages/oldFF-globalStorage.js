@@ -2,7 +2,8 @@
 // versions 6 and 7, where no localStorage, etc
 // is available.
 
-var { Global } = require('../src/util')
+var util = require('../src/util')
+var Global = util.Global
 
 module.exports = {
 	name: 'oldFF-globalStorage',

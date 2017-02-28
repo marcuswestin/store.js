@@ -2,7 +2,8 @@
 // versions 6 and 7, where no localStorage, sessionStorage, etc
 // is available.
 
-var { Global } = require('../src/util')
+var util = require('../src/util')
+var Global = util.Global
 
 module.exports = {
 	name: 'oldIE-userDataStorage',
@@ -43,7 +44,7 @@ function each(callback) {
 		for (var i=attributes.length-1; i>=0; i--) {
 			var attr = attributes[i]
 			callback(storageEl.getAttribute(attr.name), attr.name)
-		}		
+		}
 	})
 }
 
@@ -51,7 +52,7 @@ function remove(unfixedKey) {
 	var fixedKey = fixKey(unfixedKey)
 	_withStorageEl(function(storageEl) {
 		storageEl.removeAttribute(fixedKey)
-		storageEl.save(storageName)		
+		storageEl.save(storageName)
 	})
 }
 
@@ -62,7 +63,7 @@ function clearAll() {
 		for (var i=attributes.length-1; i>=0; i--) {
 			storageEl.removeAttribute(attributes[i].name)
 		}
-		storageEl.save(storageName)		
+		storageEl.save(storageName)
 	})
 }
 
@@ -85,7 +86,7 @@ function _makeIEStorageElFunction() {
 		storageOwner,
 		storageContainer,
 		storageEl
-	
+
 	// Since #userData storage applies only to specific paths, we need to
 	// somehow link our data to a specific path.  We choose /favicon.ico
 	// as a pretty safe option, since all browsers already make a request to
@@ -110,7 +111,7 @@ function _makeIEStorageElFunction() {
 		storageEl = doc.createElement('div')
 		storageOwner = doc.body
 	}
-	
+
 	return function(storeFunction) {
 		var args = [].slice.call(arguments, 0)
 		args.unshift(storageEl)
