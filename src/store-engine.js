@@ -1,11 +1,3 @@
-var util = require('./util')
-var pluck = util.pluck
-var each = util.each
-var create = util.create
-var isList = util.isList
-var isFunction = util.isFunction
-var isObject = util.isObject
-
 module.exports = {
 	createStore: createStore,
 }
@@ -13,8 +5,7 @@ module.exports = {
 var storeAPI = {
 	version: '2.0.3',
 	enabled: false,
-	storage: null,
-
+	
 	// addStorage adds another storage to this store. The store
 	// will use the first storage it receives that is enabled, so
 	// call addStorage in the order of preferred storage.
@@ -23,48 +14,7 @@ var storeAPI = {
 		if (this._testStorage(storage)) {
 			this._storage.resolved = storage
 			this.enabled = true
-			this.storage = storage.name
 		}
-	},
-
-	// addPlugin will add a plugin to this store.
-	addPlugin: function(plugin) {
-		var self = this
-
-		// If the plugin is an array, then add all plugins in the array.
-		// This allows for a plugin to depend on other plugins.
-		if (isList(plugin)) {
-			each(plugin, function(plugin) {
-				self.addPlugin(plugin)
-			})
-			return
-		}
-
-		// Keep track of all plugins we've seen so far, so that we
-		// don't add any of them twice.
-		var seenPlugin = pluck(this._seenPlugins, function(seenPlugin) { return (plugin === seenPlugin) })
-		if (seenPlugin) {
-			return
-		}
-		this._seenPlugins.push(plugin)
-
-		// Check that the plugin is properly formed
-		if (!isFunction(plugin)) {
-			throw new Error('Plugins must be function values that return objects')
-		}
-
-		var pluginProperties = plugin.call(this)
-		if (!isObject(pluginProperties)) {
-			throw new Error('Plugins must return an object of function properties')
-		}
-
-		// Add the plugin function properties to this store instance.
-		each(pluginProperties, function(pluginFnProp, propName) {
-			if (!isFunction(pluginFnProp)) {
-				throw new Error('Bad plugin property: '+propName+' from plugin '+plugin.name+'. Plugins should only return functions.')
-			}
-			self._assignPluginFnProp(pluginFnProp, propName)
-		})
 	},
 
 	// get returns the value of the given key. If that value
@@ -127,24 +77,21 @@ var storeAPI = {
 	// createStore creates a store.js instance with the first
 	// functioning storage in the list of storage candidates,
 	// and applies the the given mixins to the instance.
-	createStore: function(storages, plugins) {
-		return createStore(storages, plugins)
+	createStore: function(storages) {
+		return createStore(storages)
 	},
 }
 
-function createStore(storages, plugins) {
+function createStore(storages) {
+	if (!storages) { storages = [] }
 	var _privateStoreProps = {
-		_seenPlugins: [],
 		_namespacePrefix: '',
 		_namespaceRegexp: null,
 		_legalNamespace: /^[a-zA-Z0-9_\-]+$/, // alpha-numeric + underscore and dash
 
 		_storage: function() {
 			if (!this.enabled) {
-				throw new Error("store.js: No supported storage has been added! "+
-					"Add one (e.g store.addStorage(require('store/storages/cookieStorage')) "+
-					"or use a build with more built-in storages (e.g "+
-					"https://github.com/marcuswestin/store.js/tree/master/dist/store.legacy.min.js)")
+				throw new Error("store.js: No supported storage")
 			}
 			return this._storage.resolved
 		},
@@ -158,32 +105,6 @@ function createStore(storages, plugins) {
 				return ok
 			} catch(e) {
 				return false
-			}
-		},
-
-		_assignPluginFnProp: function(pluginFnProp, propName) {
-			var oldFn = this[propName]
-			this[propName] = function pluginFn() {
-				var args = Array.prototype.slice.call(arguments, 0)
-				var self = this
-
-				// super_fn calls the old function which was overwritten by
-				// this mixin.
-				function super_fn() {
-					if (!oldFn) { return }
-					var result = oldFn.apply(self, super_fn.args)
-					delete super_fn.args
-					return result
-				}
-
-				// Give mixing function access to super_fn by prefixing all mixin function
-				// arguments with super_fn.
-				var newFnArgs = [super_fn].concat(args)
-				// Allow the mixin function to access the super_fn arguments, so that it
-				// can modify them if needed.
-				super_fn.args = args
-
-				return pluginFnProp.apply(self, newFnArgs)
 			}
 		},
 
@@ -207,11 +128,18 @@ function createStore(storages, plugins) {
 	}
 
 	var store = create(_privateStoreProps, storeAPI)
-	each(storages, function(storage) {
-		store.addStorage(storage)
-	})
-	each(plugins, function(plugin) {
-		store.addPlugin(plugin)
-	})
+	for (var i=0; i<storages.length; i++) {
+		store.addStorage(storages[i])
+	}
 	return store
+}
+
+function F() {} // eslint-disable-line no-inner-declarations
+function create(obj, props) {
+	F.prototype = obj
+	var res = new F()
+	for (var key in props) {
+		res[key] = props[key]
+	}
+	return res
 }

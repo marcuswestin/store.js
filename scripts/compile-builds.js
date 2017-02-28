@@ -35,6 +35,9 @@ function run(callback) {
 			if (item.match(/\.min\.js$/)) {
 				return next()
 			}
+			if (!item.match('minimal')) {
+				return next()
+			}
 			var input = path.resolve(dir+'/'+item)
 			var output = input.replace(/\.js$/, '.min.js')
 			console.log('compile', input, '->', output)

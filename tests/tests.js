@@ -26,15 +26,15 @@ function runTests() {
 				store.addStorage(storage)
 				runStorageTests(store)
 			})
-			each(allPluginTests, function(pluginTest, pluginName) {
-				var plugin = allPlugins[pluginName]
-				test.group('plugin: '+pluginName, function() {
-					var store = createStore()
-					store.addStorage(storage)
-					store.addPlugin(plugin)
-					pluginTest.setup(store)
-				})
-			})
+			// each(allPluginTests, function(pluginTest, pluginName) {
+			// 	var plugin = allPlugins[pluginName]
+			// 	test.group('plugin: '+pluginName, function() {
+			// 		var store = createStore()
+			// 		store.addStorage(storage)
+			// 		// store.addPlugin(plugin)
+			// 		pluginTest.setup(store)
+			// 	})
+			// })
 		})
 	})
 	
