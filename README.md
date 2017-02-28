@@ -94,9 +94,9 @@ Supported Browsers
 
 All of them, pretty much :)
 
-To support all browsers (including IE6, IE7, Firefox 4, etc), use `require('store/dist/legacy')` or [store.legacy.min.js](dist/store.legacy.min.js).
+To support all browsers (including IE6, IE7, Firefox 4, etc), use `require('store')` (alias for `require('store/dist/store.legacy')`) or [store.legacy.min.js](dist/store.legacy.min.js).
 
-To save some KBs but still support all modern browsers, use `require('store/dist/modern')` or [store.modern.min.js](dist/store.modern.min.js) instead.
+To save some KBs but still support all modern browsers, use `require('store/dist/store.modern')` or [store.modern.min.js](dist/store.modern.min.js) instead.
 
 ### List of supported browsers
 
