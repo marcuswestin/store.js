@@ -3,7 +3,7 @@
 var fs = require('fs')
 var path = require('path')
 var browserify = require('browserify')
-var uglifyJS = require('uglify-js')
+var UglifyJS = require('uglify-js')
 var base = __dirname + '/..'
 
 module.exports = {
@@ -71,11 +71,13 @@ function compileFile(input, output, callback) {
 }
 
 function minify(code) {
-	var minified = uglifyJS.minify(code, {
+	var minified = UglifyJS.minify(code, {
 		fromString: true,
 		compress: { screw_ie8:false },
-		mangle: { screw_ie8:false },
-		output: { screw_ie8:false }
+		mangle:   { screw_ie8:false },
+		output:   { screw_ie8:false },
+		// warnings: true,
+		// mangleProperties: { reserved:[] },
 	})
 	return minified.code // TODO: sourcemaps - use `result.map`.
 }
