@@ -220,7 +220,7 @@ Store.js will pick the best available storage, and automatically falls back to t
 - [all.js](storages/all.js)                                     All the storages in one handy place.
 - [cookieStorage.js](storages/cookieStorage.js)                 Store values in cookies. Useful for Safari Private mode.
 - [localStorage.js](storages/localStorage.js)                   Store values in localStorage. Great for all modern browsers.
-- [sessionStorage.js](storages/sessionStorage.js)               Store values in sessioStorage.
+- [sessionStorage.js](storages/sessionStorage.js)               Store values in sessionStorage.
 - [memoryStorage.js](storages/memoryStorage.js)                 Store values in memory. Great fallback to ensure store functionality at all times.
 - [oldFF-globalStorage.js](storages/oldFF-globalStorage.js)     Store values in globalStorage. Only useful for legacy Firefox 3+.
 - [oldIE-userDataStorage.js](storages/oldIE-userDataStorage.js) Store values in userData. Only useful for legacy IE 6+.
