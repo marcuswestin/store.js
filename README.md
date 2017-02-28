@@ -187,7 +187,7 @@ Choose which build is right for you!
 - [store.everything.min.js](dist/store.everything.min.js): All the plugins, all the storages. [Source](dist/store.everything.js)
 - [store.legacy.min.js](dist/store.legacy.min.js): Full support for all tested browsers. Add plugins separately. [Source](dist/store.legacy.js)
 - [store.modern.min.js](dist/store.modern.min.js): Full support for all modern browsers. Add plugins separately. [Source](dist/store.modern.js)
-- [store.v1-backcompat.min.js](dist/store.dist/v1-backcompat.min.js): Full backwards compatability with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
+- [store.v1-backcompat.min.js](dist/store.v1-backcompat.min.js): Full backwards compatability with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
 
 ### Make your own Build
 
@@ -230,7 +230,7 @@ Store.js will pick the best available storage, and automatically falls back to t
 
 Chances are you won't ever need another storage. But if you do...
 
-See [storages/](storages/) for examples. Two good examples are [memoryStorage](memoryStorage) and [localStorage](localStorage).
+See [storages/](storages/) for examples. Two good examples are [memoryStorage](storages/memoryStorage.js) and [localStorage](storages/localStorage.js).
 
 Basically, you just need an object that looks like this:
 
