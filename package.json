@@ -1,6 +1,6 @@
 {
   "name": "store",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
   "main": "dist/store.legacy.js",
   "scripts": {
