@@ -32,7 +32,7 @@ Store.js has been around since 2010 ([first commit](https://github.com/marcuswes
 
 For many years v1.x provided basic cross-browser persistant storage, and over time more and more people [started asking](https://github.com/marcuswestin/store.js/issues?q=is%3Aissue+is%3Aclosed) for additional functionality.
 
-Store.js version 2 is a full revamp with pluggable storage (it will automatically fall back to one that works in every scenario by default), pluggable extra functionality (like [expiration](plugins/expire.js), [default values](plugins/defaults.js), common [array/object operations](plugins/operations.js), etc), and fully cross-browser automatic testing using saucelabs.com.
+Store.js version 2 is a full revamp with pluggable storage (it will automatically fall back to one that works in every scenario by default), pluggable extra functionality (like [expirations](plugins/expire.js), [default values](plugins/defaults.js), common [array/object operations](plugins/operations.js), etc), and fully cross-browser automatic testing using saucelabs.com.
 
 
 
@@ -148,9 +148,31 @@ A store.js plugin is a function that returns an object that gets added on to the
 If any of the plugin functions overrides existing functions, the plugin function can still call
 the original function using the first argument (super_fn).
 
-I'll elaborate on this shortly (let me know if you need more info sooner rather than later!),
-but for the moment I recommend you take a look at the [current plugins](plugins/). Good example
-plugins are [plugins/defaults](plugins/defaults.js), [plugins/expire](plugins/expire.js) and
+```js
+// Example plugin that stores a version history of every value
+var versionHistoryPlugin = function() {
+	var historyStore = this.namespace('history')
+	return {
+		set: function(super_fn, key, value) {
+			var history = historyStore.get(key) || []
+			history.push(value)
+			historyStore.set(key, history)
+			return super_fn()
+		},
+		getHistory: function(key) {
+			return historyStore.get(key)
+		}
+	}
+}
+store.addPlugin(versionHistoryPlugin)
+store.set('foo', 'bar 1')
+store.set('foo', 'bar 2')
+store.getHistory('foo') == ['bar 1', 'bar 2']
+```
+
+Let me know if you need more info on writing plugins, but for the moment I recommend
+taking a look at the [current plugins](plugins/). Good example plugins are
+[plugins/defaults](plugins/defaults.js), [plugins/expire](plugins/expire.js) and
 [plugins/events](plugins/events.js).
 
 
