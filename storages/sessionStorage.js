@@ -1,4 +1,5 @@
-var { Global } = require('../src/util')
+var util = require('../src/util')
+var Global = util.Global
 
 module.exports = {
 	name: 'sessionStorage',

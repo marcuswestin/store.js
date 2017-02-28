@@ -2,7 +2,9 @@
 // doesn't work but cookies do. This implementation is adopted from
 // https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage
 
-var { Global, trim } = require('../src/util')
+var util = require('../src/util')
+var Global = util.Global
+var trim = util.trim
 
 module.exports = {
 	name: 'cookieStorage',
@@ -17,11 +19,11 @@ var doc = Global.document
 
 function read(key) {
 	if (!key || !_has(key)) { return null }
-	var regexpStr = "(?:^|.*;\\s*)" + 
+	var regexpStr = "(?:^|.*;\\s*)" +
 		escape(key).replace(/[\-\.\+\*]/g, "\\$&") +
 		"\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"
 	return unescape(doc.cookie.replace(new RegExp(regexpStr), "$1"))
-}	
+}
 
 function each(callback) {
 	var cookies = doc.cookie.split(/; ?/g)

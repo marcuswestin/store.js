@@ -1,20 +1,24 @@
-var { bind, each, create, slice } = require('../src/util')
+var util = require('../src/util')
+var bind = util.bind
+var each = util.each
+var create = util.create
+var slice = util.slice
 
 module.exports = eventsPlugin
 
 function eventsPlugin() {
 	var pubsub = _newPubSub()
-	
+
 	return {
 		watch: watch,
 		unwatch: unwatch,
 		once: once,
-		
+
 		set: set,
 		remove: remove,
 		clearAll: clearAll
 	}
-	
+
 	// new pubsub functions
 	function watch(_, key, listener) {
 		return pubsub.on(key, bind(this, listener))
@@ -25,7 +29,7 @@ function eventsPlugin() {
 	function once(_, key, listener) {
 		pubsub.once(key, bind(this, listener))
 	}
-	
+
 	// overwrite function to fire when appropriate
 	function set(super_fn, key, val) {
 		var oldVal = this.get(key)
