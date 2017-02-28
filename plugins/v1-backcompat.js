@@ -1,13 +1,9 @@
-var dump = require('./dump')
-var json2 = require('./json2')
+var dumpPlugin = require('./dump')
+var json2Plugin = require('./json2')
 
-module.exports = {
-	name: 'v1-backcompat',
-	dependencies: [dump, json2],
-	mixin: backcompat_mixin,
-}
+module.exports = [dumpPlugin, json2Plugin, v1BackcompatPlugin]
 
-function backcompat_mixin() {
+function v1BackcompatPlugin() {
 	this.disabled = !this.enabled
 	return {
 		has: backcompat_has,

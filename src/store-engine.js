@@ -1,4 +1,4 @@
-var { each, create, isList } = require('./util')
+var { pluck, each, create, isList, isObject, isFunction } = require('./util')
 
 module.exports = {
 	createStore: createStore,
@@ -23,24 +23,41 @@ var storeAPI = {
 
 	// addPlugin will add a plugin to this store.
 	addPlugin: function(plugin) {
-		if (this._seenPlugins[plugin.name]) {
+		var self = this
+		
+		// If the plugin is an array, then add all plugins in the array.
+		// This allows for a plugin to depend on other plugins.
+		if (isList(plugin)) {
+			each(plugin, function(plugin) {
+				self.addPlugin(plugin)
+			})
 			return
 		}
-		this._seenPlugins[plugin.name] = true
-		
-		var self = this
-		var newProps = plugin.mixin.call(this)
-		each(newProps, function(mixinFn, propName) {
-			if (typeof mixinFn != 'function') {
-				throw new Error('Bad plugin value: '+propName+' from plugin '+plugin.name+'. Plugins should only return functions.')
-			}
-			self._assignPluginProp(propName, mixinFn)
-		})
-		if (plugin.dependencies && !isList(plugin.dependencies)) {
-			throw new Error('mixin "'+plugin.name+'" dependencies should either be an array or undefined')
+
+		// Keep track of all plugins we've seen so far, so that we
+		// don't add any of them twice.
+		var seenPlugin = pluck(this._seenPlugins, function(seenPlugin) { return (plugin === seenPlugin) })
+		if (seenPlugin) {
+			return
 		}
-		each(plugin.dependencies, function(dependencyPlugin) {
-			self.addPlugin(dependencyPlugin)
+		this._seenPlugins.push(plugin)
+
+		// Check that the plugin is properly formed
+		if (!isFunction(plugin)) {
+			throw new Error('Plugins must be function values that return objects')
+		}
+		
+		var pluginProperties = plugin.call(this)
+		if (!isObject(pluginProperties)) {
+			throw new Error('Plugins must return an object of function properties')
+		}
+		
+		// Add the plugin function properties to this store instance.
+		each(pluginProperties, function(pluginFnProp, propName) {
+			if (!isFunction(pluginFnProp)) {
+				throw new Error('Bad plugin property: '+propName+' from plugin '+plugin.name+'. Plugins should only return functions.')
+			}
+			self._assignPluginFnProp(pluginFnProp, propName)
 		})
 	},
 
@@ -111,7 +128,7 @@ var storeAPI = {
 
 function createStore(storages, plugins) {
 	var _privateStoreProps = {
-		_seenPlugins: {},
+		_seenPlugins: [],
 		_namespacePrefix: '',
 		_namespaceRegexp: null,
 		_legalNamespace: /^[a-zA-Z0-9_\-]+$/, // alpha-numeric + underscore and dash
@@ -138,9 +155,9 @@ function createStore(storages, plugins) {
 			}
 		},
 		
-		_assignPluginProp: function(propName, mixinFn) {
+		_assignPluginFnProp: function(pluginFnProp, propName) {
 			var oldFn = this[propName]
-			this[propName] = function mixedin() {
+			this[propName] = function pluginFn() {
 				var args = Array.prototype.slice.call(arguments, 0)
 				var self = this
 				
@@ -160,7 +177,7 @@ function createStore(storages, plugins) {
 				// can modify them if needed.
 				super_fn.args = args
 				
-				return mixinFn.apply(self, newFnArgs)
+				return pluginFnProp.apply(self, newFnArgs)
 			}
 		},
 		

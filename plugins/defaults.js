@@ -1,21 +1,18 @@
-module.exports = {
-	name: 'defaults',
-	mixin: defaults_mixin,
-}
+module.exports = defaultsPlugin
 
-function defaults_mixin() {
+function defaultsPlugin() {
 	var defaultValues = {}
 	
 	return {
 		defaults: defaults,
-		get: defaults_get
+		get: get
 	}
 	
 	function defaults(_, values) {
 		defaultValues = values
 	}
 	
-	function defaults_get(super_fn, key) {
+	function get(super_fn, key) {
 		var val = super_fn()
 		return (val !== undefined ? val : defaultValues[key])
 	}

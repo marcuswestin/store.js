@@ -13,6 +13,8 @@ module.exports = {
 	map: map,
 	pluck: pluck,
 	isList: isList,
+	isFunction: isFunction,
+	isObject: isObject,
 	Global: Global,
 }
 
@@ -27,7 +29,7 @@ function make_assign() {
 				})
 			}			
 			return obj
-		}		
+		}
 	}
 }
 
@@ -72,6 +74,7 @@ function slice(arr, index) {
 function each(obj, fn) {
 	pluck(obj, function(key, val) {
 		fn(key, val)
+		return false
 	})
 }
 
@@ -79,6 +82,7 @@ function map(obj, fn) {
 	var res = (isList(obj) ? [] : {})
 	pluck(obj, function(v, k) {
 		res[k] = fn(v, k)
+		return false
 	})
 	return res
 }
@@ -86,14 +90,14 @@ function map(obj, fn) {
 function pluck(obj, fn) {
 	if (isList(obj)) {
 		for (var i=0; i<obj.length; i++) {
-			if (fn(obj[i], i) == true) {
+			if (fn(obj[i], i)) {
 				return obj[i]
 			}
 		}
 	} else {
 		for (var key in obj) {
 			if (obj.hasOwnProperty(key)) {
-				if (fn(obj[key], key) == true) {
+				if (fn(obj[key], key)) {
 					return obj[key]
 				}
 			}
@@ -101,7 +105,14 @@ function pluck(obj, fn) {
 	}
 }
 
-
 function isList(val) {
 	return (val != null && typeof val != 'function' && typeof val.length == 'number')
+}
+
+function isFunction(val) {
+	return val && {}.toString.call(val) === '[object Function]'
+}
+
+function isObject(val) {
+	return val && {}.toString.call(val) === '[object Object]'
 }

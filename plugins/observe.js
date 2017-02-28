@@ -1,12 +1,8 @@
-var events_mixin = require('./events')
+var eventsPlugin = require('./events')
 
-module.exports = {
-	name: 'observe',
-	dependencies: [events_mixin],
-	mixin: observe_mixin,
-}
+module.exports = [eventsPlugin, observePlugin]
 
-function observe_mixin() {
+function observePlugin() {
 	return {
 		observe: observe,
 		unobserve: unobserve

@@ -1,11 +1,8 @@
-module.exports = {
-	name: 'expire',
-	mixin: expire_mixin,
-}
-
 var namespace = 'expire_mixin'
 
-function expire_mixin() {
+module.exports = expirePlugin
+
+function expirePlugin() {
 	var expirations = this.namespace(namespace)
 	
 	return {

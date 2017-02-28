@@ -1,9 +1,6 @@
-module.exports = {
-	name: 'dump',
-	mixin: dump_mixin
-}
+module.exports = dumpPlugin
 
-function dump_mixin() {
+function dumpPlugin() {
 	return {
 		dump: dump
 	}

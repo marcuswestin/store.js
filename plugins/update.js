@@ -1,9 +1,6 @@
-module.exports = {
-	name: 'update',
-	mixin: update_mixin,
-}
+module.exports = updatePlugin
 
-function update_mixin() {
+function updatePlugin() {
 	return {
 		update: update
 	}

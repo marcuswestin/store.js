@@ -1,11 +1,8 @@
 var { bind, each, create, slice } = require('../src/util')
 
-module.exports = {
-	name: 'events',
-	mixin: events_mixin,
-}
+module.exports = eventsPlugin
 
-function events_mixin() {
+function eventsPlugin() {
 	var pubsub = _newPubSub()
 	
 	return {

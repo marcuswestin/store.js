@@ -1,9 +1,6 @@
-module.exports = {
-	name: 'json2',
-	mixin: json2_mixin,
-}
+module.exports = json2Plugin
 
-function json2_mixin() {
+function json2Plugin() {
 	require('./lib/json2')
 	return {}
 }
