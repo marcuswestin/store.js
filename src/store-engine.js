@@ -5,7 +5,7 @@ module.exports = {
 }
 
 var storeAPI = {
-	version: '2.0.0-rc1',
+	version: '2.0.0',
 	enabled: false,
 	storage: null,
 
