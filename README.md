@@ -1,7 +1,7 @@
 Store.js
 ========
 
-1. [Version 2.0](#version-20)
+1. [Version 2.0](#user-content-version-20)
 	- What's new?
 2. [Basic Usage](#basic-usage)
 	- All you need to get started
