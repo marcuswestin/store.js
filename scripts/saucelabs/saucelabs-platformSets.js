@@ -55,7 +55,7 @@ var platforms = module.exports = {
 	opera: {
 		'Windows XP': { 'opera':'11' },
 		'Linux': { 'opera':'12' },
-	}
+	},
 
 	// Individual browser versions
 	//////////////////////////////
