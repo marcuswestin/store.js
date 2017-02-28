@@ -43,7 +43,7 @@ function startServer(port, callback) {
 			res.writeHead(200, { 'Content-Type':'text/html' })
 			res.end(testRunnerHTML)
 
-		} else if (req.url == '/test-runner.min.js') {
+		} else if (req.url == '/store.tests.min.js') {
 			var headers = {
 				'Content-Type':'application/javascript',
 				'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -66,7 +66,7 @@ function startServer(port, callback) {
 		</head>
 		<body>
 			<h1>store.js test runner</h1>
-			<script src="/test-runner.min.js"></script>
+			<script src="/store.tests.min.js"></script>
 		</body>
 		</html>
 	`.replace(/\n\t\t/g, '\n').replace(/^\n/, '')
