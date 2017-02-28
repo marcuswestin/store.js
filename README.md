@@ -1,9 +1,6 @@
 Store.js
 ========
 
-Table of Contents
------------------
-
 1. [Basic Usage](#basic-usage)
 	- All you need to get started:
 	- [API](#api)
