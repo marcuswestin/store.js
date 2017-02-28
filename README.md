@@ -1,28 +1,28 @@
 Store.js
 ========
 
-1. [Version 2.0](#version-20)
+1. [Version 2.0](#user-content-version-20)
 	- What's new?
-2. [Basic Usage](#basic-usage)
+2. [Basic Usage](#user-content-basic-usage)
 	- All you need to get started
-	- [API](#api)
-	- [Installation](#installation)
-3. [Supported Browsers](#supported-browsers)
+	- [API](#user-content-api)
+	- [Installation](#user-content-installation)
+3. [Supported Browsers](#user-content-supported-browsers)
 	- All of them, pretty much :)
-	- [List of supported browsers](#list-of-supported-browsers)
-4. [Plugins](#plugins)
+	- [List of supported browsers](#user-content-list-of-supported-browsers)
+4. [Plugins](#user-content-plugins)
 	- Additional common functionality
-	- [List of all Plugins](#list-of-all-plugins)
-	- [Using Plugins](#using-plugins)
-	- [Write your own Plugin](#write-your-own-plugin)
-5. [Builds](#builds)
+	- [List of all Plugins](#user-content-list-of-all-plugins)
+	- [Using Plugins](#user-content-using-plugins)
+	- [Write your own Plugin](#user-content-write-your-own-plugin)
+5. [Builds](#user-content-builds)
 	- Choose which build is right for you
-	- [List of default Builds](#list-of-default-builds)
-	- [Make your own Build](#make-your-own-build)
-6. [Storages](#storages)
+	- [List of default Builds](#user-content-list-of-default-builds)
+	- [Make your own Build](#user-content-make-your-own-build)
+6. [Storages](#user-content-storages)
 	- Storages provide underlying persistance
-	- [List of all Storages](#list-of-all-storages)
-	- [Write your own Storage](#write-your-own-storage)
+	- [List of all Storages](#user-content-list-of-all-storages)
+	- [Write your own Storage](#user-content-write-your-own-storage)
 
 
 Version 2.0
