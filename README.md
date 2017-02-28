@@ -6,44 +6,27 @@ Table of Contents
 
 1. [Basic Usage](#basic-usage): All you need to know to get started.
 	- [Using a script tag](#using-a-script-tag)
-	- [Using NPM](#using-npm)
+	- [Using npm](#using-npm)
 	- [API](#api)
 2. [Supported Browsers](#supported-browsers): All of them, pretty much :)
 3. [Builds](#builds): Choose which build is right for you.
-	- [store.everything.js](#store.everything.js)
-	- [store.legacy.js](#store.legacy.js)
-	- [store.modern.js](#store.modern.js)
-	- [store.tests.js](#store.tests.js)
-	- [store.v1-backcompat.js](#store.v1-backcompat.js)
+	- [List of default Builds](#list-of-default-builds)
 	- [Make your own Build](#make-your-own-build)
 4. [Plugins](#plugins): For additional common functionality.
-	- [all.js](#all.js)
-	- [defaults.js](#defaults.js)
-	- [dump.js](#dump.js)
-	- [events.js](#events.js)
-	- [expire.js](#expire.js)
-	- [json2.js](#json2.js)
-	- [observe.js](#observe.js)
-	- [operations.js](#operations.js)
-	- [update.js](#update.js)
-	- [v1-backcompat.js](#v1-backcompat.js)
+	- [List of all Plugins](#list-of-all-plugins)
+	- [Using Plugins](#using-plugins)
 	- [Write your own Plugin][#write-your-own-plugin]
 5. [Storages](#storages): A list of all Storages.
-	- [all.js](#all.js)
-	- [cookieStorage.js](#cookiestorage.js)
-	- [localStorage.js](#localstorage.js)
-	- [memoryStorage.js](#memorystorage.js)
-	- [oldFF-globalStorage.js](#oldff-globalstorage.js)
-	- [oldIE-userDataStorage.js](#oldie-userdatastorage.js)
-	- [sessionStorage.js](#sessionstorage.js)
+	- [List of all Storages](#list-of-all-storages)
 	- [Write your own Storage](#write-your-own-storage)
+
 
 
 Basic Usage
 -----------
 All you need to know to get started.
 
-#### Using a script tag](#using-a-script-tag)
+#### Using a script tag
 
 First, download one of the #builds (e.g https://raw.githubusercontent.com/marcuswestin/store.js/master/dist/store.legacy.min.js). Then:
 
@@ -56,7 +39,7 @@ store.get('user').name == 'Marcus'
 </script>
 ```
 
-#### Using NPM
+#### Using npm
 
 ```js
 var store = require('store')
@@ -100,6 +83,10 @@ Supported Browsers
 ------------------
 All of them, pretty much :)
 
+To support all browsers (including IE6, IE7, Firefox 4, etc), use `require('store/dist/legacy')` or [store.legacy.min.js](dist/store.legacy.min.js).
+
+To save some KBs but still support all modern browsers, use `require('store/dist/modern')` or [store.modern.min.js](dist/store.modern.min.js) instead.
+
 - Tested on IE6+
 - Tested on iOS 8+
 - Tested on Android 4+
@@ -110,44 +97,96 @@ All of them, pretty much :)
 - Tested on Node (with https://github.com/coolaj86/node-localStorage)
 
 
+
 Builds
 ------
-Choose which build is right for you.
+Choose which build is right for you!
 
-#### store.everything.js
-#### store.legacy.js
-#### store.modern.js
-#### store.tests.js
-#### store.v1-backcompat.js
+#### List of default builds
+
+- [store.everything.min.js](dist/store.everything.min.js): All the plugins, all the storages. [Source](dist/store.everything.js)
+- [store.legacy.min.js](dist/store.legacy.min.js): Full support for all tested browsers. Add plugins separately. [Source](dist/store.legacy.js)
+- [store.modern.min.js](dist/store.modern.min.js): Full support for all modern browsers. Add plugins separately. [Source](dist/store.modern.js)
+- [store.v1-backcompat.min.js](dist/store.dist/v1-backcompat.min.js): Full backwards compatability with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
+
 #### Make your own Build
+
+If you're using NPM you can create your own build:
+
+```js
+var engine = require('../store-engine')
+var storages = [require('store/storages/localStorage'), require('../../storages/cookieStorage')]
+var plugins = [require('store/plugins/defaults'), require('store/plugins/expire')]
+var store = engine.createStore(storages, plugins)
+store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to expire in 3 seconds
+```
+
 
 
 Plugins
 -------
-For additional common functionality.
+Plugins provide additional common functionality that some people need, but not everyone.
 
-#### all.js
-#### defaults.js
-#### dump.js
-#### events.js
-#### expire.js
-#### json2.js
-#### observe.js
-#### operations.js
-#### update.js
-#### v1-backcompat.js
+#### List of all Plugins
+
+- [all.js](plugins/all.js):                      All the plugins in one handy place.
+- [defaults.js](plugins/defaults.js):            Declare default values. [Example usage](plugins/defaults_test.js)
+- [dump.js](plugins/dump.js):                    Dump all stored values. [Example usage](plugins/dump_test.js)
+- [events.js](plugins/events.js):                Get notified when stored values change. [Example usage](plugins/events_test.js)
+- [expire.js](plugins/expire.js):                Expire stored values after a given time. [Example usage](plugins/expire_test.js)
+- [observe.js](plugins/observe.js):              Observe stored values and their changes. [Example usage](plugins/observe_test.js)
+- [operations.js](plugins/operations.js):        Useful operations like push, shift & assign. [Example usage](plugins/operations_test.js)
+- [update.js](plugins/update.js):                Update a stored object, or create it if null. [Example usage](plugins/update_test.js)
+- [v1-backcompat.js](plugins/v1-backcompat.js):  Full backwards compatability with store.js v1. [Example usage](plugins/v1-backcompat_test.js)
+
+#### Using Plugins
+
+With npm:
+
+```js
+var expirePlugin = require('store/plugins/expire')
+store.addPlugin(expirePlugin)
+```
+
+If you're using script tags, you can either use [store.everything.min.js](dist/store.everything.min.js) (which
+has all plugins built-in), or clone this repo to add or modify a build and run `make build`.
+
 
 
 Storages
 --------
-A list of all Storages.
 
-#### all.js
-#### cookieStorage.js
-#### localStorage.js
-#### memoryStorage.js
-#### oldFF-globalStorage.js
-#### oldIE-userDataStorage.js
-#### sessionStorage.js
+
+#### List of all Storages
+
+- [all.js](storages/all.js)                                     All the storages in one handy place.
+- [cookieStorage.js](storages/cookieStorage.js)                 Store values in cookies. Useful for Safari Private mode.
+- [localStorage.js](storages/localStorage.js)                   Store values in localStorage. Great for all modern browsers.
+- [sessionStorage.js](storages/sessionStorage.js)               Store values in sessioStorage.
+- [memoryStorage.js](storages/memoryStorage.js)                 Store values in memory. Great fallback to ensure store functionality at all times.
+- [oldFF-globalStorage.js](storages/oldFF-globalStorage.js)     Store values in globalStorage. Only useful for legacy Firefox 3+.
+- [oldIE-userDataStorage.js](storages/oldIE-userDataStorage.js) Store values in userData. Only useful for legacy IE 6+.
+
+
 #### Write your own Storage
+
+Chances are you won't ever need another storage. But if you do...
+
+See [storages/](storages/) for examples. Two good examples are [memoryStorage](memoryStorage) and [localStorage](localStorage).
+
+Basically, you just need an object that looks like this:
+
+```js
+var storage = {
+	name: 'myStorage',
+	read: function(key) { ... },
+	write: function(key, value) { ... },
+	each: function(fn) { ... },
+	remove: function(key) { ... },
+	clearAll: function() { ... }
+}
+store.addStorage(storage)
+```
+
+
 
