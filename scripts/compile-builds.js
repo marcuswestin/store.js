@@ -21,7 +21,7 @@ function main() {
 }
 
 function run(callback) {
-	var dir = base+'/src/builds'
+	var dir = base+'/dist'
 	fs.readdir(dir, function(err, items) {
 		next()
 		function next() {
@@ -36,7 +36,7 @@ function run(callback) {
 				return next()
 			}
 			var input = path.resolve(dir+'/'+item)
-			var output = input.replace('src/builds/', 'dist/').replace(/\.js$/, '.min.js')
+			var output = input.replace(/\.js$/, '.min.js')
 			console.log('compile', input, '->', output)
 			compileFile(input, output, function(err) {
 				if (err) {

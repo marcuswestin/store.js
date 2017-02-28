@@ -2,7 +2,7 @@
 
 var budo = require('budo')
 
-budo(__dirname+'/../src/builds/store.tests.js', {
+budo(__dirname+'/../dist/store.tests.js', {
 	live: true,
 	stream: process.stdout,
 	port: 9966,
