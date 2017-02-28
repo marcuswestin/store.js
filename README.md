@@ -1,27 +1,38 @@
 Store.js
 ========
 
-1. [Basic Usage](#basic-usage)
+1. [Version 2.0](#version-20)
+	- What's new?
+2. [Basic Usage](#basic-usage)
 	- All you need to get started
 	- [API](#api)
-	- [Using npm](#using-npm)
-	- [Using a script tag](#using-a-script-tag)
-2. [Supported Browsers](#supported-browsers)
-	- All of them, pretty much
+	- [Installation](#installation)
+3. [Supported Browsers](#supported-browsers)
+	- All of them, pretty much :)
 	- [List of supported browsers](#list-of-supported-browsers)
-3. [Builds](#builds)
-	- Choose which build is right for you
-	- [List of default Builds](#list-of-default-builds)
-	- [Make your own Build](#make-your-own-build)
 4. [Plugins](#plugins)
 	- Additional common functionality
 	- [List of all Plugins](#list-of-all-plugins)
 	- [Using Plugins](#using-plugins)
 	- [Write your own Plugin](#write-your-own-plugin)
-5. [Storages](#storages)
+5. [Builds](#builds)
+	- Choose which build is right for you
+	- [List of default Builds](#list-of-default-builds)
+	- [Make your own Build](#make-your-own-build)
+6. [Storages](#storages)
 	- Storages provide underlying persistance
 	- [List of all Storages](#list-of-all-storages)
 	- [Write your own Storage](#write-your-own-storage)
+
+
+Version 2.0
+-----------
+
+Store.js has been around since 2010 ([first commit](https://github.com/marcuswestin/store.js/commit/cb0198c2c02ff5f17c084276eeb4f28c79849d5e)! [HN discussion](https://news.ycombinator.com/item?id=1468802)!), and is live on tens of thousands of websites - like cnn.com!
+
+For many years v1.x provided basic cross-browser persistant storage, and over time more and more people [started asking](https://github.com/marcuswestin/store.js/issues?q=is%3Aissue+is%3Aclosed) for additional functionality.
+
+Store.js version 2 is a full revamp with pluggable storage (it will automatically fall back to one that works in every scenario by default), pluggable extra functionality (like [expiration](plugins/expire.js), [default values](plugins/defaults.js), common [array/object operations](plugins/operations.js), etc), and fully cross-browser automatic testing using saucelabs.com.
 
 
 
@@ -53,19 +64,21 @@ store.each(function(value, key) {
 })
 ```
 
-### Using npm
+### Installation
+
+Using npm:
 
 ```js
+// Example store.js usage with npm
 var store = require('store')
 store.set('user', { name:'Marcus' })
 store.get('user').name == 'Marcus'
 ```
 
-### Using a script tag
-
-First, download one of the #builds (e.g https://raw.githubusercontent.com/marcuswestin/store.js/master/dist/store.legacy.min.js). Then:
+Using script tag: (First download one of the [builds](dist/))
 
 ```html
+<!-- Example store.js usage with script tag -->
 <script src="path/to/my/store.legacy.min.js"></script>
 <script>
 var store = require('store')
@@ -98,31 +111,6 @@ To save some KBs but still support all modern browsers, use `require('store/dist
 
 
 
-Builds
-------
-
-Choose which build is right for you!
-
-### List of default builds
-
-- [store.everything.min.js](dist/store.everything.min.js): All the plugins, all the storages. [Source](dist/store.everything.js)
-- [store.legacy.min.js](dist/store.legacy.min.js): Full support for all tested browsers. Add plugins separately. [Source](dist/store.legacy.js)
-- [store.modern.min.js](dist/store.modern.min.js): Full support for all modern browsers. Add plugins separately. [Source](dist/store.modern.js)
-- [store.v1-backcompat.min.js](dist/store.dist/v1-backcompat.min.js): Full backwards compatability with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
-
-### Make your own Build
-
-If you're using NPM you can create your own build:
-
-```js
-var engine = require('../store-engine')
-var storages = [require('store/storages/localStorage'), require('../../storages/cookieStorage')]
-var plugins = [require('store/plugins/defaults'), require('store/plugins/expire')]
-var store = engine.createStore(storages, plugins)
-store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to expire in 3 seconds
-```
-
-
 
 Plugins
 -------
@@ -146,6 +134,7 @@ Plugins provide additional common functionality that some people need, but not e
 With npm:
 
 ```js
+// Example plugin usage:
 var expirePlugin = require('store/plugins/expire')
 store.addPlugin(expirePlugin)
 ```
@@ -161,8 +150,43 @@ the original function using the first argument (super_fn).
 
 I'll elaborate on this shortly (let me know if you need more info sooner rather than later!),
 but for the moment I recommend you take a look at the [current plugins](plugins/). Good example
-plugins are [plugins/defaults](plugins/defaults), [plugins/expire](plugins/expire) and
-[plugins/events](plugins/events).
+plugins are [plugins/defaults](plugins/defaults.js), [plugins/expire](plugins/expire.js) and
+[plugins/events](plugins/events.js).
+
+
+
+Builds
+------
+
+Choose which build is right for you!
+
+### List of default builds
+
+- [store.everything.min.js](dist/store.everything.min.js): All the plugins, all the storages. [Source](dist/store.everything.js)
+- [store.legacy.min.js](dist/store.legacy.min.js): Full support for all tested browsers. Add plugins separately. [Source](dist/store.legacy.js)
+- [store.modern.min.js](dist/store.modern.min.js): Full support for all modern browsers. Add plugins separately. [Source](dist/store.modern.js)
+- [store.v1-backcompat.min.js](dist/store.dist/v1-backcompat.min.js): Full backwards compatability with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
+
+### Make your own Build
+
+If you're using NPM you can create your own build:
+
+```js
+// Example custom build usage:
+var engine = require('../store-engine')
+var storages = [
+	require('store/storages/localStorage'),
+	require('../../storages/cookieStorage')
+]
+var plugins = [
+	require('store/plugins/defaults'),
+	require('store/plugins/expire')
+]
+var store = engine.createStore(storages, plugins)
+store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to expire in 3 seconds
+```
+
+
 
 
 Storages
@@ -189,6 +213,7 @@ See [storages/](storages/) for examples. Two good examples are [memoryStorage](m
 Basically, you just need an object that looks like this:
 
 ```js
+// Example custom storage
 var storage = {
 	name: 'myStorage',
 	read: function(key) { ... },
