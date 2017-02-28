@@ -75,7 +75,7 @@ function clearAll() {
 // See https://github.com/marcuswestin/store.js/issues/83
 var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g")
 function fixKey(key) {
-	return key.replace(/^d/, '___$&').replace(forbiddenCharsRegex, '___')
+	return key.replace(/^\d/, '___$&').replace(forbiddenCharsRegex, '___')
 }
 
 function _makeIEStorageElFunction() {
