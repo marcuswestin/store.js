@@ -30,7 +30,7 @@ Version 2.0
 
 Store.js has been around since 2010 ([first commit](https://github.com/marcuswestin/store.js/commit/cb0198c2c02ff5f17c084276eeb4f28c79849d5e)! [HN discussion](https://news.ycombinator.com/item?id=1468802)!), and is live on tens of thousands of websites - like cnn.com!
 
-For many years v1.x provided basic cross-browser persistant storage, and over time more and more people [started asking](https://github.com/marcuswestin/store.js/issues?q=is%3Aissue+is%3Aclosed) for additional functionality.
+For many years v1.x provided basic cross-browser persistent storage, and over time more and more people [started asking](https://github.com/marcuswestin/store.js/issues?q=is%3Aissue+is%3Aclosed) for additional functionality.
 
 Store.js version 2 is a full revamp with pluggable storage (it will automatically fall back to one that works in every scenario by default), pluggable extra functionality (like [expirations](plugins/expire.js), [default values](plugins/defaults.js), common [array/object operations](plugins/operations.js), etc), and fully cross-browser automatic testing using saucelabs.com.
 
@@ -43,7 +43,7 @@ All you need to know to get started:
 
 ### API
 
-store.js exposes a simple API for cross browser local storage:
+store.js exposes a simple API for cross-browser local storage:
 
 ```js
 // Store current user
@@ -75,7 +75,7 @@ store.set('user', { name:'Marcus' })
 store.get('user').name == 'Marcus'
 ```
 
-Using script tag: (First download one of the [builds](dist/))
+Using script tag (first download one of the [builds](dist/)):
 
 ```html
 <!-- Example store.js usage with script tag -->
@@ -94,9 +94,9 @@ Supported Browsers
 
 All of them, pretty much :)
 
-To support all browsers (including IE6, IE7, Firefox 4, etc), use `require('store')` (alias for `require('store/dist/store.legacy')`) or [store.legacy.min.js](dist/store.legacy.min.js).
+To support all browsers (including IE 6, IE 7, Firefox 4, etc.), use `require('store')` (alias for `require('store/dist/store.legacy')`) or [store.legacy.min.js](dist/store.legacy.min.js).
 
-To save some KBs but still support all modern browsers, use `require('store/dist/store.modern')` or [store.modern.min.js](dist/store.modern.min.js) instead.
+To save some kilobytes but still support all modern browsers, use `require('store/dist/store.modern')` or [store.modern.min.js](dist/store.modern.min.js) instead.
 
 ### List of supported browsers
 
@@ -115,7 +115,7 @@ To save some KBs but still support all modern browsers, use `require('store/dist
 Plugins
 -------
 
-Plugins provide additional common functionality that some people need, but not everyone:
+Plugins provide additional common functionality that some users might need:
 
 ### List of all Plugins
 
@@ -144,7 +144,7 @@ has all plugins built-in), or clone this repo to add or modify a build and run `
 
 ### Write your own plugin
 
-A store.js plugin is a function that returns an object that gets added on to the store.
+A store.js plugin is a function that returns an object that gets added to the store.
 If any of the plugin functions overrides existing functions, the plugin function can still call
 the original function using the first argument (super_fn).
 
@@ -170,7 +170,7 @@ store.set('foo', 'bar 2')
 store.getHistory('foo') == ['bar 1', 'bar 2']
 ```
 
-Let me know if you need more info on writing plugins, but for the moment I recommend
+Let me know if you need more info on writing plugins. For the moment I recommend
 taking a look at the [current plugins](plugins/). Good example plugins are
 [plugins/defaults](plugins/defaults.js), [plugins/expire](plugins/expire.js) and
 [plugins/events](plugins/events.js).
@@ -191,7 +191,7 @@ Choose which build is right for you!
 
 ### Make your own Build
 
-If you're using NPM you can create your own build:
+If you're using npm you can create your own build:
 
 ```js
 // Example custom build usage:
@@ -213,7 +213,7 @@ store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to e
 
 Storages
 --------
-Store.js will pick the best available storage, and automatically falls back to the first added storage that works:
+Store.js will pick the best available storage, and automatically falls back to the first available storage that works:
 
 ### List of all Storages
 
