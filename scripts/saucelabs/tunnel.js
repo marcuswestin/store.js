@@ -51,7 +51,7 @@ function startServer(port, callback) {
 				'Expires': '0'
 			}
 			res.writeHead(200, headers)
-			fs.createReadStream(__dirname+'/../../dist/test-runner.min.js').pipe(res)
+			fs.createReadStream(__dirname+'/../../dist/store.tests.min.js').pipe(res)
 
 		} else {
 			res.writeHead(404)
