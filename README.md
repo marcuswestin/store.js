@@ -22,6 +22,7 @@ Store.js
 6. [Storages](#user-content-storages)
 	- Storages provide underlying persistence
 	- [List of all Storages](#user-content-list-of-all-storages)
+	- [Storages limits](#user-content-storages-limits)
 	- [Write your own Storage](#user-content-write-your-own-storage)
 
 
@@ -237,11 +238,11 @@ Store.js will pick the best available storage, and automatically falls back to t
 | globalStorage** |            |     5MB     |           |          |                   |                    |                 |
 |    userData**   |            |             |           |  1024KB  |                   |                    |                 |
 
-*Cookies numbers, max size per cookie/domain vary in different browsers and versions. [Check out here for me](http://browsercookielimits.squawky.net/) 
+*Cookies numbers, max size per cookie/domain vary in different browsers and versions. [Check out here for more.](http://browsercookielimits.squawky.net/) 
 
 **globalStorage and userData Behaviour are used in version 6 and 7 of (respectively) Firefox and Internet Explorer, where localStorage is not available.
 
-***Session and Local storage limits in Android Browser are different for each version. Check out [more here](http://dev-test.nemikor.com/web-storage/support-test/)
+***Session and Local storage limits in Android Browser are different for each version. [Check out here for more.](http://dev-test.nemikor.com/web-storage/support-test/)
 
 
 ### Write your own Storage
