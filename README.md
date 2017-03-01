@@ -226,6 +226,24 @@ Store.js will pick the best available storage, and automatically falls back to t
 - [oldIE-userDataStorage.js](storages/oldIE-userDataStorage.js) Store values in userData. Only useful for legacy IE 6+.
 
 
+### Storages limits
+
+|                 | Chrome 40+ | Firefox 34+ | Safari 6+ |   IE 9+  | Mobile Chrome 40+ | Safari (mobile) 6+ | Android Browser |
+|:---------------:|:----------:|:-----------:|:---------:|:--------:|:-----------------:|:------------------:|:---------------:|
+|     Cookies*    |    ~4KB    |     ~4KB    |    ~4KB   |   ~4KB   |        ~4KB       |        ~4KB        |       ~4KB      |
+|   localStorage  |    10MB    |     10MB    |    5MB    |   10MB   |        10MB       |         5MB        |     2.5MB***    |
+|  sessionStorage |    10MB    |     10MB    | Unlimited |   10MB   |        10MB       |         5MB        |      5MB***     |
+|  Browser cache  |  RAM size  |   RAM size  |  RAM size | RAM size |      RAM size     |      RAM size      |     RAM size    |
+| globalStorage** |            |     5MB     |           |          |                   |                    |                 |
+|    userData**   |            |             |           |  1024KB  |                   |                    |                 |
+
+*Cookies numbers, max size per cookie/domain vary in different browsers and versions. [Check out here for me](http://browsercookielimits.squawky.net/) 
+
+**globalStorage and userData Behaviour are used in version 6 and 7 of (respectively) Firefox and Internet Explorer, where localStorage is not available.
+
+***Session and Local storage limits in Android Browser are different for each version. Check out [more here](http://dev-test.nemikor.com/web-storage/support-test/)
+
+
 ### Write your own Storage
 
 Chances are you won't ever need another storage. But if you do...
