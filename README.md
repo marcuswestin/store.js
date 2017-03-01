@@ -20,7 +20,7 @@ Store.js
 	- [List of default Builds](#user-content-list-of-default-builds)
 	- [Make your own Build](#user-content-make-your-own-build)
 6. [Storages](#user-content-storages)
-	- Storages provide underlying persistance
+	- Storages provide underlying persistence
 	- [List of all Storages](#user-content-list-of-all-storages)
 	- [Write your own Storage](#user-content-write-your-own-storage)
 
@@ -127,7 +127,7 @@ Plugins provide additional common functionality that some users might need:
 - [observe.js](plugins/observe.js):              Observe stored values and their changes. [Example usage](plugins/observe_test.js)
 - [operations.js](plugins/operations.js):        Useful operations like push, shift & assign. [Example usage](plugins/operations_test.js)
 - [update.js](plugins/update.js):                Update a stored object, or create it if null. [Example usage](plugins/update_test.js)
-- [v1-backcompat.js](plugins/v1-backcompat.js):  Full backwards compatability with store.js v1. [Example usage](plugins/v1-backcompat_test.js)
+- [v1-backcompat.js](plugins/v1-backcompat.js):  Full backwards compatibility with store.js v1. [Example usage](plugins/v1-backcompat_test.js)
 
 ### Using Plugins
 
@@ -187,7 +187,7 @@ Choose which build is right for you!
 - [store.everything.min.js](dist/store.everything.min.js): All the plugins, all the storages. [Source](dist/store.everything.js)
 - [store.legacy.min.js](dist/store.legacy.min.js): Full support for all tested browsers. Add plugins separately. [Source](dist/store.legacy.js)
 - [store.modern.min.js](dist/store.modern.min.js): Full support for all modern browsers. Add plugins separately. [Source](dist/store.modern.js)
-- [store.v1-backcompat.min.js](dist/store.v1-backcompat.min.js): Full backwards compatability with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
+- [store.v1-backcompat.min.js](dist/store.v1-backcompat.min.js): Full backwards compatibility with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
 
 ### Make your own Build
 
