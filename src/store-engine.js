@@ -171,7 +171,11 @@ function createStore(storages, plugins) {
 				// this mixin.
 				function super_fn() {
 					if (!oldFn) { return }
-					var result = oldFn.apply(self, super_fn.args)
+					var args = Array.prototype.slice.call(arguments)
+					super_fn.args.forEach(function (arg, i) {
+						args[i] = (args[i] === undefined) ? arg : args[i]
+					})
+					var result = oldFn.apply(self, args)
 					delete super_fn.args
 					return result
 				}
