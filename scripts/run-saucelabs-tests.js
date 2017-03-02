@@ -14,7 +14,11 @@ main(function(err) {
 })
 
 function main() {
-	tunnel.setup(port, function(err, url) {
+	tunnel.setup(port, null, function(err, url) {
+		if (err) {
+			console.log("Ensure that ngrok is not already being used elsewhere")
+			throw err
+		}
 		saucelabs.setAuth(username, password)
 		var s = saucelabs.platformSets
 		var platformSets = [

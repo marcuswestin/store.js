@@ -6,11 +6,11 @@ module.exports = {
 	setup: setup,
 }
 
-function setup(port, callback) {
+function setup(port, subdomain, callback) {
 	startServer(port, function(err) {
 		if (err) { return callback(err) }
 		console.log("Creating tunnel - this might take a few seconds")
-		startTunnel(port, function(err, url) {
+		startTunnel(port, subdomain, function(err, url) {
 			if (err) { return callback(err) }
 			console.log("tunnel up at", url)
 			callback(null, url)
@@ -18,10 +18,10 @@ function setup(port, callback) {
 	})
 }
 
-function startTunnel(port, callback) {
+function startTunnel(port, subdomain, callback) {
 	// return callback(null, 'https://07f51ed4.ngrok.io')
 	var authtoken = new Buffer('NTJuelB1dUpVSDNycDNjZ3pldHVEXzVnWlNObkpuMlFaR013WjZ0eUZUQw==', 'base64').toString('utf8')
-	ngrok.connect({ addr:port, subdomain:'storejs-test', authtoken:authtoken }, function(err, url) {
+	ngrok.connect({ addr:port, subdomain:subdomain, authtoken:authtoken }, function(err, url) {
 		if (err) { return callback(err) }
 		url = url.replace('https:', 'http:')
 		callback(null, url)
