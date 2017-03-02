@@ -1,6 +1,8 @@
 Store.js
 ========
 
+[![Build Status](https://travis-ci.org/AaronLlanos/store.js.svg?branch=master)](http://travis-ci.org/AaronLlanos/store.js)
+
 1. [Version 2.0](#user-content-version-20)
 	- What's new?
 2. [Basic Usage](#user-content-basic-usage)
@@ -246,6 +248,3 @@ var storage = {
 }
 store.addStorage(storage)
 ```
-
-
-
