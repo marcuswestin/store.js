@@ -1,4 +1,5 @@
 var util = require('./util')
+var slice = util.slice
 var pluck = util.pluck
 var each = util.each
 var create = util.create
@@ -164,28 +165,22 @@ function createStore(storages, plugins) {
 		_assignPluginFnProp: function(pluginFnProp, propName) {
 			var oldFn = this[propName]
 			this[propName] = function pluginFn() {
-				var args = Array.prototype.slice.call(arguments, 0)
+				var args = slice(arguments, 0)
 				var self = this
 
 				// super_fn calls the old function which was overwritten by
 				// this mixin.
 				function super_fn() {
 					if (!oldFn) { return }
-					var args = Array.prototype.slice.call(arguments)
-					super_fn.args.forEach(function (arg, i) {
-						args[i] = (args[i] === undefined) ? arg : args[i]
+					each(arguments, function(arg, i) {
+						args[i] = arg
 					})
-					var result = oldFn.apply(self, args)
-					delete super_fn.args
-					return result
+					return oldFn.apply(self, args)
 				}
 
 				// Give mixing function access to super_fn by prefixing all mixin function
 				// arguments with super_fn.
 				var newFnArgs = [super_fn].concat(args)
-				// Allow the mixin function to access the super_fn arguments, so that it
-				// can modify them if needed.
-				super_fn.args = args
 
 				return pluginFnProp.apply(self, newFnArgs)
 			}
