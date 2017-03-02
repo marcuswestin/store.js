@@ -20,4 +20,9 @@ function setup(store) {
 		store.remove('foo')
 	})
 
+	test('decompressing non-existing data', function () {
+		assert(store.decompress('bar') == undefined, 'value should be undefined')
+		store.remove('bar')
+	})
+
 }

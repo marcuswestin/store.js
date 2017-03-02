@@ -10,6 +10,7 @@ function compressionPlugin() {
 
 	function decompress(_, key) {
 		var val = this.get(key)
+		if (!val) return val
 		return JSON.parse(LZString.decompress(val))
 	}
 
