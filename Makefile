@@ -1,4 +1,5 @@
 test: test-node
+test-ci: test-saucelabs
 
 test-node:
 	node scripts/run-node-tests.js
