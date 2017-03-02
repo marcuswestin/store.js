@@ -1,7 +1,7 @@
 Store.js
 ========
 
-[![Build Status](https://travis-ci.org/marcuswestin/store.js.svg?branch=master)](http://travis-ci.org/marcuswestin/store.js)
+[![Build Status](https://travis-ci.org/marcuswestin/store.js.svg?branch=master)](https://travis-ci.org/marcuswestin/store.js)
 [![npm version](https://badge.fury.io/js/store.svg)](https://badge.fury.io/js/store)
 [![npm](https://img.shields.io/npm/dm/store.svg?maxAge=2592000)]()
 
