@@ -219,9 +219,9 @@ Store.js will pick the best available storage, and automatically falls back to t
 ### List of all Storages
 
 - [all.js](storages/all.js)                                     All the storages in one handy place.
-- [cookieStorage.js](storages/cookieStorage.js)                 Store values in cookies. Useful for Safari Private mode.
 - [localStorage.js](storages/localStorage.js)                   Store values in localStorage. Great for all modern browsers.
 - [sessionStorage.js](storages/sessionStorage.js)               Store values in sessionStorage.
+- [cookieStorage.js](storages/cookieStorage.js)                 Store values in cookies. Useful for Safari Private mode.
 - [memoryStorage.js](storages/memoryStorage.js)                 Store values in memory. Great fallback to ensure store functionality at all times.
 - [oldFF-globalStorage.js](storages/oldFF-globalStorage.js)     Store values in globalStorage. Only useful for legacy Firefox 3+.
 - [oldIE-userDataStorage.js](storages/oldIE-userDataStorage.js) Store values in userData. Only useful for legacy IE 6+.
@@ -229,20 +229,28 @@ Store.js will pick the best available storage, and automatically falls back to t
 
 ### Storages limits
 
-|                 | Chrome 40+ | Firefox 34+ | Safari 6+ |   IE 9+  | Mobile Chrome 40+ | Safari (mobile) 6+ | Android Browser |
-|:---------------:|:----------:|:-----------:|:---------:|:--------:|:-----------------:|:------------------:|:---------------:|
-|     Cookies*    |    ~4KB    |     ~4KB    |    ~4KB   |   ~4KB   |        ~4KB       |        ~4KB        |       ~4KB      |
-|   localStorage  |    10MB    |     10MB    |    5MB    |   10MB   |        10MB       |         5MB        |     2.5MB***    |
-|  sessionStorage |    10MB    |     10MB    | Unlimited |   10MB   |        10MB       |         5MB        |      5MB***     |
-|  Browser cache  |  RAM size  |   RAM size  |  RAM size | RAM size |      RAM size     |      RAM size      |     RAM size    |
-| globalStorage** |            |     5MB     |           |          |                   |                    |                 |
-|    userData**   |            |             |           |  1024KB  |                   |                    |                 |
+Each storage has different limits, restrictions and overflow behavior on different browser. For example, Android has has a 4.57M localStorage limit in 4.0, a 2.49M limit in 4.1, and a 4.98M limit in 4.2... Yeah.
 
-*Cookies numbers, max size per cookie/domain vary in different browsers and versions. [Check out here for more.](http://browsercookielimits.squawky.net/) 
+To simplify things we provide these recommendations to ensure cross browser behavior:
 
-**globalStorage and userData Behaviour are used in version 6 and 7 of (respectively) Firefox and Internet Explorer, where localStorage is not available.
+| Storage         | Targets                | Recommendations                 | More info                                        |
+|:----------------|:-----------------------|:--------------------------------|:-------------------------------------------------|
+| all             | All browsers           | Store < 1 million characters    | (Except Safari Private mode)                     |
+| all             | All & Private mode     | Store < 32 thousand characters  | (Including Safari Private mode)                  |
+| localStorage    | Modern browsers        | Max 2mb  (~1M chars)            | [limits][local-limits], [android][local-android] |
+| sessionStorage  | Modern browsers        | Max 5mb  (~2M chars)            | [limits][session-limits]                         |
+| cookieStorage   | Safari Private mode    | Max 4kb  (~2K chars)            | [limits][cookie-limits]                          |
+| userDataStorage | IE5, IE6 & IE7         | Max 64kb (~32K chars)           | [limits][userdata-limits]                        |
+| globalStorage   | Firefox 2-5            | Max 5mb  (~2M chars)            | [limits][global-limits]                          |
+| memoryStorage   | All browsers, fallback | Does not persist across pages!  |                                                  |
 
-***Session and Local storage limits in Android Browser are different for each version. [Check out here for more.](http://dev-test.nemikor.com/web-storage/support-test/)
+[local-limits]: https://arty.name/localstorage.html
+[local-android]: http://dev-test.nemikor.com/web-storage/support-test/
+[session-limits]: http://stackoverflow.com/questions/15840976/how-large-is-html5-session-storage
+[cookie-limits]: http://browsercookielimits.squawky.net/
+[userdata-limits]: https://msdn.microsoft.com/en-us/library/ms533015(v=vs.85).aspx
+[global-limits]: https://github.com/jeremydurham/persist-js/blob/master/README.md#4-size-limits
+[more]: https://www.html5rocks.com/en/tutorials/offline/quota-research/
 
 
 ### Write your own Storage
