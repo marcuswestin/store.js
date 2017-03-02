@@ -14,8 +14,7 @@ module.exports = {
 var storeAPI = {
 	version: '2.0.3',
 	enabled: false,
-	storage: null,
-
+	
 	// addStorage adds another storage to this store. The store
 	// will use the first storage it receives that is enabled, so
 	// call addStorage in the order of preferred storage.
@@ -24,7 +23,6 @@ var storeAPI = {
 		if (this._testStorage(storage)) {
 			this._storage.resolved = storage
 			this.enabled = true
-			this.storage = storage.name
 		}
 	},
 
