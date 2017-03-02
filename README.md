@@ -22,6 +22,7 @@ Store.js
 6. [Storages](#user-content-storages)
 	- Storages provide underlying persistence
 	- [List of all Storages](#user-content-list-of-all-storages)
+	- [Storages limits](#user-content-storages-limits)
 	- [Write your own Storage](#user-content-write-your-own-storage)
 
 
@@ -224,6 +225,24 @@ Store.js will pick the best available storage, and automatically falls back to t
 - [memoryStorage.js](storages/memoryStorage.js)                 Store values in memory. Great fallback to ensure store functionality at all times.
 - [oldFF-globalStorage.js](storages/oldFF-globalStorage.js)     Store values in globalStorage. Only useful for legacy Firefox 3+.
 - [oldIE-userDataStorage.js](storages/oldIE-userDataStorage.js) Store values in userData. Only useful for legacy IE 6+.
+
+
+### Storages limits
+
+|                 | Chrome 40+ | Firefox 34+ | Safari 6+ |   IE 9+  | Mobile Chrome 40+ | Safari (mobile) 6+ | Android Browser |
+|:---------------:|:----------:|:-----------:|:---------:|:--------:|:-----------------:|:------------------:|:---------------:|
+|     Cookies*    |    ~4KB    |     ~4KB    |    ~4KB   |   ~4KB   |        ~4KB       |        ~4KB        |       ~4KB      |
+|   localStorage  |    10MB    |     10MB    |    5MB    |   10MB   |        10MB       |         5MB        |     2.5MB***    |
+|  sessionStorage |    10MB    |     10MB    | Unlimited |   10MB   |        10MB       |         5MB        |      5MB***     |
+|  Browser cache  |  RAM size  |   RAM size  |  RAM size | RAM size |      RAM size     |      RAM size      |     RAM size    |
+| globalStorage** |            |     5MB     |           |          |                   |                    |                 |
+|    userData**   |            |             |           |  1024KB  |                   |                    |                 |
+
+*Cookies numbers, max size per cookie/domain vary in different browsers and versions. [Check out here for more.](http://browsercookielimits.squawky.net/) 
+
+**globalStorage and userData Behaviour are used in version 6 and 7 of (respectively) Firefox and Internet Explorer, where localStorage is not available.
+
+***Session and Local storage limits in Android Browser are different for each version. [Check out here for more.](http://dev-test.nemikor.com/web-storage/support-test/)
 
 
 ### Write your own Storage
