@@ -4,18 +4,21 @@ module.exports = compressionPlugin
 
 function compressionPlugin() {
 	return {
-		decompress: decompress,
-		compress: compress,
+		get: get,
+		set: set,
 	}
 
-	function decompress(_, key) {
-		var val = this.get(key)
-		if (!val) return val
-		return JSON.parse(LZString.decompress(val))
+	function get(super_fn, key, raw) {
+		var val = super_fn(key)
+		if (!val || raw) return val
+		var decompressed = LZString.decompress(val)
+		// fallback to existing values that are not compressed
+		return (decompressed == null) ? val : JSON.parse(decompressed)
 	}
 
-	function compress(_, key, val) {
+	function set(super_fn, key, val, raw) {
+		if (raw) return super_fn(key, val)
 		var compressed = LZString.compress(JSON.stringify(val))
-		this.set(key, compressed)
+		super_fn(key, compressed)
 	}
 }
