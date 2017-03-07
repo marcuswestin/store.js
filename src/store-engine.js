@@ -1,4 +1,5 @@
 var util = require('./util')
+var slice = util.slice
 var pluck = util.pluck
 var each = util.each
 var create = util.create
@@ -13,8 +14,7 @@ module.exports = {
 var storeAPI = {
 	version: '2.0.3',
 	enabled: false,
-	storage: null,
-
+	
 	// addStorage adds another storage to this store. The store
 	// will use the first storage it receives that is enabled, so
 	// call addStorage in the order of preferred storage.
@@ -23,7 +23,6 @@ var storeAPI = {
 		if (this._testStorage(storage)) {
 			this._storage.resolved = storage
 			this.enabled = true
-			this.storage = storage.name
 		}
 	},
 
@@ -164,24 +163,22 @@ function createStore(storages, plugins) {
 		_assignPluginFnProp: function(pluginFnProp, propName) {
 			var oldFn = this[propName]
 			this[propName] = function pluginFn() {
-				var args = Array.prototype.slice.call(arguments, 0)
+				var args = slice(arguments, 0)
 				var self = this
 
 				// super_fn calls the old function which was overwritten by
 				// this mixin.
 				function super_fn() {
 					if (!oldFn) { return }
-					var result = oldFn.apply(self, super_fn.args)
-					delete super_fn.args
-					return result
+					each(arguments, function(arg, i) {
+						args[i] = arg
+					})
+					return oldFn.apply(self, args)
 				}
 
 				// Give mixing function access to super_fn by prefixing all mixin function
 				// arguments with super_fn.
 				var newFnArgs = [super_fn].concat(args)
-				// Allow the mixin function to access the super_fn arguments, so that it
-				// can modify them if needed.
-				super_fn.args = args
 
 				return pluginFnProp.apply(self, newFnArgs)
 			}

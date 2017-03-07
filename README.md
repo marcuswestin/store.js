@@ -5,6 +5,7 @@ Store.js
 [![npm version](https://badge.fury.io/js/store.svg)](https://badge.fury.io/js/store)
 [![npm](https://img.shields.io/npm/dm/store.svg?maxAge=2592000)](https://npm-stat.com/charts.html?package=store&from=2016-03-06&to=2017-03-06)
 
+
 1. [Version 2.0](#user-content-version-20)
 	- What's new?
 2. [Basic Usage](#user-content-basic-usage)
@@ -26,6 +27,7 @@ Store.js
 6. [Storages](#user-content-storages)
 	- Storages provide underlying persistence
 	- [List of all Storages](#user-content-list-of-all-storages)
+	- [Storages limits](#user-content-storages-limits)
 	- [Write your own Storage](#user-content-write-your-own-storage)
 
 
@@ -222,12 +224,38 @@ Store.js will pick the best available storage, and automatically falls back to t
 ### List of all Storages
 
 - [all.js](storages/all.js)                                     All the storages in one handy place.
-- [cookieStorage.js](storages/cookieStorage.js)                 Store values in cookies. Useful for Safari Private mode.
 - [localStorage.js](storages/localStorage.js)                   Store values in localStorage. Great for all modern browsers.
 - [sessionStorage.js](storages/sessionStorage.js)               Store values in sessionStorage.
+- [cookieStorage.js](storages/cookieStorage.js)                 Store values in cookies. Useful for Safari Private mode.
 - [memoryStorage.js](storages/memoryStorage.js)                 Store values in memory. Great fallback to ensure store functionality at all times.
 - [oldFF-globalStorage.js](storages/oldFF-globalStorage.js)     Store values in globalStorage. Only useful for legacy Firefox 3+.
 - [oldIE-userDataStorage.js](storages/oldIE-userDataStorage.js) Store values in userData. Only useful for legacy IE 6+.
+
+
+### Storages limits
+
+Each storage has different limits, restrictions and overflow behavior on different browser. For example, Android has has a 4.57M localStorage limit in 4.0, a 2.49M limit in 4.1, and a 4.98M limit in 4.2... Yeah.
+
+To simplify things we provide these recommendations to ensure cross browser behavior:
+
+| Storage         | Targets                | Recommendations                 | More info                                        |
+|:----------------|:-----------------------|:--------------------------------|:-------------------------------------------------|
+| all             | All browsers           | Store < 1 million characters    | (Except Safari Private mode)                     |
+| all             | All & Private mode     | Store < 32 thousand characters  | (Including Safari Private mode)                  |
+| localStorage    | Modern browsers        | Max 2mb  (~1M chars)            | [limits][local-limits], [android][local-android] |
+| sessionStorage  | Modern browsers        | Max 5mb  (~2M chars)            | [limits][session-limits]                         |
+| cookieStorage   | Safari Private mode    | Max 4kb  (~2K chars)            | [limits][cookie-limits]                          |
+| userDataStorage | IE5, IE6 & IE7         | Max 64kb (~32K chars)           | [limits][userdata-limits]                        |
+| globalStorage   | Firefox 2-5            | Max 5mb  (~2M chars)            | [limits][global-limits]                          |
+| memoryStorage   | All browsers, fallback | Does not persist across pages!  |                                                  |
+
+[local-limits]: https://arty.name/localstorage.html
+[local-android]: http://dev-test.nemikor.com/web-storage/support-test/
+[session-limits]: http://stackoverflow.com/questions/15840976/how-large-is-html5-session-storage
+[cookie-limits]: http://browsercookielimits.squawky.net/
+[userdata-limits]: https://msdn.microsoft.com/en-us/library/ms533015(v=vs.85).aspx
+[global-limits]: https://github.com/jeremydurham/persist-js/blob/master/README.md#4-size-limits
+[more]: https://www.html5rocks.com/en/tutorials/offline/quota-research/
 
 
 ### Write your own Storage
