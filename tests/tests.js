@@ -16,6 +16,7 @@ module.exports = {
 }
 
 function runTests() {
+	setupEngineTests()
 	each(storages, function(storage) {
 		test.group(storage.name, function() {
 			if (!_checkEnabled(storage)) {
@@ -54,6 +55,34 @@ function _checkEnabled(storage) {
 		return false
 	}
 	return true
+}
+
+function setupEngineTests(store) {
+	test('Addon super_fn args', function() {
+		var store = createStore(storages.memoryStorage)
+		var calls = 0
+		store.addPlugin(function underlying() {
+			return {
+				set: function(super_fn, key, val, customArg1, customArg2) {
+					assert(key == 'key'+'appended')
+					assert(val == 'val')
+					assert(customArg1 == 'overridden-customArg1')
+					assert(customArg2 == 'customArg2')
+					calls++
+				}
+			}
+		})
+		store.addPlugin(function overlying() {
+			return {
+				set: function(super_fn, key, val) {
+					super_fn(key+'appended', val, 'overridden-customArg1')
+					calls++
+				}
+			}
+		})
+		store.set('key', 'val', 'customArg1', 'customArg2')
+		assert(calls == 2)
+	})
 }
 
 function runStorageTests(store) {
