@@ -3,7 +3,7 @@ Store.js
 
 [![Build Status](https://travis-ci.org/marcuswestin/store.js.svg?branch=master)](http://travis-ci.org/marcuswestin/store.js)
 [![npm version](https://badge.fury.io/js/store.svg)](https://badge.fury.io/js/store)
-[![npm](https://img.shields.io/npm/dm/store.svg?maxAge=2592000)]()
+[![npm](https://img.shields.io/npm/dm/store.svg?maxAge=2592000)](https://npm-stat.com/charts.html?package=store&from=2016-03-06&to=2017-03-06)
 
 1. [Version 2.0](#user-content-version-20)
 	- What's new?
