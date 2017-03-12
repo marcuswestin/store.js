@@ -4,7 +4,10 @@
   "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
   "main": "dist/store.legacy.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "preversion": "bash scripts/release-prompt.sh",
+    "version": "make build && git add -A dist",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
