@@ -5,5 +5,5 @@ module.exports = {
 	'oldIE-userDataStorage': require('./oldIE-userDataStorage'),
 	'cookieStorage': require('./cookieStorage'),
 	'sessionStorage': require('./sessionStorage'),
-	'memoryStorage': require('./memoryStorage'),
+	'memoryStorage': require('./memoryStorage')
 }
