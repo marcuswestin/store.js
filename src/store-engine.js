@@ -96,7 +96,7 @@ var storeAPI = {
 	each: function(callback) {
 		var self = this
 		this._storage().each(function(val, namespacedKey) {
-			callback(self._deserialize(val), namespacedKey.replace(self._namespaceRegexp, ''))
+			callback.call(self, self._deserialize(val), (namespacedKey || '').replace(self._namespaceRegexp, ''))
 		})
 	},
 
