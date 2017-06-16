@@ -39,6 +39,8 @@ function runTests() {
 		})
 	})
 	
+	require('./bugs/all')
+	
 	tinytest.runTests({
 		failFast: false
 	})
