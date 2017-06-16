@@ -10,6 +10,7 @@ function expirePlugin() {
 		get: expire_get,
 		remove: expire_remove,
 		getExpiration: getExpiration,
+		removeExpiredKeys: removeExpiredKeys
 	}
 	
 	function expire_set(super_fn, key, val, expiration) {
@@ -21,10 +22,7 @@ function expirePlugin() {
 
 	function expire_get(super_fn, key) {
 		if (this != expirations) {
-			var expiration = expirations.get(key, Number.MAX_VALUE)
-			if (expiration <= new Date().getTime()) {
-				this.raw.remove(key)
-			}
+			_checkExpiration.call(this, key)
 		}
 		return super_fn()
 	}
@@ -36,7 +34,25 @@ function expirePlugin() {
 		return super_fn()
 	}
 	
-	function getExpiration(super_fn, key) {
+	function getExpiration(_, key) {
 		return expirations.get(key)
+	}
+	
+	function removeExpiredKeys(_) {
+		var keys = []
+		this.each(function(val, key) {
+			keys.push(key)
+		})
+		for (var i=0; i<keys.length; i++) {
+			_checkExpiration.call(this, keys[i])
+		}
+	}
+	
+	function _checkExpiration(key) {
+		var expiration = expirations.get(key, Number.MAX_VALUE)
+		if (expiration <= new Date().getTime()) {
+			this.raw.remove(key)
+			expirations.remove(key)
+		}
 	}
 }

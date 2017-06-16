@@ -49,4 +49,12 @@ function setup(store) {
 			}, duration)
 		}
 	})
+	
+	test('remove expired keys', function() {
+		var key = 'expired'
+		store.set(key, 'bar', new Date().getTime() - 1000)
+		assert(store.getExpiration(key) > 0)
+		store.removeExpiredKeys()
+		assert(!store.getExpiration(key))
+	})
 }
