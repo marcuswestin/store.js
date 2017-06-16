@@ -106,7 +106,7 @@ function pluck(obj, fn) {
 }
 
 function isList(val) {
-	return (val != null && typeof val != 'function' && typeof val.length == 'number')
+	return (val != null && typeof val != 'function' && typeof val.length == 'number' && typeof val != 'string')
 }
 
 function isFunction(val) {

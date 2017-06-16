@@ -1,3 +1,5 @@
+// https://github.com/marcuswestin/store.js/issues/235
+
 var engine = require('../../src/store-engine');
 
 const store = engine.createStore([
