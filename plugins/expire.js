@@ -22,7 +22,7 @@ function expirePlugin() {
 		if (!this.hasNamespace(namespace)) {
 			var expiration = expirations.get(key, Number.MAX_VALUE)
 			if (expiration <= new Date().getTime()) {
-				this.remove(key)
+				this.raw.remove(key)
 			}
 		}
 		return super_fn()

@@ -2,6 +2,7 @@ var util = require('./util')
 var slice = util.slice
 var pluck = util.pluck
 var each = util.each
+var bind = util.bind
 var create = util.create
 var isList = util.isList
 var isFunction = util.isFunction
@@ -204,6 +205,10 @@ function createStore(storages, plugins) {
 	}
 
 	var store = create(_privateStoreProps, storeAPI)
+	store.raw = {}
+	each(store, function(prop, propName) {
+		store.raw[propName] = bind(store, prop)
+	})
 	each(storages, function(storage) {
 		store.addStorage(storage)
 	})
