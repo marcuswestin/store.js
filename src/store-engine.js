@@ -9,7 +9,7 @@ var isFunction = util.isFunction
 var isObject = util.isObject
 
 module.exports = {
-	createStore: createStore,
+	createStore: createStore
 }
 
 var seenNamespaces = {}
@@ -135,7 +135,7 @@ var storeAPI = {
 	// and applies the the given mixins to the instance.
 	createStore: function(storages, plugins) {
 		return createStore(storages, plugins)
-	},
+	}
 }
 
 function createStore(storages, plugins) {
@@ -207,7 +207,7 @@ function createStore(storages, plugins) {
 			catch(e) { val = strVal }
 
 			return (val !== undefined ? val : defaultVal)
-		},
+		}
 	}
 
 	var store = create(_privateStoreProps, storeAPI)

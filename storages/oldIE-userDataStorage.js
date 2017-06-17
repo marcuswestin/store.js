@@ -11,7 +11,7 @@ module.exports = {
 	read: read,
 	each: each,
 	remove: remove,
-	clearAll: clearAll,
+	clearAll: clearAll
 }
 
 var storageName = 'storejs'
