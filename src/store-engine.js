@@ -116,7 +116,7 @@ var storeAPI = {
 	// namespace clones the current store and assigns it the given namespace
 	namespace: function(namespace) {
 		if (!this._legalNamespace.test(namespace)) {
-			throw new Error('store.js namespaces can only have alhpanumerics + underscores and dashes')
+			throw new Error('store.js namespaces can only have alphanumerics + underscores and dashes')
 		}
 		if (seenNamespaces[namespace]) {
 			throw new Error('namespace is already in use: '+namespace)

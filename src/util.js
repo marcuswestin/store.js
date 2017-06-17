@@ -72,8 +72,8 @@ function slice(arr, index) {
 }
 
 function each(obj, fn) {
-	pluck(obj, function(key, val) {
-		fn(key, val)
+	pluck(obj, function(val, key) {
+		fn(val, key)
 		return false
 	})
 }
