@@ -7,7 +7,7 @@ module.exports = {
 	write: write,
 	each: each,
 	remove: remove,
-	clearAll: clearAll
+	clearAll: clearAll,
 }
 
 function localStorage() {

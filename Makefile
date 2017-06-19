@@ -16,5 +16,5 @@ build:
 	node scripts/compile-builds.js
 
 lint:
-	./node_modules/.bin/eslint tests/* src/*      \
-		--ignore-pattern src/addon/lib/json2.js   \
+	./node_modules/.bin/eslint tests/* src/* plugins/* storages/*  \
+		--ignore-pattern src/addon/lib/json2.js                    \

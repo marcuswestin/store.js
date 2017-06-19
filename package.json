@@ -46,7 +46,7 @@
       "print": false
     },
     "rules": {
-      "comma-dangle": ["error", "never"],
+      "comma-dangle": ["error", "only-multiline"],
       "no-unused-vars": [
         "error",
         {

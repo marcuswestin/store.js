@@ -12,7 +12,7 @@ module.exports = {
 	write: write,
 	each: each,
 	remove: remove,
-	clearAll: clearAll
+	clearAll: clearAll,
 }
 
 var doc = Global.document

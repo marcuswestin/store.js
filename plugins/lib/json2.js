@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 //  json2.js
 //  2016-10-28
 //  Public Domain.
