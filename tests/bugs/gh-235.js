@@ -1,3 +1,5 @@
+/* eslint semi: "off", indent: "off" */
+
 var engine = require('../../src/store-engine');
 
 const store = engine.createStore([
