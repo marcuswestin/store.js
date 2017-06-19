@@ -15,7 +15,7 @@ module.exports = {
 var seenNamespaces = {}
 
 var storeAPI = {
-	version: '2.0.3',
+	version: '2.0.5',
 	enabled: false,
 	
 	// addStorage adds another storage to this store. The store
