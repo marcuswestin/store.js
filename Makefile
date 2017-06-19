@@ -1,4 +1,4 @@
-test: test-node
+test: test-node lint
 
 test-node:
 	node scripts/run-node-tests.js
@@ -12,7 +12,7 @@ test-saucelabs: build
 tunnel:
 	node scripts/create-tunnel.js
 
-build: test lint
+build: test
 	node scripts/compile-builds.js
 
 lint:

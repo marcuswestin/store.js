@@ -1,5 +1,5 @@
 module.exports = {
-	deepEqual: deepEqual,
+	deepEqual: deepEqual
 }
 
 function deepEqual(a,b) {

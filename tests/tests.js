@@ -12,7 +12,7 @@ module.exports = {
 	output:null,
 	outputError:null,
 	runTests: runTests,
-	failed:false,
+	failed:false
 }
 
 function runTests() {
