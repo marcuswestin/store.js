@@ -15,6 +15,7 @@ main(function(err) {
 
 function main() {
 	tunnel.setup(port, function(err, url) {
+		if (err) { throw err }
 		saucelabs.setAuth(username, password)
 		var s = saucelabs.platformSets
 		var platformSets = [
