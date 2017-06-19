@@ -12,8 +12,6 @@ module.exports = {
 	createStore: createStore
 }
 
-var seenNamespaces = {}
-
 var storeAPI = {
 	version: '2.0.5',
 	enabled: false,
@@ -118,10 +116,6 @@ var storeAPI = {
 		if (!this._legalNamespace.test(namespace)) {
 			throw new Error('store.js namespaces can only have alphanumerics + underscores and dashes')
 		}
-		if (seenNamespaces[namespace]) {
-			throw new Error('namespace is already in use: '+namespace)
-		}
-		
 		// create a prefix that is very unlikely to collide with un-namespaced keys
 		var namespacePrefix = '__storejs_'+namespace+'_'
 		return create(this, {
