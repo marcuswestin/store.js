@@ -3,7 +3,7 @@ var namespace = 'expire_mixin'
 module.exports = expirePlugin
 
 function expirePlugin() {
-	var expirations = this.namespace(namespace)
+	var expirations = this.createStore(this._storage.resolved, null, namespace)
 	
 	return {
 		set: expire_set,

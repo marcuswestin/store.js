@@ -23,16 +23,13 @@ function runTests() {
 				test.skip('disabled')
 			}
 			test('Storage tests', function() {
-				var store = createStore()
-				store.addStorage(storage)
+				var store = createStore(storage)
 				runStorageTests(store)
 			})
 			each(allPluginTests, function(pluginTest, pluginName) {
 				var plugin = allPlugins[pluginName]
 				test.group('plugin: '+pluginName, function() {
-					var store = createStore()
-					store.addStorage(storage)
-					store.addPlugin(plugin)
+					var store = createStore(storage, plugin)
 					pluginTest.setup(store)
 				})
 			})
@@ -51,7 +48,7 @@ function _checkEnabled(storage) {
 		print('Skip unsupported storage:', storage.name)
 		return false
 	}
-	var store = createStore([storage], [])
+	var store = createStore([storage])
 	if (!store.enabled) {
 		print('Skip disabled storage:', storage.name)
 		return false
@@ -61,9 +58,7 @@ function _checkEnabled(storage) {
 
 function setupEngineTests(store) {
 	test('Addon super_fn args', function() {
-		var store = createStore(storages.memoryStorage)
-		var calls = 0
-		store.addPlugin(function underlying() {
+		function underlyingPlugin() {
 			return {
 				set: function(super_fn, key, val, customArg1, customArg2) {
 					assert(key == 'key'+'appended')
@@ -73,15 +68,18 @@ function setupEngineTests(store) {
 					calls++
 				}
 			}
-		})
-		store.addPlugin(function overlying() {
+		}
+		function overlyingPlugin() {
 			return {
 				set: function(super_fn, key, val) {
 					super_fn(key+'appended', val, 'overridden-customArg1')
 					calls++
 				}
 			}
-		})
+		}
+		
+		var store = createStore(storages.memoryStorage, [underlyingPlugin, overlyingPlugin])
+		var calls = 0
 		store.set('key', 'val', 'customArg1', 'customArg2')
 		assert(calls == 2)
 	})

@@ -3,12 +3,10 @@
 
 var engine = require('../../src/store-engine');
 
-const store = engine.createStore([
-    require('../../storages/localStorage')
-], [
-    require('../../plugins/expire'),
-    require('../../plugins/events')
-]);
+const store = engine.createStore(
+	[ require('../../storages/localStorage'), require('../../storages/memoryStorage') ],
+	[ require('../../plugins/expire'), require('../../plugins/events') ]
+);
 
 store.set('foo', 'bar', new Date().getTime() - 1);
 store.set('foo', 'bar');
