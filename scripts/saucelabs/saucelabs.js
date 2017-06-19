@@ -65,7 +65,7 @@ function runTest(url, platformSets, callback) {
 					else { throw new Error('Bad status') }
 				})
 				_.each(_.flatten([passed, pending, failed]), function(test) {
-					console.log(getTestStatus(test), test.id, test.status, test.platform)
+					console.log(getTestStatus(test), test.id, test.status || 'test finished', test.platform)
 				})
 				if (pending.length == 0) {
 					console.log("Test suite completed")
