@@ -6,13 +6,13 @@ test-node:
 test-browser:
 	node scripts/run-browser-tests-live-reload.js
 
-test-saucelabs: build
+test-saucelabs: build test-node lint
 	node scripts/run-saucelabs-tests.js
 
 tunnel:
 	node scripts/create-tunnel.js
 
-build: test
+build:
 	node scripts/compile-builds.js
 
 lint:
