@@ -55,19 +55,21 @@ function runTest(url, platformSets, callback) {
 		function loopCheckStatus() {
 			getTestsStatus(runTestsRes, function(res) {
 				var pending = []
+				var running = []
 				var passed = []
 				var failed = []
 				_.each(res['js tests'], function(test) {
 					var status = getTestStatus(test)
 					if (status == PENDING) { pending.push(test) }
 					else if (status == PASSED) { passed.push(test) }
+					else if (status == RUNNING) { running.push(test) }
 					else if (status == FAILED) { failed.push(test) }
 					else { throw new Error('Bad status') }
 				})
-				_.each(_.flatten([passed, pending, failed]), function(test) {
-					console.log(getTestStatus(test), test.id, test.platform, test.status || '')
+				_.each(_.flatten([passed, pending, running, failed]), function(test) {
+					console.log(getTestStatus(test), test.id, test.platform, test.status || 'test finished')
 				})
-				if (pending.length == 0) {
+				if (pending.length == 0 && running.length == 0) {
 					console.log("Test suite completed")
 					callback(checkTestResults(res))
 				} else if (res.completed) {
@@ -124,11 +126,14 @@ function getTestsStatus(runTestsRes, callback) {
 }
 
 var PENDING = 'PENDING'
+var RUNNING = 'RUNNING'
 var FAILED  = 'FAILED '
 var PASSED  = 'PASSED '
 function getTestStatus(test) {
 	if (test.status == 'test error') {
 		return FAILED
+	} else if (test.status == 'test session in progress') {
+		return RUNNING
 	} else if (test.result) {
 		return (test.result.failed ? FAILED : PASSED)
 	} else {
