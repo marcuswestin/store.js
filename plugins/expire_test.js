@@ -1,6 +1,5 @@
-require('./expire')
-
 module.exports = {
+	plugin: require('./expire'),
 	setup: setup,
 }
 

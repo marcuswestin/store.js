@@ -1,6 +1,5 @@
-require('./observe')
-
 module.exports = {
+	plugin: require('./observe'),
 	setup: setup,
 }
 

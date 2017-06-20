@@ -1,6 +1,5 @@
-require('./json2')
-
 module.exports = {
+	plugin: require('./json2'),
 	setup: setup,
 }
 

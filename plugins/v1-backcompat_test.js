@@ -1,4 +1,5 @@
 module.exports = {
+	plugin: require('./v1-backcompat'),
 	setup: setup,
 }
 

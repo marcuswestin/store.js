@@ -1,6 +1,5 @@
-require('./defaults')
-
 module.exports = {
+	plugin: require('./defaults'),
 	setup: setup,
 }
 

@@ -1,6 +1,5 @@
-require('./events')
-
 module.exports = {
+	plugin: require('./events'),
 	setup: setup,
 }
 

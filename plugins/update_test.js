@@ -1,4 +1,5 @@
 module.exports = {
+	plugin: require('./update'),
 	setup: setup,
 }
 

@@ -1,9 +1,8 @@
 var { each, map } = require('../src/util')
 var { deepEqual } = require('../tests/util')
 
-require('./operations')
-
 module.exports = {
+	plugin: require('./operations'),
 	setup: setup,
 }
 

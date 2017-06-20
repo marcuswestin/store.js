@@ -5,7 +5,6 @@ tinytest.hijackConsoleLog()
 var { createStore } = require('../src/store-engine')
 var { each } = require('../src/util')
 var storages = require('../storages/all')
-var allPlugins = require('../plugins/all')
 var allPluginTests = require('../plugins/all_tests')
 
 module.exports = {
@@ -26,9 +25,8 @@ function runTests() {
 				var store = createStore([storage])
 				runStorageTests(store)
 			})
-			each(allPluginTests, function(pluginTest, pluginIndex) {
-				var plugin = allPlugins[pluginIndex]
-				var pluginName = (plugin.name ? plugin : _last(plugin)).name // Either a plugin function or a list of plugin functions
+			each(allPluginTests, function(pluginTest, pluginName) {
+				var plugin = pluginTest.plugin
 				test.group('plugin: '+pluginName, function() {
 					var store = createStore([storage], [plugin])
 					pluginTest.setup(store)
@@ -42,10 +40,6 @@ function runTests() {
 	tinytest.runTests({
 		failFast: false
 	})
-}
-
-function _last(arr) {
-	return arr[arr.length - 1]
 }
 
 function _checkEnabled(storage) {

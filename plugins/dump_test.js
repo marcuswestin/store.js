@@ -2,6 +2,7 @@ var { each } = require('../src/util')
 var { deepEqual } = require('../tests/util')
 
 module.exports = {
+	plugin: require('./dump'),
 	setup: setup,
 }
 
