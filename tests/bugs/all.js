@@ -8,4 +8,7 @@ test.group('bugs', function() {
 	test("gh-236", function() {
 		require('./gh-236')
 	})
+	test("gh-239", function() {
+		require('./gh-239')
+	})
 })
