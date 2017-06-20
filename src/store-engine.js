@@ -72,9 +72,8 @@ var storeAPI = {
 		_warn('store.addStorage(storage) is deprecated. Use createStore([storages])')
 		this._addStorage(storage)
 	},
-	// Deprecated
+
 	addPlugin: function(plugin) {
-		_warn('store.addPlugin(plugin) is deprecated. Use createStore([storages], [plugins])')
 		this._addPlugin(plugin)
 	},
 	
