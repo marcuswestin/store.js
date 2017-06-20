@@ -92,12 +92,6 @@ function _warn() {
 }
 
 function createStore(storages, plugins, namespace) {
-	if (storages && !isList(storages)) {
-		storages = [storages]
-	}
-	if (plugins && !isList(plugins)) {
-		plugins = [plugins]
-	}
 	if (!namespace) {
 		namespace = ''
 	}

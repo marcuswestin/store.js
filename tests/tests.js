@@ -23,13 +23,13 @@ function runTests() {
 				test.skip('disabled')
 			}
 			test('Storage tests', function() {
-				var store = createStore(storage)
+				var store = createStore([storage])
 				runStorageTests(store)
 			})
 			each(allPluginTests, function(pluginTest, pluginName) {
 				var plugin = allPlugins[pluginName]
 				test.group('plugin: '+pluginName, function() {
-					var store = createStore(storage, plugin)
+					var store = createStore([storage], [plugin])
 					pluginTest.setup(store)
 				})
 			})
