@@ -77,10 +77,9 @@ var storeAPI = {
 		_warn('store.addPlugin(plugin) is deprecated. Use createStore([storages], [plugins])')
 		this._addPlugin(plugin)
 	},
-	// Deprecated
+	
 	namespace: function(namespace) {
-		_warn('store.namespace is deprecated. Use store.createStore(storages, plugins, namespace)')
-		return createStore([this._storage.resolved], this._seenPlugins, namespace)
+		return createStore(this.storage, this.plugins, namespace)
 	}
 }
 

@@ -6,8 +6,8 @@ var storages = [require('../../storages/memoryStorage')];
 var plugins = [require('../../plugins/expire')];
 
 const store1 = engine.createStore(storages, plugins, '');
-const store2 = engine.createStore(storages, plugins, 'store2');
-const store3 = engine.createStore(storages, plugins, 'store3');
+const store2 = store1.namespace('store2')
+const store3 = store1.namespace('store3')
 
 var time = Math.floor(new Date().getTime() / 10) * 10
 var expiration1 = time + 1001
