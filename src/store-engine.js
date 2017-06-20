@@ -67,12 +67,6 @@ var storeAPI = {
 		return createStore.apply(this, arguments)
 	},
 	
-	// Deprecated
-	addStorage: function(storage) {
-		_warn('store.addStorage(storage) is deprecated. Use createStore([storages])')
-		this._addStorage(storage)
-	},
-
 	addPlugin: function(plugin) {
 		this._addPlugin(plugin)
 	},
@@ -212,6 +206,15 @@ function createStore(storages, plugins, namespace) {
 				}
 				self._assignPluginFnProp(pluginFnProp, propName)
 			})
+		},
+		
+		// Put deprecated properties in the private API, so as to not expose it to accidential
+		// discovery through inspection of the store object.
+		
+		// Deprecated: addStorage
+		addStorage: function(storage) {
+			_warn('store.addStorage(storage) is deprecated. Use createStore([storages])')
+			this._addStorage(storage)
 		}
 	}
 
