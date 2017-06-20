@@ -13,7 +13,7 @@ module.exports = {
 }
 
 var storeAPI = {
-	version: '2.0.11',
+	version: '2.0.12',
 	enabled: false,
 	
 	// get returns the value of the given key. If that value
