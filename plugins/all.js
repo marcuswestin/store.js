@@ -1,4 +1,5 @@
 module.exports = [
+	require('./compression'),
 	require('./defaults'),
 	require('./dump'),
 	require('./events'),
