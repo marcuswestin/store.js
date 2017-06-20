@@ -16,7 +16,7 @@ if [ "$GIT_BRANCH" != "master" ]; then
 	exit -1
 fi
 
-if [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]]; then
+if ! git diff-index --quiet HEAD --; then
 	echo "git repo is dirty. Commit all changes before using release.sh"
 	exit -1
 fi
