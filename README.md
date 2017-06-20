@@ -275,5 +275,5 @@ var storage = {
 	remove: function(key) { ... },
 	clearAll: function() { ... }
 }
-store.addStorage(storage)
+var store = require('store').createStore(storage)
 ```
