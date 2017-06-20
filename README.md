@@ -128,7 +128,7 @@ Plugins provide additional common functionality that some users might need:
 - [defaults.js](plugins/defaults.js):            Declare default values. [Example usage](plugins/defaults_test.js)
 - [dump.js](plugins/dump.js):                    Dump all stored values. [Example usage](plugins/dump_test.js)
 - [events.js](plugins/events.js):                Get notified when stored values change. [Example usage](plugins/events_test.js)
-- [expire.js](plugins/expire.js):                Expire stored values after a given time. [Example usage](plugins/expire_test.js)
+- [expire.js](plugins/expire.js):                Expire stored values at a given time. [Example usage](plugins/expire_test.js)
 - [observe.js](plugins/observe.js):              Observe stored values and their changes. [Example usage](plugins/observe_test.js)
 - [operations.js](plugins/operations.js):        Useful operations like push, shift & assign. [Example usage](plugins/operations_test.js)
 - [update.js](plugins/update.js):                Update a stored object, or create it if null. [Example usage](plugins/update_test.js)
