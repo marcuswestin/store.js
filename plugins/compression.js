@@ -8,16 +8,15 @@ function compressionPlugin() {
 		set: set,
 	}
 
-	function get(super_fn, key, raw) {
+	function get(super_fn, key) {
 		var val = super_fn(key)
-		if (!val || raw) return val
+		if (!val) { return val }
 		var decompressed = LZString.decompress(val)
 		// fallback to existing values that are not compressed
 		return (decompressed == null) ? val : JSON.parse(decompressed)
 	}
 
-	function set(super_fn, key, val, raw) {
-		if (raw) return super_fn(key, val)
+	function set(super_fn, key, val) {
 		var compressed = LZString.compress(JSON.stringify(val))
 		super_fn(key, compressed)
 	}
