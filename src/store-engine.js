@@ -19,7 +19,7 @@ var storeAPI = {
 	// get returns the value of the given key. If that value
 	// is undefined, it returns optionalDefaultValue instead.
 	get: function(key, optionalDefaultValue) {
-		var data = this._storage().read(this._namespacePrefix + key)
+		var data = this.storage.read(this._namespacePrefix + key)
 		return this._deserialize(data, optionalDefaultValue)
 	},
 
@@ -29,27 +29,27 @@ var storeAPI = {
 		if (value === undefined) {
 			return this.remove(key)
 		}
-		this._storage().write(this._namespacePrefix + key, this._serialize(value))
+		this.storage.write(this._namespacePrefix + key, this._serialize(value))
 		return value
 	},
 
 	// remove deletes the key and value stored at the given key.
 	remove: function(key) {
-		this._storage().remove(this._namespacePrefix + key)
+		this.storage.remove(this._namespacePrefix + key)
 	},
 
 	// each will call the given callback once for each key-value pair
 	// in this store.
 	each: function(callback) {
 		var self = this
-		this._storage().each(function(val, namespacedKey) {
+		this.storage.each(function(val, namespacedKey) {
 			callback.call(self, self._deserialize(val), (namespacedKey || '').replace(self._namespaceRegexp, ''))
 		})
 	},
 
 	// clearAll will remove all the stored key-value pairs in this store.
 	clearAll: function() {
-		this._storage().clearAll()
+		this.storage.clearAll()
 	},
 
 	// additional functionality that can't live in plugins
@@ -95,6 +95,12 @@ function createStore(storages, plugins, namespace) {
 	if (!namespace) {
 		namespace = ''
 	}
+	if (storages && !isList(storages)) {
+		storages = [storages]
+	}
+	if (plugins && !isList(plugins)) {
+		plugins = [plugins]
+	}
 
 	var namespacePrefix = (namespace ? '__storejs_'+namespace+'_' : '')
 	var namespaceRegexp = (namespace ? new RegExp('^'+namespacePrefix) : null)
@@ -104,19 +110,8 @@ function createStore(storages, plugins, namespace) {
 	}
 	
 	var _privateStoreProps = {
-		_seenPlugins: [],
 		_namespacePrefix: namespacePrefix,
 		_namespaceRegexp: namespaceRegexp,
-		
-		_storage: function() {
-			if (!this.enabled) {
-				throw new Error("store.js: No supported storage has been added! "+
-					"Add one (e.g store.createStore(require('store/storages/cookieStorage')) "+
-					"or use a build with more built-in storages (e.g "+
-					"https://github.com/marcuswestin/store.js/tree/master/dist/store.legacy.min.js)")
-			}
-			return this._storage.resolved
-		},
 
 		_testStorage: function(storage) {
 			try {
@@ -175,7 +170,7 @@ function createStore(storages, plugins, namespace) {
 		_addStorage: function(storage) {
 			if (this.enabled) { return }
 			if (this._testStorage(storage)) {
-				this._storage.resolved = storage
+				this.storage = storage
 				this.enabled = true
 			}
 		},
@@ -194,11 +189,13 @@ function createStore(storages, plugins, namespace) {
 
 			// Keep track of all plugins we've seen so far, so that we
 			// don't add any of them twice.
-			var seenPlugin = pluck(this._seenPlugins, function(seenPlugin) { return (plugin === seenPlugin) })
+			var seenPlugin = pluck(this.plugins, function(seenPlugin) {
+				return (plugin === seenPlugin)
+			})
 			if (seenPlugin) {
 				return
 			}
-			this._seenPlugins.push(plugin)
+			this.plugins.push(plugin)
 
 			// Check that the plugin is properly formed
 			if (!isFunction(plugin)) {
@@ -220,7 +217,9 @@ function createStore(storages, plugins, namespace) {
 		}
 	}
 
-	var store = create(_privateStoreProps, storeAPI)
+	var store = create(_privateStoreProps, storeAPI, {
+		plugins: []
+	})
 	store.raw = {}
 	each(store, function(prop, propName) {
 		if (isFunction(prop)) {

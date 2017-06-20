@@ -26,8 +26,9 @@ function runTests() {
 				var store = createStore([storage])
 				runStorageTests(store)
 			})
-			each(allPluginTests, function(pluginTest, pluginName) {
-				var plugin = allPlugins[pluginName]
+			each(allPluginTests, function(pluginTest, pluginIndex) {
+				var plugin = allPlugins[pluginIndex]
+				var pluginName = (plugin.name ? plugin : _last(plugin)).name // Either a plugin function or a list of plugin functions
 				test.group('plugin: '+pluginName, function() {
 					var store = createStore([storage], [plugin])
 					pluginTest.setup(store)
@@ -41,6 +42,10 @@ function runTests() {
 	tinytest.runTests({
 		failFast: false
 	})
+}
+
+function _last(arr) {
+	return arr[arr.length - 1]
 }
 
 function _checkEnabled(storage) {
@@ -145,7 +150,7 @@ function runStorageTests(store) {
 		'odd_string'  : "{ZYX'} abc:;::)))"
 	}
 	for (var key in promoteValues) {
-		store._storage.resolved.write(key, promoteValues[key])
+		store.storage.write(key, promoteValues[key])
 		assert(store.get(key) == promoteValues[key], key+" was not correctly promoted to valid JSON")
 		store.remove(key)
 	}
