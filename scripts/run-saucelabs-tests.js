@@ -14,9 +14,15 @@ main(function(err) {
 })
 
 function main() {
-	tunnel.setup(port, function(err, url) {
-		if (err) { throw err }
-		saucelabs.setAuth(username, password)
+	var platformSetNames = process.argv.slice(2)
+	var platformSets = platformSetNames.map(function(platformSetName) {
+		var platformSet = saucelabs.platformSets[platformSetName]
+		if (!platformSet) {
+			throw new Error("Unknown platform set: "+platformSetName)
+		}
+		return platformSet
+	})
+	if (platformSets.length == 0) {
 		var s = saucelabs.platformSets
 		var platformSets = [
 			// All supported platforms:
@@ -37,6 +43,11 @@ function main() {
 			// s.firefox4, s.firefox5,
 			// s.ie10,
 		]
+	}
+	
+	tunnel.setup(port, function(err, url) {
+		if (err) { throw err }
+		saucelabs.setAuth(username, password)
 		saucelabs.runTest(url, platformSets, onDone)
 		function onDone(err) {
 			if (err) {
