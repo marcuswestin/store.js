@@ -6,16 +6,19 @@ module.exports = {
 }
 
 function setup(store) {
-	test('string compression', function() {
-		store.set('foo', 'baz')
-		assert(store.raw.get('foo') == 'ᄂゆ׬䀀', 'string should be lz compressed')
-		assert(store.get('foo') == 'baz', 'value should be baz')
+	test('string compression size', function() {
+		var str = 'foo'
+		var serialized = store._serialize(str)
+		store.set('foo', str)
+		assert(store.raw.get('foo').length < serialized.length, 'compressed string should be smaller than uncompressed')
+		assert(deepEqual(store.get('foo'), str), 'value should be equal')
 	})
 
 	test('object compression', function () {
 		var obj = { one: { two: 3 }}
+		var serialized = store._serialize(obj)
 		store.set('foo', obj)
-		assert(store.raw.get('foo') == '㞂⃶ݠ꘠岠ᜃ릎٠⾆耀', 'object should be lz compressed')
+		assert(store.raw.get('foo').length < serialized.length, 'compressed object should be smaller than uncompressed')
 		assert(deepEqual(store.get('foo'), obj), 'should deep equal original object')
 		store.remove('foo')
 	})
