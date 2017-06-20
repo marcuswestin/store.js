@@ -13,11 +13,11 @@ function compressionPlugin() {
 		if (!val) { return val }
 		var decompressed = LZString.decompress(val)
 		// fallback to existing values that are not compressed
-		return (decompressed == null) ? val : JSON.parse(decompressed)
+		return (decompressed == null) ? val : this._deserialize(decompressed)
 	}
 
 	function set(super_fn, key, val) {
-		var compressed = LZString.compress(JSON.stringify(val))
+		var compressed = LZString.compress(this._serialize(val))
 		super_fn(key, compressed)
 	}
 }
