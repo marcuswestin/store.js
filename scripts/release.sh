@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # scripts/
 cd ../ # store.js project root
 
@@ -14,6 +13,11 @@ fi
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 if [ "$GIT_BRANCH" != "master" ]; then
 	echo "release.sh must be called from branch master (current: $GIT_BRANCH)"
+	exit -1
+fi
+
+if [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]]; then
+	echo "git repo is dirty. Commit all changes before using release.sh"
 	exit -1
 fi
 
@@ -32,6 +36,11 @@ sed -E s/"version\: '[0-9]+\.[0-9]+\.[0-9]+'"/"version\: '$VERSION'"/ src/store-
 	> /tmp/store-engine.js && \
 	mv /tmp/store-engine.js src/store-engine.js
 cat src/store-engine.js | grep $VERSION -C 1
+
+if [[ ! `git diff --stat` =~ "2 files changed, 2 insertions, 2 deletions" ]]; then
+	echo "WARNING! Expected exactly 2 changes in 2 files after replacing version number. Bailing! (check git status and git diff)"
+	exit -1
+fi
 
 echo
 while true; do
