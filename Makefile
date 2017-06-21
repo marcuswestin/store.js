@@ -27,7 +27,9 @@ tunnel:
 	node scripts/create-tunnel.js
 
 build:
+	mkdir -p tmp
 	node scripts/compile-builds.js
+	rm -rf tmp
 
 lint:
 	./node_modules/.bin/eslint tests/* src/* plugins/* storages/*  \
