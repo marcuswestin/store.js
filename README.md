@@ -1,44 +1,38 @@
 Store.js
 ========
 
+Cross-browser storage for all use cases, used across the web.
+
 [![Circle CI](https://img.shields.io/circleci/project/github/marcuswestin/store.js.svg)](https://circleci.com/gh/marcuswestin/store.js)
 [![npm version](https://badge.fury.io/js/store.svg)](https://badge.fury.io/js/store)
 [![npm](https://img.shields.io/npm/dm/store.svg?maxAge=2592000)](https://npm-stat.com/charts.html?package=store)
 
-1. [Version 2.0](#user-content-version-20)
-	- What's new?
-2. [Basic Usage](#user-content-basic-usage)
+Store.js has been around since 2010 ([first commit](https://github.com/marcuswestin/store.js/commit/cb0198c2c02ff5f17c084276eeb4f28c79849d5e), [v1 release](https://news.ycombinator.com/item?id=1468802)). It is used in production on tens of thousands of websites, such as cnn.com, dailymotion.com, & many more.
+
+Store.js provides basic key/value storage functionality (`get/set/remove/each`) as well as a rich set of plug-in [storages](#user-content-storages) and extra [functionality](#user-content-plugins).
+
+
+1. [Basic Usage](#user-content-basic-usage)
 	- All you need to get started
 	- [API](#user-content-api)
 	- [Installation](#user-content-installation)
-3. [Supported Browsers](#user-content-supported-browsers)
+2. [Supported Browsers](#user-content-supported-browsers)
 	- All of them, pretty much :)
 	- [List of supported browsers](#user-content-list-of-supported-browsers)
-4. [Plugins](#user-content-plugins)
+3. [Plugins](#user-content-plugins)
 	- Additional common functionality
 	- [List of all Plugins](#user-content-list-of-all-plugins)
 	- [Using Plugins](#user-content-using-plugins)
 	- [Write your own Plugin](#user-content-write-your-own-plugin)
-5. [Builds](#user-content-builds)
+4. [Builds](#user-content-builds)
 	- Choose which build is right for you
 	- [List of default Builds](#user-content-list-of-default-builds)
 	- [Make your own Build](#user-content-make-your-own-build)
-6. [Storages](#user-content-storages)
+5. [Storages](#user-content-storages)
 	- Storages provide underlying persistence
 	- [List of all Storages](#user-content-list-of-all-storages)
 	- [Storages limits](#user-content-storages-limits)
 	- [Write your own Storage](#user-content-write-your-own-storage)
-
-
-Version 2.0
------------
-
-Store.js has been around since 2010 ([first commit](https://github.com/marcuswestin/store.js/commit/cb0198c2c02ff5f17c084276eeb4f28c79849d5e)! [HN discussion](https://news.ycombinator.com/item?id=1468802)!), and is live on tens of thousands of websites - like cnn.com!
-
-For many years v1.x provided basic cross-browser persistent storage, and over time more and more people [started asking](https://github.com/marcuswestin/store.js/issues?q=is%3Aissue+is%3Aclosed) for additional functionality.
-
-Store.js version 2 is a full revamp with pluggable storage (it will automatically fall back to one that works in every scenario by default), pluggable extra functionality (like [expirations](plugins/expire.js), [default values](plugins/defaults.js), common [array/object operations](plugins/operations.js), etc), and fully cross-browser automatic testing using saucelabs.com.
-
 
 
 Basic Usage
