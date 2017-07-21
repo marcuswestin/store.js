@@ -46,21 +46,21 @@ store.js exposes a simple API for cross-browser local storage:
 
 ```js
 // Store current user
-store.set('user', { name:'Marcus' })
+store.set('user', { name:'Marcus' });
 
 // Get current user
-store.get('user')
+store.get('user');
 
 // Remove current user
-store.remove('user')
+store.remove('user');
 
 // Clear all keys
-store.clearAll()
+store.clearAll();
 
 // Loop over all stored values
 store.each(function(value, key) {
 	console.log(key, '==', value)
-})
+});
 ```
 
 ### Installation
@@ -69,9 +69,9 @@ Using npm:
 
 ```js
 // Example store.js usage with npm
-var store = require('store')
-store.set('user', { name:'Marcus' })
-store.get('user').name == 'Marcus'
+var store = require('store');
+store.set('user', { name:'Marcus' });
+store.get('user').name == 'Marcus';
 ```
 
 Using script tag (first download one of the [builds](dist/)):
@@ -80,9 +80,9 @@ Using script tag (first download one of the [builds](dist/)):
 <!-- Example store.js usage with script tag -->
 <script src="path/to/my/store.legacy.min.js"></script>
 <script>
-var store = require('store')
-store.set('user', { name:'Marcus' })
-store.get('user').name == 'Marcus'
+var store = require('store');
+store.set('user', { name:'Marcus' });
+store.get('user').name == 'Marcus';
 </script>
 ```
 
@@ -134,8 +134,8 @@ With npm:
 
 ```js
 // Example plugin usage:
-var expirePlugin = require('store/plugins/expire')
-store.addPlugin(expirePlugin)
+var expirePlugin = require('store/plugins/expire');
+store.addPlugin(expirePlugin);
 ```
 
 If you're using script tags, you can either use [store.everything.min.js](dist/store.everything.min.js) (which
@@ -150,7 +150,7 @@ the original function using the first argument (super_fn).
 ```js
 // Example plugin that stores a version history of every value
 var versionHistoryPlugin = function() {
-	var historyStore = this.namespace('history')
+	var historyStore = this.namespace('history');
 	return {
 		set: function(super_fn, key, value) {
 			var history = historyStore.get(key) || []
@@ -159,14 +159,14 @@ var versionHistoryPlugin = function() {
 			return super_fn()
 		},
 		getHistory: function(key) {
-			return historyStore.get(key)
+			return historyStore.get(key);
 		}
 	}
 }
-store.addPlugin(versionHistoryPlugin)
-store.set('foo', 'bar 1')
-store.set('foo', 'bar 2')
-store.getHistory('foo') == ['bar 1', 'bar 2']
+store.addPlugin(versionHistoryPlugin);
+store.set('foo', 'bar 1');
+store.set('foo', 'bar 2');
+store.getHistory('foo') == ['bar 1', 'bar 2'];
 ```
 
 Let me know if you need more info on writing plugins. For the moment I recommend
@@ -194,17 +194,17 @@ If you're using npm you can create your own build:
 
 ```js
 // Example custom build usage:
-var engine = require('store/src/store-engine')
+var engine = require('store/src/store-engine');
 var storages = [
 	require('store/storages/localStorage'),
 	require('store/storages/cookieStorage')
-]
+];
 var plugins = [
 	require('store/plugins/defaults'),
 	require('store/plugins/expire')
-]
-var store = engine.createStore(storages, plugins)
-store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to expire in 3 seconds
+];
+var store = engine.createStore(storages, plugins);
+store.set('foo', 'bar', new Date().getTime() + 3000); // Using expire plugin to expire in 3 seconds
 ```
 
 
@@ -268,6 +268,6 @@ var storage = {
 	each: function(fn) { ... },
 	remove: function(key) { ... },
 	clearAll: function() { ... }
-}
-var store = require('store').createStore(storage)
+};
+var store = require('store').createStore(storage);
 ```
