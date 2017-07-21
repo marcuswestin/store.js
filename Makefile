@@ -1,4 +1,6 @@
 test: test-node lint
+install:
+	yarn install
 
 test-node:
 	node scripts/run-node-tests.js
