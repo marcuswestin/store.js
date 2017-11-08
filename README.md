@@ -80,7 +80,6 @@ Using script tag (first download one of the [builds](dist/)):
 <!-- Example store.js usage with script tag -->
 <script src="path/to/my/store.legacy.min.js"></script>
 <script>
-var store = require('store')
 store.set('user', { name:'Marcus' })
 store.get('user').name == 'Marcus'
 </script>
