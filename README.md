@@ -6,6 +6,7 @@ Cross-browser storage for all use cases, used across the web.
 [![Circle CI](https://img.shields.io/circleci/project/github/marcuswestin/store.js.svg)](https://circleci.com/gh/marcuswestin/store.js)
 [![npm version](https://badge.fury.io/js/store.svg)](https://badge.fury.io/js/store)
 [![npm](https://img.shields.io/npm/dm/store.svg?maxAge=2592000)](https://npm-stat.com/charts.html?package=store)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcuswestin%2Fstore.js.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcuswestin%2Fstore.js?ref=badge_shield)
 
 Store.js has been around since 2010 ([first commit](https://github.com/marcuswestin/store.js/commit/cb0198c2c02ff5f17c084276eeb4f28c79849d5e), [v1 release](https://news.ycombinator.com/item?id=1468802)). It is used in production on tens of thousands of websites, such as cnn.com, dailymotion.com, & many more.
 
@@ -270,3 +271,7 @@ var storage = {
 }
 var store = require('store').createStore(storage)
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcuswestin%2Fstore.js.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcuswestin%2Fstore.js?ref=badge_large)
