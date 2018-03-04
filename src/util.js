@@ -27,7 +27,7 @@ function make_assign() {
 				each(Object(arguments[i]), function(val, key) {
 					obj[key] = val
 				})
-			}			
+			}
 			return obj
 		}
 	}
@@ -40,7 +40,7 @@ function make_create() {
 			return assign.apply(this, [Object.create(obj)].concat(assignArgsList))
 		}
 	} else {
-		function F() {} // eslint-disable-line no-inner-declarations
+		var F = function () {}
 		return function create(obj, assignProps1, assignProps2, etc) {
 			var assignArgsList = slice(arguments, 1)
 			F.prototype = obj
