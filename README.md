@@ -191,6 +191,14 @@ Choose which build is right for you!
 - [store.modern.min.js](dist/store.modern.min.js): Full support for all modern browsers. Add plugins separately. [Source](dist/store.modern.js)
 - [store.v1-backcompat.min.js](dist/store.v1-backcompat.min.js): Full backwards compatibility with [store.js v1](https://github.com/marcuswestin/store.js/releases/tag/v1.3.20). [Source](dist/store.v1-backcompat.js)
 
+
+Individual storage builds (not containing any fallback logic)
+
+- [store.only.local-storage.min.js](dist/store.only.local-storage.min.js): All the plugins, all the storages. [Source](dist/store.only.local-storage.js)
+- [store.only.session-storage.min.js](dist/store.only.session-storage.min.js): All the plugins, all the storages. [Source](dist/store.only.session-storage.js)
+- [store.only.cookie-storage.min.js](dist/store.only.cookie-storage.min.js): All the plugins, all the storages. [Source](dist/store.only.cookie-storage.js)
+- [store.only.memory-storage.min.js](dist/store.only.memory-storage.min.js): All the plugins, all the storages. [Source](dist/store.only.memory-storage.js)
+
 ### Make your own Build
 
 If you're using npm you can create your own build:
