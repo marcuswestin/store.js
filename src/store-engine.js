@@ -25,11 +25,11 @@ var storeAPI = {
 
 	// set will store the given value at key and returns value.
 	// Calling set with value === undefined is equivalent to calling remove.
-	set: function(key, value) {
+	set: function(key, value, isSecure = false) {
 		if (value === undefined) {
 			return this.remove(key)
 		}
-		this.storage.write(this._namespacePrefix + key, this._serialize(value))
+		this.storage.write(this._namespacePrefix + key, this._serialize(value), isSecure)
 		return value
 	},
 

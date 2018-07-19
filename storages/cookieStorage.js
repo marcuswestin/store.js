@@ -38,9 +38,10 @@ function each(callback) {
 	}
 }
 
-function write(key, data) {
+function write(key, data, isSecure = false) {
 	if(!key) { return }
-	doc.cookie = escape(key) + "=" + escape(data) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/"
+	var secure = isSecure ? ";secure" : ""
+	doc.cookie = escape(key) + "=" + escape(data) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/" + secure
 }
 
 function remove(key) {
