@@ -67,6 +67,10 @@ store.each(function(value, key) {
 
 Using npm:
 
+```sh
+npm i store
+```
+
 ```js
 // Example store.js usage with npm
 var store = require('store')
