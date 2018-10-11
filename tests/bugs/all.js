@@ -2,6 +2,9 @@ test.group('bugs', function() {
 	test('gh-215: "Expire plugin doesn\'t factor custom namespaces"', function() {
 		require('./gh-215')
 	})
+	test('gh-224: "forEach and remove conflict when used at the sametime"', function() {
+		require('./gh-224')
+	})
 	test('gh-235: "Expire and Events plugins conflict with each other"', function() {
 		require('./gh-235')
 	})
