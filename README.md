@@ -207,7 +207,7 @@ var plugins = [
 	require('store/plugins/expire')
 ]
 var store = engine.createStore(storages, plugins)
-store.set('foo', 'bar', new Date().getTime() + 3000) // Using expire plugin to expire in 3 seconds
+store.set('foo', 'bar', Date.now() + 3000) // Using expire plugin to expire in 3 seconds
 ```
 
 
