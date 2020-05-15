@@ -107,7 +107,7 @@ function _makeIEStorageElFunction() {
 		storageEl = storageOwner.createElement('div')
 	} catch(e) {
 		// somehow ActiveXObject instantiation failed (perhaps some special
-		// security settings or otherwse), fall back to per-path storage
+		// security settings or otherwise), fall back to per-path storage
 		storageEl = doc.createElement('div')
 		storageOwner = doc.body
 	}
