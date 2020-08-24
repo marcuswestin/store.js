@@ -39,8 +39,8 @@ function each(callback) {
 }
 
 function write(key, data, options) {
-    if(!key) { return }
-    var opts = options ? options : ""
+	if(!key) { return }
+	var opts = options ? options : ""
 	doc.cookie = escape(key) + "=" + escape(data) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/" + opts
 }
 
