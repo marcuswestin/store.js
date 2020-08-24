@@ -15,7 +15,7 @@ module.exports = {
 var storeAPI = {
 	version: '2.0.12',
 	enabled: false,
-	
+
 	// get returns the value of the given key. If that value
 	// is undefined, it returns optionalDefaultValue instead.
 	get: function(key, optionalDefaultValue) {
@@ -25,11 +25,11 @@ var storeAPI = {
 
 	// set will store the given value at key and returns value.
 	// Calling set with value === undefined is equivalent to calling remove.
-	set: function(key, value) {
+	set: function(key, value, options) {
 		if (value === undefined) {
 			return this.remove(key)
 		}
-		this.storage.write(this._namespacePrefix + key, this._serialize(value))
+		this.storage.write(this._namespacePrefix + key, this._serialize(value), options)
 		return value
 	},
 
@@ -66,11 +66,11 @@ var storeAPI = {
 	createStore: function() {
 		return createStore.apply(this, arguments)
 	},
-	
+
 	addPlugin: function(plugin) {
 		this._addPlugin(plugin)
 	},
-	
+
 	namespace: function(namespace) {
 		return createStore(this.storage, this.plugins, namespace)
 	}
@@ -100,7 +100,7 @@ function createStore(storages, plugins, namespace) {
 	if (!legalNamespaces.test(namespace)) {
 		throw new Error('store.js namespaces can only have alphanumerics + underscores and dashes')
 	}
-	
+
 	var _privateStoreProps = {
 		_namespacePrefix: namespacePrefix,
 		_namespaceRegexp: namespaceRegexp,
@@ -158,7 +158,7 @@ function createStore(storages, plugins, namespace) {
 
 			return (val !== undefined ? val : defaultVal)
 		},
-		
+
 		_addStorage: function(storage) {
 			if (this.enabled) { return }
 			if (this._testStorage(storage)) {
@@ -207,10 +207,10 @@ function createStore(storages, plugins, namespace) {
 				self._assignPluginFnProp(pluginFnProp, propName)
 			})
 		},
-		
+
 		// Put deprecated properties in the private API, so as to not expose it to accidential
 		// discovery through inspection of the store object.
-		
+
 		// Deprecated: addStorage
 		addStorage: function(storage) {
 			_warn('store.addStorage(storage) is deprecated. Use createStore([storages])')
@@ -224,7 +224,7 @@ function createStore(storages, plugins, namespace) {
 	store.raw = {}
 	each(store, function(prop, propName) {
 		if (isFunction(prop)) {
-			store.raw[propName] = bind(store, prop)			
+			store.raw[propName] = bind(store, prop)
 		}
 	})
 	each(storages, function(storage) {
