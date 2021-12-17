@@ -38,9 +38,9 @@ function each(callback) {
 	}
 }
 
-function write(key, data) {
+function write(key, data, expire_date="Tue, 19 Jan 2038 03:14:07 GMT") {
 	if(!key) { return }
-	doc.cookie = escape(key) + "=" + escape(data) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/"
+	doc.cookie = escape(key) + "=" + escape(data) + "; expires=" + expire_date + "; path=/"
 }
 
 function remove(key) {
