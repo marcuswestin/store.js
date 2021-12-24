@@ -13,6 +13,7 @@ module.exports = {
 	each: each,
 	remove: remove,
 	clearAll: clearAll,
+	removeExpire: removeWithExprirationTime
 }
 
 var doc = Global.document
