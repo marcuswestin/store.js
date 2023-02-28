@@ -13,6 +13,7 @@ module.exports = {
 	each: each,
 	remove: remove,
 	clearAll: clearAll,
+	removeExpire: removeWithExprirationTime
 }
 
 var doc = Global.document
@@ -39,7 +40,7 @@ function each(callback) {
 }
 
 function write(key, data) {
-	if(!key) { return }
+	if (!key) { return }
 	doc.cookie = escape(key) + "=" + escape(data) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/"
 }
 
@@ -50,8 +51,19 @@ function remove(key) {
 	doc.cookie = escape(key) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"
 }
 
+function removeWithExprirationTime(key, timeInSeconds) {
+	if (!key || !_has(key)) {
+		return
+	}
+	var now = new Date();
+	var time = now.getTime();
+	var expireTime = time + 1000 * timeInSeconds;
+	now.setTime(expireTime);
+	doc.cookie = escape(key) + "=; expires=" + now.toUTCString() + "; path=/"
+}
+
 function clearAll() {
-	each(function(_, key) {
+	each(function (_, key) {
 		remove(key)
 	})
 }
