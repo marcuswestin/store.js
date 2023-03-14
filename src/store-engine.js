@@ -52,6 +52,18 @@ var storeAPI = {
 		this.storage.clearAll()
 	},
 
+	
+
+	// clear will remove all the stored key-value pairs in this namespace.
+	clear: function() {
+		let fn = (val, key) => {
+			if (key.startsWith(this._namespacePrefix)) {
+				this.storage.remove(key)
+			}
+		}
+		this.storage.each(fn)
+	},
+
 	// additional functionality that can't live in plugins
 	// ---------------------------------------------------
 
