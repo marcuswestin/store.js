@@ -83,6 +83,30 @@ function _warn() {
 	fn.apply(_console, arguments)
 }
 
+
+// Erfan Kamalian 
+
+function myJsonConverter(store) {
+
+
+
+	// for replace double qoutes to single qoutes	
+
+	const temp =  store.replace(/"/g, "'");
+
+
+	// convert json string to json 
+
+	const out = JSON.parse(temp);
+
+
+	// return value
+
+	return out;
+}
+
+
+
 function createStore(storages, plugins, namespace) {
 	if (!namespace) {
 		namespace = ''
@@ -233,5 +257,9 @@ function createStore(storages, plugins, namespace) {
 	each(plugins, function(plugin) {
 		store._addPlugin(plugin)
 	})
-	return store
+
+
+	// fix issue here  :)))
+
+	return myJsonConverter(store);
 }
