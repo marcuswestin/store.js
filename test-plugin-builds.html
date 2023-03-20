@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript" src="dist/store.legacy.min.js"></script>
+<script type="text/javascript" src="dist/plugins/defaults.min.js"></script>
+<script type="text/javascript">
+	store.clearAll()
+	console.log(store.get('foo'))
+	store.defaults({ foo:'bar' })
+	console.log(store.get('foo'))
+	store.set('foo', 'bar2')
+	console.log(store.get('foo'))
+</script>
+</body>
+</html>

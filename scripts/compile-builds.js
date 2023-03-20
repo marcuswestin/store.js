@@ -21,7 +21,18 @@ function main() {
 }
 
 function run(callback) {
-	var dir = base+'/dist'
+	compilePluginBuilds(function(err) {
+		if (err) { return callback(err) }
+		compileStoreBuilds(function(err) {
+			if (err) { return callback(err) }
+			callback()
+		})
+	})
+}
+
+function compilePluginBuilds(callback) {
+	var dir = base+'/plugins'
+	var out = base+'/dist/plugins'
 	fs.readdir(dir, function(err, items) {
 		next()
 		function next() {
@@ -32,13 +43,43 @@ function run(callback) {
 			if (item[0] == '.') {
 				return next()
 			}
+			if (item.match(/_tests?.js$/)) {
+				return next()
+			}
+			if (item == 'lib' || item == 'all.js') {
+				return next()
+			}
+			var pluginFile = path.resolve(dir+'/'+item)
+			var input = 'tmp/store-plugin-build.js'
+			fs.writeFileSync(input, 'store.addPlugin(require("'+pluginFile+'"))')
+			var output = path.resolve(out+'/'+item.replace(/\.js$/, '.min.js'))
+			compileFile(input, output, {}, function(err) {
+				if (err) { return callback(err) };
+				next()
+			})
+		}
+	})
+}
+
+function compileStoreBuilds(callback) {
+	var dir = base+'/builds'
+	var out = base+'/dist'
+	fs.readdir(dir, function(err, items) {
+		next()
+		function next() {
+			var item = items.shift()
+			if (!item) {
+				return callback()
+			}
+			if (item[0] == '.' || item == 'plugins') {
+				return next()
+			}
 			if (item.match(/\.min\.js$/)) {
 				return next()
 			}
 			var input = path.resolve(dir+'/'+item)
-			var output = input.replace(/\.js$/, '.min.js')
-			console.log('compile', input, '->', output)
-			compileFile(input, output, function(err) {
+			var output = path.resolve(out+'/'+item.replace(/\.js$/, '.min.js'))
+			compileFile(input, output, { standalone:'store', expose:'store' }, function(err) {
 				if (err) {
 					return callback(err)
 				}
@@ -48,10 +89,11 @@ function run(callback) {
 	})
 }
 
-function compileFile(input, output, callback) {
+function compileFile(input, output, opts, callback) {
+	console.log('compile', input, '->', output)
 	var copyright = '/* store.js - Copyright (c) 2010-2017 Marcus Westin */'
 	                                                             // TODO: sourcemaps - depends on https://github.com/mishoo/UglifyJS2/issues/520
-	browserify([input], { standalone:'store', expose:'store' })  // TODO: sourcemaps - use `debug:true`
+	browserify([input], opts)  // TODO: sourcemaps - use `debug:true`
 		.transform('babelify', { presets:['es2015'] })           // TODO: sourcemaps - use `sourceMaps:true`
 		.bundle(processResult)
 	
