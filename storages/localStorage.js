@@ -3,29 +3,29 @@ var Global = util.Global
 
 module.exports = {
 	name: 'localStorage',
-	read: read,
-	write: write,
-	each: each,
-	remove: remove,
-	clearAll: clearAll,
+	read,
+	write,
+	each,
+	remove,
+	clearAll,
 }
 
 function localStorage() {
-	return Global.localStorage
+	return Global.localStorage;
 }
 
 function read(key) {
-	return localStorage().getItem(key)
+	return localStorage().getItem(key);
 }
 
 function write(key, data) {
-	return localStorage().setItem(key, data)
+	return localStorage().setItem(key, data);
 }
 
 function each(fn) {
-	for (var i = localStorage().length - 1; i >= 0; i--) {
+	for (var i = localStorage().length; i > 0; i--) {
 		var key = localStorage().key(i)
-		fn(read(key), key)
+		fn(read(key), key);
 	}
 }
 
